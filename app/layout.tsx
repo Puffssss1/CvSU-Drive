@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "CvSU-Drive",
-  description: "Record System",
+  title: 'CvSU-Drive',
+  description: 'Record System for CvSU',
 };
 
 export default function RootLayout({
@@ -14,11 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={``}
-      >
-        {children}
-      </body>
+      <body className={``}>{children}</body>
     </html>
   );
 }

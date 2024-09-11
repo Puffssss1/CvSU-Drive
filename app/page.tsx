@@ -1,4 +1,4 @@
-import  LoginBtn from './components/LoginBtn'
+import LoginBtn from './components/LoginBtn';
 
 export default function Home() {
   return (

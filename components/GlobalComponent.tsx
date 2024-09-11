@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function GlobalComponent() {
-  return (
-    <div>GlobalComponent</div>
-  )
+  return <div>GlobalComponent</div>;
 }
 
-export default GlobalComponent
+export default GlobalComponent;

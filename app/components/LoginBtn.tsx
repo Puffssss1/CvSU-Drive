@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
@@ -12,7 +12,7 @@ function LoginBtn() {
         <Button variant="outlined">Outlined</Button>
       </Stack>
     </div>
-  )
+  );
 }
 
-export default LoginBtn
+export default LoginBtn;
