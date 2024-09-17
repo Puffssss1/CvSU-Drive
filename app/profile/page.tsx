@@ -1,11 +1,10 @@
 import React from 'react'
-import KUPAL from '../components/sample'
 
 
 function Profile() {
   return (
     <div>
-      <KUPAL />
+      Profile
     </div>
   )
 }

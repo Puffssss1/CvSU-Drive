@@ -1,10 +1,12 @@
 {
   "extends": [
+    "next",
     "next/core-web-vitals",
     "plugin:prettier/recommended",
     "next/typescript"
   ],
   "rules": {
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "react/react-in-jsx-scope": ["off"] // Turn off the rule
   }
 }
