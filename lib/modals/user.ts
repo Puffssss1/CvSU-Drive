@@ -2,12 +2,11 @@ import {Schema, model, models} from "mongoose";
 
 const UserSchema = new Schema(
     {
-        email: {
+        name: {
             type: "string",
-            required: true,
-            unique: true
+            required: true
         },
-        username: {
+        email: {
             type: "string",
             required: true,
             unique: true
@@ -15,6 +14,10 @@ const UserSchema = new Schema(
         password: {
             type: "string",
             required: true
+        },
+        role: {
+            type: "string",
+            enum: ["Admin", "Faculty", "Chairperson"]
         }
     },
         {
