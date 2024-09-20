@@ -32,9 +32,9 @@ function Header() {
   }, []);
 
   return (
-    <div className='w-full h-full p-10 bg-[#EEEDEB]'>
+    <div className='w-full h-full p-10 bg-[#EEEDEB] pb-0'>
         <h1 className="text-fontGreen text-center text-2xl">Welcome to CvSU Drive</h1>
-        <div className='flex flex-row w-full justify-center gap-20 p-5'>
+        <div className='flex flex-row w-full justify-center gap-40 p-5'>
             <button>
                 <SlList className='size-8'></SlList>
             </button>
