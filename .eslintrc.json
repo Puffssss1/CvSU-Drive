@@ -1,12 +1,14 @@
 {
+  "parser": "@typescript-eslint/parser",  
   "extends": [
     "next",
     "next/core-web-vitals",
     "plugin:prettier/recommended",
     "next/typescript"
   ],
+  "plugins": ["@typescript-eslint"], 
   "rules": {
     "prettier/prettier": ["error"],
-    "react/react-in-jsx-scope": ["off"] // Turn off the rule
+    "@typescript-eslint/no-explicit-any": "off" 
   }
 }
