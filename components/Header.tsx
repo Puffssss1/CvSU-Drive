@@ -4,6 +4,8 @@ import { SlList } from 'react-icons/sl'
 import { useEffect, useState } from 'react';
 import { HiOutlineUserCircle } from "react-icons/hi";
 import SearchBar from '@/app/components/SearchBar';
+import Sidebar from '@/app/components/Sidebar';
+
 
 interface User {
   id: number;
@@ -34,12 +36,10 @@ function Header() {
   return (
     <div className='w-full h-full p-10 bg-[#EEEDEB] pb-0'>
         <h1 className="text-fontGreen text-center text-2xl">Welcome to CvSU Drive</h1>
-        <div className='flex flex-row w-full justify-center gap-40 p-5'>
-            <button>
-                <SlList className='size-8'></SlList>
-            </button>
-            <SearchBar></SearchBar>
-            <div className='flex flex-row gap-1'>
+        <div className='flex flex-row w-full justify-center gap-40 p-5 align-middle'>
+            <Sidebar/>
+            <SearchBar/>
+            <div className='flex flex-row gap-1 align-middle'>
               <ul className='text-right text-sm m-0 p-0'>
                 {users.filter(user => user.id === 1).map(user => (
                     <li key={user.id}>

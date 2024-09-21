@@ -1,0 +1,136 @@
+import React from 'react'
+import { SlList } from 'react-icons/sl'
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
+import MessageIcon from '@mui/icons-material/Message';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
+
+function Sidebar() {
+    const [state, setState] = React.useState({
+        left: false,
+    });
+
+    const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+      setState({ ...state, [anchor]: open });
+    };
+
+    const list = (anchor: Anchor) => (
+        <Box
+          sx={{ 
+            width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+          role="presentation"
+          onClick={toggleDrawer(anchor, false)}
+          onKeyDown={toggleDrawer(anchor, false)}
+        >
+          <List sx={{ flexGrow: 1 }}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <HomeIcon/>
+                </ListItemIcon>
+                <ListItemText primary={"Home"}/>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <a href='./profile'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <AccountBoxIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Profile"}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
+            <ListItem disablePadding>
+              <a href='./log-history'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <WorkHistoryIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Log History"}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
+            <ListItem disablePadding>
+              <a href='./messages'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <MessageIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Messages"}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PersonAddIcon/>
+                </ListItemIcon>
+                <ListItemText primary={"Add User"}/>
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          {/* Upload */}
+          <List>
+              <ListItem disablePadding className='justify-items-center'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <AddCircleIcon/>
+                  </ListItemIcon>
+                </ListItemButton>
+              </ListItem>
+          </List>
+        </Box>
+      );
+  return (
+    <div>
+        <React.Fragment>
+            <MenuIcon className='size-10'
+                onClick={
+                    toggleDrawer("left", true)
+                }
+            />
+
+            <Drawer
+            anchor={"left"}
+            open={state["left"]}
+            onClose={toggleDrawer("left", false)}
+            sx={{ "& .MuiDrawer-paper": { marginTop: '168px' } }}
+            BackdropProps={{ invisible: true }}
+            >
+            {list("left")}
+            </Drawer>
+        </React.Fragment>
+  </div>
+  )
+}
+
+export default Sidebar
