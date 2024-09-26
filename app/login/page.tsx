@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import { useState, useEffect } from "react";
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Loading from '../components/loading';
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -45,7 +46,7 @@ export default function Login() {
     };
 
     if (sessionStatus === "loading") {
-        return <h1>loading...</h1>;
+        return <Loading />;
     }
 
     return (

@@ -17,15 +17,15 @@ function Header() {
             <Sidebar/>
             <SearchBar/>
             <div className='flex flex-row gap-1 align-middle'>
-              <ul className='text-right text-sm m-0 p-0'>
-              {session?.user ? (
-              <>
-                <li>{session.user.name}</li>
-                <li>{session.user.email}</li>
-              </>
-            ) : (
-              <li>User not logged in</li>
-            )}
+              <ul className='text-right text-sm w-24 m-0 p-0'>
+                  {session?.user ? (
+                  <>
+                    <li>{session.user.name},</li>
+                    <li>{session?.role}</li>
+                  </>
+                ) : (
+                  <li>User not logged in</li>
+                )}
               </ul>
               <HiOutlineUserCircle className='size-10'></HiOutlineUserCircle>
               <LogoutBtn/>

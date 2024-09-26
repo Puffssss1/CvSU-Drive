@@ -1,7 +1,8 @@
-import NextAuth from 'next-auth/next';
+import NextAuth, { NextAuthOptions, User, Session } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connect from '@/lib/db';
 import users from '@/lib/modals/user';
+import { JWT } from 'next-auth/jwt';
 
 type UserType = {
     id: string;
@@ -11,43 +12,63 @@ type UserType = {
     role: string;
 };
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
-    CredentialsProvider({
-        name: "credentials",
-        credentials: {},
-        authorize: async (credentials) => {
-            if (!credentials) return null; 
+        CredentialsProvider({
+            name: "credentials",
+            credentials: {},
+            authorize: async (credentials) => {
+                if (!credentials) return null; 
 
-            const { email, password } = credentials as Record<string, string>;
+                const { email, password } = credentials as Record<string, string>;
 
-            try {
-                await connect();
-                const user = await users.findOne({ email });
+                try {
+                    await connect();
+                    const user = await users.findOne({ email });
 
-                if (!user) {
+                    if (!user) {
+                        return null; 
+                    }
+
+                    if (user.password !== password) {
+                        return null;
+                    }
+
+                    const result: UserType = { 
+                        id: user.id, 
+                        name: user.name, 
+                        email: user.email, 
+                        password: user.password,
+                        role: user.role 
+                    };
+
+                    // Return user object
+                    return result; 
+                } catch (error) {
+                    console.log("Error: ", error);
                     return null; 
                 }
-                if (user.password !== password) {
-                    return null;
-                }
-                const result = { 
-                    id: user.id, 
-                    name: user.name, 
-                    email: user.email, 
-                    role: user.role 
-                } as UserType;
-                // Return user object, ensuring it matches the UserType
-                return result; 
-            } catch (error) {
-                console.log("Error: ", error);
-                return null; 
-            }
             }
         }),
     ],
     session: {
-        strategy: "jwt" as const ,
+        strategy: "jwt" as const,
+    },
+    callbacks: {
+        async jwt({ token, user }: { token: JWT; user?: User }) {
+            if (user) {
+                token.id = user.id;  
+                token.role = user.role; 
+            }
+            return token;
+        },
+        async session({ session, token }: { session: Session; token: JWT }) {
+            if (token) {
+                session.id = token.id as string;
+                session.role = token.role as string;
+            }
+            return session;
+        }
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
@@ -57,4 +78,4 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export {handler as GET, handler as POST};
+export { handler as GET, handler as POST };

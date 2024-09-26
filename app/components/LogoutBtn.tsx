@@ -11,11 +11,11 @@ function LogoutBtn() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut({ redirect: true }); // Do not redirect automatically
-    router.push('/login'); // Redirect to login page after logging out
+    await signOut({ redirect: true });
+    router.push('/login');
   };
 
-  // Only show the button if the user is logged in (session exists)
+
   if (status === 'authenticated' && session) {
     return (
       <div>
@@ -28,7 +28,6 @@ function LogoutBtn() {
     );
   }
 
-  // Otherwise, return null or empty fragment when user is not logged in
   return null;
 }
 
