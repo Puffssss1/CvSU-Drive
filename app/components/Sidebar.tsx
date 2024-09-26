@@ -1,28 +1,34 @@
 import React from 'react'
-import { SlList } from 'react-icons/sl'
-import { Link } from 'react-router-dom';
+import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import MessageIcon from '@mui/icons-material/Message';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
+const Roles = {
+  ADMIN: 'Admin',
+  FACULTY: 'Faculty',
+  CHAIRPERSON: 'Chairperson',
+};
+
 function Sidebar() {
+  const { data: session } = useSession(); // Fetch session
+  const userRole = session?.role; // Get user role from session
+
+
     const [state, setState] = React.useState({
         left: false,
     });
@@ -58,26 +64,48 @@ function Sidebar() {
                 <ListItemText primary={"Home"}/>
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <a href='./profile'>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <AccountBoxIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary={"Profile"}/>
-                </ListItemButton>
-              </a>
-            </ListItem>
-            <ListItem disablePadding>
-              <a href='./log-history'>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <WorkHistoryIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary={"Log History"}/>
-                </ListItemButton>
-              </a>
-            </ListItem>
+
+            {userRole === Roles.ADMIN && (
+              <>
+                <ListItem disablePadding>
+                  <a href='./log-history'>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <WorkHistoryIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={"Log History"}/>
+                        </ListItemButton>
+                  </a>
+                </ListItem>
+
+                <ListItem disablePadding>
+                  <a href='/accounts'>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <AccountBoxIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={"Accounts"}/>
+                    </ListItemButton>
+                  </a>
+                </ListItem>
+              </>
+            )}
+            
+            {userRole === Roles.CHAIRPERSON && (
+              <>
+                <ListItem disablePadding>
+                  <a href='./profile'>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <AccountBoxIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={"Faculty's Profile"}/>
+                    </ListItemButton>
+                  </a>
+                </ListItem>
+              </>
+            )}
+
             <ListItem disablePadding>
               <a href='./messages'>
                 <ListItemButton>
@@ -88,16 +116,20 @@ function Sidebar() {
                 </ListItemButton>
               </a>
             </ListItem>
+
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <PersonAddIcon/>
-                </ListItemIcon>
-                <ListItemText primary={"Add User"}/>
-              </ListItemButton>
+              <a href='/files'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <BackupTableIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Files"}/>
+                </ListItemButton>
+              </a>
             </ListItem>
           </List>
           <Divider />
+
           {/* Upload */}
           <List>
               <ListItem disablePadding className='justify-items-center'>
