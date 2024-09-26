@@ -1,37 +1,14 @@
 "use client"
 import React from 'react'
-import { SlList } from 'react-icons/sl' 
-import { useEffect, useState } from 'react';
 import { HiOutlineUserCircle } from "react-icons/hi";
 import SearchBar from '@/app/components/SearchBar';
 import Sidebar from '@/app/components/Sidebar';
+import LogoutBtn from '../app/components/LogoutBtn';
+import { useSession } from 'next-auth/react';
 
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
 
 function Header() {
-  const [users, setUsers] = useState<User[]>([]);
-
-    // HOW TO FETCH DATA FROM THE API
-  useEffect(() => {
-    // Fetch data from the API route
-    const fetchUsers = async () => {
-    try {
-        const res = await fetch('/api/users');
-        const data = await res.json();
-        setUsers(data);
-    } catch (error) {
-        console.error('Failed to fetch users:', error);
-    }
-    };
-    
-    fetchUsers();
-  }, []);
+  const {data:session} = useSession();
 
   return (
     <div className='w-full h-full p-10 bg-[#EEEDEB] pb-0'>
@@ -41,14 +18,17 @@ function Header() {
             <SearchBar/>
             <div className='flex flex-row gap-1 align-middle'>
               <ul className='text-right text-sm m-0 p-0'>
-                {users.filter(user => user.id === 1).map(user => (
-                    <li key={user.id}>
-                    {user.name}
-                    <li>{user.role}</li>
-                    </li>
-                ))}
+              {session?.user ? (
+              <>
+                <li>{session.user.name}</li>
+                <li>{session.user.email}</li>
+              </>
+            ) : (
+              <li>User not logged in</li>
+            )}
               </ul>
               <HiOutlineUserCircle className='size-10'></HiOutlineUserCircle>
+              <LogoutBtn/>
             </div>
             
         </div>
