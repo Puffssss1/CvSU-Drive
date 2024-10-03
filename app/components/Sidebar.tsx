@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -8,6 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
@@ -28,6 +30,12 @@ function Sidebar() {
   const { data: session } = useSession(); // Fetch session
   const userRole = session?.role; // Get user role from session
 
+  // Upload Modal State
+  const [openModal, setOpenModal] = useState(false);
+
+  //Upload Modal Handler
+  const HandleOpenModal = () => setOpenModal(true);
+  const HandleCloseModal = () => setOpenModal(false);
 
     const [state, setState] = React.useState({
         left: false,
@@ -129,16 +137,16 @@ function Sidebar() {
             </ListItem>
           </List>
           <Divider />
-
           {/* Upload */}
-          <List>
-              <ListItem disablePadding className='justify-items-center'>
-                <ListItemButton>
+          <List sx={{ flexGrow: 1 }}>
+          <ListItem disablePadding>
+                <ListItemButton onClick={HandleOpenModal}>
                   <ListItemIcon>
                     <AddCircleIcon/>
                   </ListItemIcon>
+                  <ListItemText primary={"Upload"}/>
                 </ListItemButton>
-              </ListItem>
+            </ListItem>
           </List>
         </Box>
       );
@@ -161,6 +169,34 @@ function Sidebar() {
             {list("left")}
             </Drawer>
         </React.Fragment>
+        
+        <Modal
+        open={openModal}
+        onClose={HandleCloseModal}
+        aria-labelledby="modal-upload-title"
+        aria-describedby="modal-upload-description"
+        >
+          <Box
+          sx={{
+            position: 'absolute' as 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <h2 id="modal-upload-title">Upload File</h2>
+          <p id="modal-upload-description">Select a file to upload</p>
+          {/* Replace with an actual form or file input */}
+          <Button variant="contained" onClick={HandleCloseModal}>
+            Close
+          </Button>
+        </Box>
+        </Modal>
   </div>
   )
 }
