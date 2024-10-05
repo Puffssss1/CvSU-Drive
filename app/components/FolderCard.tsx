@@ -1,0 +1,109 @@
+'use client';
+
+
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { CardMedia } from '@mui/material';
+
+
+function FolderCard() {
+  const [anchorEl, setAnchorEl] =useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box width={'300px'}>
+      <Card
+        variant="outlined"
+        sx={{
+          borderWidth: '9px',
+          borderStyle: 'solid',
+          borderRadius: '16px',
+          position: 'relative',
+          paddingTop: '25px',
+          '::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '25px',
+            bgcolor: '#e1e1e0',
+            zIndex: 1,
+          },
+        }}
+      >
+
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '25px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 10px',
+            zIndex: 2,
+          }}
+        >
+          <Typography variant="body2">This is a folder</Typography>
+          <IconButton
+            aria-label="settings"
+            sx={{
+              color: 'grey.600',
+              padding: 0,
+            }}
+            onClick={handleClick}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        </Box>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Move to Bin</MenuItem>
+          <MenuItem onClick={handleClose}>Download</MenuItem>
+        </Menu>
+
+        <CardContent>
+          <CardMedia
+            component="img"
+            height="140"
+            image="./assets/free-folder-icon-1485-thumb.png"
+            alt=""
+            sx={{ borderRadius: '8px' }}
+          />
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}
+
+export default FolderCard;
