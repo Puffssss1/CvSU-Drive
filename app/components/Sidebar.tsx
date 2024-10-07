@@ -17,6 +17,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -25,6 +26,13 @@ const Roles = {
   FACULTY: 'Faculty',
   CHAIRPERSON: 'Chairperson',
 };
+
+function Uploader(){
+  const inputField = document.querySelector(".input-field") as HTMLInputElement ;
+  if(inputField){
+    inputField.click();
+  }
+}
 
 function Sidebar() {
   const { data: session } = useSession(); // Fetch session
@@ -40,6 +48,8 @@ function Sidebar() {
     const [state, setState] = React.useState({
         left: false,
     });
+
+  
 
     const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -150,6 +160,29 @@ function Sidebar() {
           </List>
         </Box>
       );
+
+    // State to hold the selected file preview URL, file name, and file type
+    const [isImage, setIsImage] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string>("");
+    const [filePreview, setFilePreview] = useState<string | null>(null);
+
+    // function to handle file preview
+    const handleFilePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file =  event.target.files?.[0];
+        if (file) {
+          setFileName(file.name);
+          //check if the file is an image
+          const isImageFile = file.type.startsWith("image/");
+          setIsImage(isImageFile);
+
+          if (isImageFile){
+            const imageURL = URL.createObjectURL(file);
+            setFilePreview(imageURL);
+          } else {
+            setFilePreview(null)
+          }
+        }
+    };
   return (
     <div>
         <React.Fragment>
@@ -184,17 +217,39 @@ function Sidebar() {
             transform: 'translate(-50%, -50%)',
             width: 400,
             bgcolor: 'background.paper',
-            border: '2px solid #000',
+            border: '',
+            borderRadius:'10px',
             boxShadow: 24,
             p: 4,
           }}
         >
-          <h2 id="modal-upload-title">Upload File</h2>
-          <p id="modal-upload-description">Select a file to upload</p>
-          {/* Replace with an actual form or file input */}
+
+          <form action="" className='flex flex-col justify-center items-center self-center border-2 border-dashed border-blue-700 w-[300] h-[300px] cursor-pointer rounded-xl'
+            onClick={Uploader}
+          >
+            <input type="file" className="input-field" hidden onChange={handleFilePreview}/>
+
+            {filePreview && isImage ?(
+              <img src={filePreview} width={60} height={60} alt={fileName} />
+            ) : (
+              fileName ? (
+                <div className="text-center">
+                  <p>{fileName}</p> {/* Display the file name if it's not an image */}
+                </div>
+              ) : (
+                <><CloudUploadIcon className='size-16 text-[#1475cf]' /><p>Browse Files to Upload</p></>
+              )
+            )}
+            
+          </form>
+          <div className='grid grid-flow-col gap-10 mt-3'>
           <Button variant="contained" onClick={HandleCloseModal}>
             Close
           </Button>
+          <Button variant="contained" onClick={HandleCloseModal}>
+            Upload
+          </Button>
+          </div>
         </Box>
         </Modal>
   </div>
