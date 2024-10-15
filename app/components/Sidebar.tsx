@@ -150,7 +150,6 @@ function Sidebar() {
                     toggleDrawer("left", true)
                 }
             />
-
             <Drawer
             anchor={"left"}
             open={state["left"]}
