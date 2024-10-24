@@ -41,9 +41,16 @@ function Sidebar() {
   // Upload Modal State
   const [openModal, setOpenModal] = useState(false);
 
+  // Create File Modal State
+  const [openOpenCreateModal, setOpenCreateModal] = useState(false);
+
   //Upload Modal Handler
   const HandleOpenModal = () => setOpenModal(true);
   const HandleCloseModal = () => setOpenModal(false);
+
+  //Create File Handler
+  const HandleOpenCreateModal = () => setOpenCreateModal(true);
+  const HandleCloseCreateModal = () => setOpenCreateModal(false);
 
     const [state, setState] = React.useState({
         left: false,
@@ -149,12 +156,20 @@ function Sidebar() {
           <Divider />
           {/* Upload */}
           <List sx={{ flexGrow: 1 }}>
-          <ListItem disablePadding>
+          {/* <ListItem disablePadding>
                 <ListItemButton onClick={HandleOpenModal}>
                   <ListItemIcon>
                     <AddCircleIcon/>
                   </ListItemIcon>
                   <ListItemText primary={"Upload"}/>
+                </ListItemButton>
+            </ListItem> */}
+            <ListItem disablePadding>
+                <ListItemButton onClick={HandleOpenCreateModal}>
+                  <ListItemIcon>
+                    <AddCircleIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Create File"}/>
                 </ListItemButton>
             </ListItem>
           </List>
@@ -202,7 +217,8 @@ function Sidebar() {
             {list("left")}
             </Drawer>
         </React.Fragment>
-        
+                
+       {/* Upload Modal */}
         <Modal
         open={openModal}
         onClose={HandleCloseModal}
@@ -243,13 +259,74 @@ function Sidebar() {
             
           </form>
           <div className='grid grid-flow-col gap-10 mt-3'>
-          <Button variant="contained" onClick={HandleCloseModal}>
+            <Button variant="contained" onClick={HandleCloseModal}>
+              Close
+            </Button>
+            <Button variant="contained" onClick={HandleCloseModal}>
+              Upload
+            </Button>
+          </div>
+        </Box>
+        </Modal>
+        
+        {/* Create File modal */}
+        <Modal
+        open={openOpenCreateModal}
+        onClose={HandleCloseCreateModal}
+        aria-labelledby="modal-upload-title"
+        aria-describedby="modal-upload-description"
+        >
+          <Box
+          sx={{
+            position: 'absolute' as 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 250,
+            bgcolor: 'background.paper',
+            border: '',
+            borderRadius:'5px',
+            boxShadow: 24,
+            p: 4
+          }}
+        >
+
+        {/* Create File Content */}
+        <List sx={{ flexGrow: 1 }}>
+          <ListItem disablePadding>
+            <ListItemButton onClick={HandleOpenModal}>
+              <ListItemIcon>
+                <CloudUploadIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Upload File"} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <CloudUploadIcon />
+              </ListItemIcon>
+              <ListItemText primary={"New File"} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <CloudUploadIcon />
+              </ListItemIcon>
+              <ListItemText primary={"New Folder"} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <div className='grid grid-flow-col gap-5 mt-3'>
+          <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
             Close
           </Button>
-          <Button variant="contained" onClick={HandleCloseModal}>
-            Upload
-          </Button>
-          </div>
+        </div>
+
         </Box>
         </Modal>
   </div>
