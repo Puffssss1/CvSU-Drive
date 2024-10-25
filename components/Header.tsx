@@ -11,13 +11,12 @@ function Header() {
   const {data:session} = useSession();
 
   return (
-    <div className='w-full h-full p-10 bg-[#EEEDEB] pb-0'>
-        <h1 className="text-fontGreen text-center text-2xl">Welcome to CvSU Drive</h1>
-        <div className='flex flex-row w-full justify-center gap-40 p-5 align-middle'>
+    <div className='w-full h-full bg-[#EEEDEB] pb-1 pt-1 px-3'>
+        <div className='flex flex-row w-full justify-between gap-40 p-5 align-middle'>
             <Sidebar/>
-            <SearchBar/>
+            <h1 className="text-fontGreen text-center text-2xl">Welcome to CvSU Drive</h1>
             <div className='flex flex-row gap-1 align-middle'>
-              <ul className='text-right text-sm w-24 m-0 p-0'>
+              <ul className='text-right text-sm w-24 m-0 p-0 gap-0'>
                   {session?.user ? (
                   <>
                     <li>{session.user.name},</li>

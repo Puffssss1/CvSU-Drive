@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 function LogoutBtn() {
   const { data: session, status } = useSession();
@@ -22,7 +23,7 @@ function LogoutBtn() {
         <Button 
           variant="text" 
           onClick={handleLogout}>
-          Logout
+          <LogoutRoundedIcon/>
         </Button>
       </div>
     );

@@ -18,6 +18,8 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -41,9 +43,16 @@ function Sidebar() {
   // Upload Modal State
   const [openModal, setOpenModal] = useState(false);
 
+  // Create File Modal State
+  const [openOpenCreateModal, setOpenCreateModal] = useState(false);
+
   //Upload Modal Handler
   const HandleOpenModal = () => setOpenModal(true);
   const HandleCloseModal = () => setOpenModal(false);
+
+  //Create File Handler
+  const HandleOpenCreateModal = () => setOpenCreateModal(true);
+  const HandleCloseCreateModal = () => setOpenCreateModal(false);
 
     const [state, setState] = React.useState({
         left: false,
@@ -68,7 +77,7 @@ function Sidebar() {
     const list = (anchor: Anchor) => (
         <Box
           sx={{ 
-            width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+            width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 200 }}
           role="presentation"
           onClick={toggleDrawer(anchor, false)}
           onKeyDown={toggleDrawer(anchor, false)}
@@ -149,12 +158,20 @@ function Sidebar() {
           <Divider />
           {/* Upload */}
           <List sx={{ flexGrow: 1 }}>
-          <ListItem disablePadding>
+          {/* <ListItem disablePadding>
                 <ListItemButton onClick={HandleOpenModal}>
                   <ListItemIcon>
                     <AddCircleIcon/>
                   </ListItemIcon>
                   <ListItemText primary={"Upload"}/>
+                </ListItemButton>
+            </ListItem> */}
+            <ListItem disablePadding>
+                <ListItemButton onClick={HandleOpenCreateModal}>
+                  <ListItemIcon>
+                    <AddCircleIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Create New"}/>
                 </ListItemButton>
             </ListItem>
           </List>
@@ -195,13 +212,14 @@ function Sidebar() {
             anchor={"left"}
             open={state["left"]}
             onClose={toggleDrawer("left", false)}
-            sx={{ "& .MuiDrawer-paper": { marginTop: '168px' } }}
+             sx={{ "& .MuiDrawer-paper": { marginTop: '88px' } }}
             BackdropProps={{ invisible: true }}
             >
             {list("left")}
             </Drawer>
         </React.Fragment>
-        
+                
+       {/* Upload Modal */}
         <Modal
         open={openModal}
         onClose={HandleCloseModal}
@@ -242,14 +260,77 @@ function Sidebar() {
             
           </form>
           <div className='grid grid-flow-col gap-10 mt-3'>
-          <Button variant="contained" onClick={HandleCloseModal}>
-            Close
-          </Button>
-          <Button variant="contained" onClick={HandleCloseModal}>
-            Upload
-          </Button>
+            <Button variant="contained" onClick={HandleCloseModal}>
+              Close
+            </Button>
+            <Button variant="contained" onClick={HandleCloseModal}>
+              Upload
+            </Button>
           </div>
         </Box>
+        </Modal>
+        
+        {/* Create File modal */}
+        <Modal
+        open={openOpenCreateModal}
+        onClose={HandleCloseCreateModal}
+        aria-labelledby="modal-upload-title"
+        aria-describedby="modal-upload-description"
+        sx={{
+          padding: 0
+        }}
+        >
+          <Box
+          sx={{
+            position: 'absolute' as 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 250,
+            bgcolor: 'background.paper',
+            border: '',
+            borderRadius:'5px',
+            boxShadow: 24,
+            p: 4,
+            padding: 2
+          }}
+          >
+
+            {/* Create File Content */}
+            <List sx={{ flexGrow: 1 }}>
+              <ListItem disablePadding>
+                <ListItemButton onClick={HandleOpenModal} sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CloudUploadIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Upload file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <NoteAddIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"New file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CreateNewFolderIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"New folder"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+            </List>
+
+            <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
+              Close
+            </Button>
+
+          </Box>
         </Modal>
   </div>
   )
