@@ -1,8 +1,11 @@
 import React from 'react'
+import AccountsTable from '../components/AccountsTable'
 
 function Accounts() {
   return (
-    <div>accounts</div>
+    <div>
+      <AccountsTable/>
+    </div>
   )
 }
 
