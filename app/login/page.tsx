@@ -9,11 +9,12 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/loading';
 
+
 export default function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { status: sessionStatus} = useSession();
+    const { status: sessionStatus} = useSession(); 
 
     const router = useRouter();
 
