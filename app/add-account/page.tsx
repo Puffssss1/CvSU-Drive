@@ -40,7 +40,7 @@ function AddAccount() {
                 { id: 'email', label: 'Email', type: 'email' },
                 { id: 'password', label: 'Password', type: 'password' },
                 { id: 'contact', label: 'Contact', type: 'text' },
-                { id: 'account-type', label: 'Type of Account', options: type, defaultValue: 'Faculty' },
+                { id: 'role', label: 'Role', options: type, defaultValue: 'Faculty' },
                 { id: 'department', label: 'Department', options: department, defaultValue: 'DIT' },
                 { id: 'sex', label: 'Sex', options: sex, defaultValue: 'Male' }
                 
