@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import SearchBar from '@/app/components/SearchBar';
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -12,7 +13,9 @@ export default async function Home() {
   return (
     <div>
       <Header></Header>
-      Home Page
+      <div className='justify-items-center mt-3'>
+        <SearchBar/>
+      </div>
     </div>
   );
 }

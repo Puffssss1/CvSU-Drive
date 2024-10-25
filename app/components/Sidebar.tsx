@@ -77,7 +77,7 @@ function Sidebar() {
     const list = (anchor: Anchor) => (
         <Box
           sx={{ 
-            width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+            width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 200 }}
           role="presentation"
           onClick={toggleDrawer(anchor, false)}
           onKeyDown={toggleDrawer(anchor, false)}
@@ -213,7 +213,7 @@ function Sidebar() {
             anchor={"left"}
             open={state["left"]}
             onClose={toggleDrawer("left", false)}
-            sx={{ "& .MuiDrawer-paper": { marginTop: '168px' } }}
+             sx={{ "& .MuiDrawer-paper": { marginTop: '88px' } }}
             BackdropProps={{ invisible: true }}
             >
             {list("left")}
