@@ -26,22 +26,24 @@ function AddAccount() {
     return (
         <Box
             component="form"
-            className="flex flex-col items-center p-6"
+            className="flex flex-col items-center p-6 overflow-hidden"
             noValidate
             autoComplete="off"
         >
             <div>
-                <h1 className='font-bold text-3xl text-center mb-6 px-6 mt-5'>| ADD ACCOUNT |</h1>
+                <h1 className='font-bold text-3xl mb-4 px-6'>| ADD ACCOUNT</h1>
             </div>
-            
+
             {[
-                { id: 'account-type', label: 'Type of Account', options: type, defaultValue: 'Faculty' },
+                
                 { id: 'name', label: 'Name', type: 'text' },
-                { id: 'department', label: 'Department', options: department, defaultValue: 'DIT' },
                 { id: 'email', label: 'Email', type: 'email' },
                 { id: 'password', label: 'Password', type: 'password' },
-                { id: 'sex', label: 'Sex', options: sex, defaultValue: 'Male' },
-                { id: 'contact', label: 'Contact', type: 'text' }
+                { id: 'contact', label: 'Contact', type: 'text' },
+                { id: 'role', label: 'Role', options: type, defaultValue: 'Faculty' },
+                { id: 'department', label: 'Department', options: department, defaultValue: 'DIT' },
+                { id: 'sex', label: 'Sex', options: sex, defaultValue: 'Male' }
+                
             ].map(field => (
                 <div className='mb-4 w-full max-w-xs' key={field.id}>
                     <TextField
