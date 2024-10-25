@@ -18,6 +18,8 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -169,7 +171,7 @@ function Sidebar() {
                   <ListItemIcon>
                     <AddCircleIcon/>
                   </ListItemIcon>
-                  <ListItemText primary={"Create File"}/>
+                  <ListItemText primary={"Create New"}/>
                 </ListItemButton>
             </ListItem>
           </List>
@@ -275,6 +277,9 @@ function Sidebar() {
         onClose={HandleCloseCreateModal}
         aria-labelledby="modal-upload-title"
         aria-describedby="modal-upload-description"
+        sx={{
+          padding: 0
+        }}
         >
           <Box
           sx={{
@@ -287,47 +292,46 @@ function Sidebar() {
             border: '',
             borderRadius:'5px',
             boxShadow: 24,
-            p: 4
+            p: 4,
+            padding: 2
           }}
-        >
+          >
 
-        {/* Create File Content */}
-        <List sx={{ flexGrow: 1 }}>
-          <ListItem disablePadding>
-            <ListItemButton onClick={HandleOpenModal}>
-              <ListItemIcon>
-                <CloudUploadIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Upload File"} />
-            </ListItemButton>
-          </ListItem>
+            {/* Create File Content */}
+            <List sx={{ flexGrow: 1 }}>
+              <ListItem disablePadding>
+                <ListItemButton onClick={HandleOpenModal} sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CloudUploadIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Upload file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <CloudUploadIcon />
-              </ListItemIcon>
-              <ListItemText primary={"New File"} />
-            </ListItemButton>
-          </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <NoteAddIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"New file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <CloudUploadIcon />
-              </ListItemIcon>
-              <ListItemText primary={"New Folder"} />
-            </ListItemButton>
-          </ListItem>
-        </List>
+              <ListItem disablePadding>
+                <ListItemButton sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CreateNewFolderIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"New folder"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+            </List>
 
-        <div className='grid grid-flow-col gap-5 mt-3'>
-          <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
-            Close
-          </Button>
-        </div>
+            <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
+              Close
+            </Button>
 
-        </Box>
+          </Box>
         </Modal>
   </div>
   )
