@@ -40,17 +40,11 @@ function Sidebar() {
   const { data: session } = useSession(); // Fetch session
   const userRole = session?.role; // Get user role from session
 
-  // Upload Modal State
-  const [openModal, setOpenModal] = useState(false);
 
   // Create File Modal State
   const [openOpenCreateModal, setOpenCreateModal] = useState(false);
 
-  //Upload Modal Handler
-  const HandleOpenModal = () => setOpenModal(true);
-  const HandleCloseModal = () => setOpenModal(false);
-
-  //Create File Handler
+  //Create New Handler
   const HandleOpenCreateModal = () => setOpenCreateModal(true);
   const HandleCloseCreateModal = () => setOpenCreateModal(false);
 
@@ -58,7 +52,64 @@ function Sidebar() {
         left: false,
     });
 
-  
+  // Upload Modal State
+  const [openUploadModal, setOpenUploadModal] = useState(false);
+
+  //Upload Modal Handler
+  const handleUploadOpenModal = () => setOpenUploadModal(true);
+  const handleUploadCloseModal = () => setOpenUploadModal(false);
+
+  // New File Modal State
+  const [openFileModal, setOpenFileModal] = useState(false);
+
+  //Upload Modal Handler
+  const handleFileOpenModal = () => setOpenFileModal(true);
+  const handleFileCloseModal = () => setOpenFileModal(false);
+
+  // new folder modal state
+  const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
+
+  //new folder handler
+  const handleOpenNewFolderModal = () => setOpenNewFolderModal(true);
+  const handleCloseNewFolderModal = () => {
+    setOpenNewFolderModal(false);
+    setFolderName(""); // Reset folder name on close
+  };
+  // State to hold the folder name
+  const [folderName, setFolderName] = useState("");
+
+  const handleCreateNewFolder = () => {
+    if (!folderName) return; // Exit if no name is provided
+
+    fetch('/api/folder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folderName }),
+    })
+    .then(response => {
+        // Check if the response is okay (status in the range 200-299)
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.error('Error creating folder:', data.message);
+                throw new Error(data.message); // Throw error for the catch block
+            });
+        }
+        return response.json(); // Parse the JSON only if the response is ok
+    })
+    .then(data => {
+        // Log the success message and folder details
+        console.log('Folder created:', data);
+        // Reset folder name and close modal
+        setFolderName("");
+        handleCloseNewFolderModal(); // Close the new folder modal
+    })
+    .catch(error => {
+        console.error('Error creating folder:', error.message);
+    });
+};
+
 
     const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -156,16 +207,9 @@ function Sidebar() {
             </ListItem>
           </List>
           <Divider />
+          
           {/* Upload */}
           <List sx={{ flexGrow: 1 }}>
-          {/* <ListItem disablePadding>
-                <ListItemButton onClick={HandleOpenModal}>
-                  <ListItemIcon>
-                    <AddCircleIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary={"Upload"}/>
-                </ListItemButton>
-            </ListItem> */}
             <ListItem disablePadding>
                 <ListItemButton onClick={HandleOpenCreateModal}>
                   <ListItemIcon>
@@ -212,22 +256,91 @@ function Sidebar() {
             anchor={"left"}
             open={state["left"]}
             onClose={toggleDrawer("left", false)}
-             sx={{ "& .MuiDrawer-paper": { marginTop: '88px' } }}
+            sx={{ "& .MuiDrawer-paper": { marginTop: '88px' } }}
             BackdropProps={{ invisible: true }}
             >
             {list("left")}
             </Drawer>
         </React.Fragment>
-                
+
+        {/* Create New Modal  */}
+        <Modal
+        open={openOpenCreateModal}
+        onClose={HandleCloseCreateModal}
+        aria-labelledby="modal-upload-title"
+        aria-describedby="modal-upload-description"
+        sx={{
+          padding: 0
+        }}
+        >
+          <Box
+          sx={{
+            // eslint-disable-next-line @typescript-eslint/prefer-as-const
+            position: 'absolute' as 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 250,
+            bgcolor: 'background.paper',
+            border: '',
+            borderRadius:'5px',
+            boxShadow: 24,
+            p: 4,
+            padding: 2
+          }}
+          >
+
+            {/* Create New Content */}
+            {/* Upload file */}
+            <List sx={{ flexGrow: 1 }}>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleUploadOpenModal} sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CloudUploadIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Upload file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+
+              {/* New file */}
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleFileOpenModal} sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <NoteAddIcon className='text-[#1475cf]'/>
+                  </ListItemIcon>
+                  <ListItemText primary={"New file"} sx={{ margin: 0 }}/>
+                </ListItemButton>
+              </ListItem>
+
+              {/* New folder */}
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleOpenNewFolderModal} sx={{ gap: 0 }}>
+                  <ListItemIcon>
+                    <CreateNewFolderIcon className='text-[#1475cf]' />
+                  </ListItemIcon>
+                  <ListItemText primary={"New folder"} sx={{ margin: 0 }} />
+                </ListItemButton>
+              </ListItem>
+            </List>
+
+            {/* Close the Create New modal */}
+            <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
+              Close
+            </Button>
+          </Box>
+        </Modal>
+
+                        
        {/* Upload Modal */}
         <Modal
-        open={openModal}
-        onClose={HandleCloseModal}
+        open={openUploadModal}
+        onClose={handleUploadCloseModal}
         aria-labelledby="modal-upload-title"
         aria-describedby="modal-upload-description"
         >
           <Box
           sx={{
+            // eslint-disable-next-line @typescript-eslint/prefer-as-const
             position: 'absolute' as 'absolute',
             top: '50%',
             left: '50%',
@@ -240,7 +353,7 @@ function Sidebar() {
             p: 4,
           }}
         >
-
+           {/* Upload form content... */}
           <form action="" className='flex flex-col justify-center items-center self-center border-2 border-dashed border-blue-700 w-[300] h-[300px] cursor-pointer rounded-xl'
             onClick={Uploader}
           >
@@ -259,78 +372,103 @@ function Sidebar() {
             )}
             
           </form>
-          <div className='grid grid-flow-col gap-10 mt-3'>
-            <Button variant="contained" onClick={HandleCloseModal}>
-              Close
-            </Button>
-            <Button variant="contained" onClick={HandleCloseModal}>
-              Upload
-            </Button>
-          </div>
-        </Box>
-        </Modal>
-        
-        {/* Create File modal */}
-        <Modal
-        open={openOpenCreateModal}
-        onClose={HandleCloseCreateModal}
-        aria-labelledby="modal-upload-title"
-        aria-describedby="modal-upload-description"
-        sx={{
-          padding: 0
-        }}
-        >
-          <Box
-          sx={{
-            position: 'absolute' as 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 250,
-            bgcolor: 'background.paper',
-            border: '',
-            borderRadius:'5px',
-            boxShadow: 24,
-            p: 4,
-            padding: 2
-          }}
-          >
-
-            {/* Create File Content */}
-            <List sx={{ flexGrow: 1 }}>
-              <ListItem disablePadding>
-                <ListItemButton onClick={HandleOpenModal} sx={{ gap: 0 }}>
-                  <ListItemIcon>
-                    <CloudUploadIcon className='text-[#1475cf]'/>
-                  </ListItemIcon>
-                  <ListItemText primary={"Upload file"} sx={{ margin: 0 }}/>
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton sx={{ gap: 0 }}>
-                  <ListItemIcon>
-                    <NoteAddIcon className='text-[#1475cf]'/>
-                  </ListItemIcon>
-                  <ListItemText primary={"New file"} sx={{ margin: 0 }}/>
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton sx={{ gap: 0 }}>
-                  <ListItemIcon>
-                    <CreateNewFolderIcon className='text-[#1475cf]'/>
-                  </ListItemIcon>
-                  <ListItemText primary={"New folder"} sx={{ margin: 0 }}/>
-                </ListItemButton>
-              </ListItem>
-            </List>
-
-            <Button variant="contained" onClick={HandleCloseCreateModal} className='text-[12]'>
-              Close
-            </Button>
-
+            <div className='grid grid-flow-col gap-10 mt-3'>
+              <Button variant="contained" onClick={handleUploadCloseModal}>
+                Close
+              </Button>
+              <Button variant="contained" onClick={handleUploadCloseModal}>
+                Upload
+              </Button>
+            </div>
           </Box>
+        </Modal>
+
+        {/* New File Modal */}
+        <Modal
+            open={openFileModal}
+            onClose={handleFileCloseModal}
+            aria-labelledby="modal-new-file-title"
+            aria-describedby="modal-new-file-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 300,
+                    bgcolor: 'background.paper',
+                    border: '',
+                    borderRadius: '5px',
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
+                <h2>Create New File</h2>
+                {/* Your form or inputs for creating a new file */}
+                <Button variant="contained" onClick={handleFileCloseModal}>
+                    Close
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        // Add your logic for creating the file here
+                        handleFileCloseModal();
+                    }}
+                >
+                    Create File
+                </Button>
+            </Box>
+        </Modal>
+
+        {/* New Folder Modal */}
+        <Modal
+            open={openNewFolderModal}
+            onClose={handleCloseNewFolderModal}
+            aria-labelledby="modal-create-folder-title"
+            aria-describedby="modal-create-folder-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 300,
+                    bgcolor: 'background.paper',
+                    border: '',
+                    borderRadius: '5px',
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
+                <h2>Create New Folder</h2>
+                <input
+                    type="text"
+                    value={folderName}
+                    onChange={(e) => setFolderName(e.target.value)} // Update folder name
+                    placeholder="Enter folder name"
+                    style={{
+                        width: '100%',
+                        marginTop: '10px',
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                    }}
+                />
+                <Button variant="contained" onClick={handleCloseNewFolderModal}>
+                    Close
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        // Add your logic for creating the folder here
+                        handleCreateNewFolder();
+                    }}
+                >
+                    Create Folder
+                </Button>
+            </Box>
         </Modal>
   </div>
   )

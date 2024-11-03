@@ -13,18 +13,18 @@ function createData(
     department: string,
     date: string,
     file: string,
-  ) {
-    return { name, department, date, file};
-  }
+    ) {
+        return { name, department, date, file};
+    }
 
-  const rows = [
-    createData('Gil Menciano', 'Department of Information Technology', 'January 01 2024', 'Nehemiah.docx'),
-    createData('Nehemiah Bernardo Mota', 'Department of Information Technology', 'January 02 2024', 'Gil.docx'),
-    createData('Joshua', 'Department of Information Technology', 'January 03 2024', 'Joshua.docx'),
-  ];
+    const rows = [
+        createData('Gil Menciano', 'Department of Information Technology', 'January 01 2024', 'Nehemiah.docx'),
+        createData('Nehemiah Bernardo Mota', 'Department of Information Technology', 'January 02 2024', 'Gil.docx'),
+        createData('Joshua', 'Department of Information Technology', 'January 03 2024', 'Joshua.docx'),
+    ];
 
 
-  const ITEM_HEIGHT = 48;
+    const ITEM_HEIGHT = 48;
 
 function LogHistory
 () {
@@ -40,32 +40,32 @@ return (
         }}
         >
             <h1 className='font-bold text-3xl'> |   LOG HISTORY </h1>
-          <Table sx={{ minWidth: 200 }} aria-label="simple table">
-              <TableHead>
-                  <TableRow>
-                      <TableCell align='left' className='font-bold text-green-800'>Name</TableCell>
-                      <TableCell align="left" className='font-bold text-green-800'>Department</TableCell>
-                      <TableCell align="left" className='font-bold text-green-800'>Date</TableCell>
-                      <TableCell align="left" className='font-bold text-green-800'>File</TableCell>
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                  {rows.map((row) => (
-                      <TableRow
-                          key={row.name}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                          <TableCell component="th" scope="row">
-                              {row.name}
-                          </TableCell>
-                          <TableCell align="left">{row.department}</TableCell>
-                          <TableCell align="left">{row.date}</TableCell>
-                          <TableCell align="left">{row.file}</TableCell>
-                      </TableRow>
-                  ))}
-              </TableBody>
-          </Table>
-      </TableContainer></>
+            <Table sx={{ minWidth: 200 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell align='left' className='font-bold text-green-800'>Name</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800'>Department</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800'>Date</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800'>File</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row) => (
+                        <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell>
+                            <TableCell align="left">{row.department}</TableCell>
+                            <TableCell align="left">{row.date}</TableCell>
+                            <TableCell align="left">{row.file}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer></>
     </div>
 )
 }
