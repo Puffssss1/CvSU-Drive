@@ -3,6 +3,7 @@ import SearchBar from '@/app/components/SearchBar';
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import FolderCard from '../app/components/FolderCard';
 
 export default async function Home() {
   const session = await getServerSession();
@@ -15,6 +16,9 @@ export default async function Home() {
       <Header></Header>
       <div className='justify-items-center mt-3'>
         <SearchBar/>
+        <div>
+          <FolderCard />
+        </div>
       </div>
     </div>
   );
