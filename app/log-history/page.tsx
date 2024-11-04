@@ -23,9 +23,6 @@ function createData(
         createData('Joshua', 'Department of Information Technology', 'January 03 2024', 'Joshua.docx'),
     ];
 
-
-    const ITEM_HEIGHT = 48;
-
 function LogHistory
 () {
 return (

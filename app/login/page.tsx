@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/loading';
-import img1 from 'login/Cvsu-logo.png'
+//import img1 from 'C:/Users/Christian/Desktop/CvSU-Drive/CvSU-Drive/app/login/Cvsu-logo.png'
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -56,7 +56,7 @@ export default function Login() {
     {/* Left Side Sample Text */}
     <div className="flex-1 text-green-900 ml-20 mb-14 justify-start bg-green-200 py-16 mr-4 ">
         <div className="flex mb-4 mx-24">
-            <img src="img1" alt="wala potaena" />
+            {/* <img src= img1={} alt="wala potaena" /> */}
             <h2 className="text-3xl font-bold text-black">Welcome to</h2>
             <h2 className="text-3xl font-bold text-green-700 ml-2">CvSU Drive - Silang Campus</h2>
         </div> 
