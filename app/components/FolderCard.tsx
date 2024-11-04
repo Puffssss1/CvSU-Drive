@@ -50,10 +50,13 @@ function FolderList() {
     <Box display="flex" flexDirection="row" alignItems="center">
       {error && <Typography color="error">{error}</Typography>}
       {folders.map((folder) => (
-        <Box key={folder.id} width={'300px'} mb={2}>
-          <Card
+        <Box key={folder.id} width={'300px'} mb={2}> 
+          <Card className='transform transition-all hover:-translate-y-2'
             variant="outlined"
             sx={{
+              height: '250px',
+              mx: '18px',
+              marginTop: '48px',
               borderWidth: '9px',
               borderStyle: 'solid',
               borderRadius: '16px',
@@ -73,6 +76,7 @@ function FolderList() {
           >
             <Box
               sx={{
+                
                 position: 'absolute',
                 top: 0,
                 left: 0,
@@ -111,14 +115,15 @@ function FolderList() {
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClose}>Move to Bin</MenuItem>
+              <MenuItem onClick={handleClose}>Rename Folder</MenuItem>
               <MenuItem onClick={handleClose}>Download</MenuItem>
             </Menu>
 
-            <CardContent>
+            <CardContent className=''>
               <CardMedia
                 component="img"
-                height="140"
+                height="250"
+                
                 image="./assets/free-folder-icon-1485-thumb.png"
                 alt=""
                 sx={{ borderRadius: '8px' }}
