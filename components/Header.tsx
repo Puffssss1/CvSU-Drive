@@ -11,17 +11,17 @@ function Header() {
   const {data:session} = useSession();
 
   return (
-    <div className='w-full h-full bg-[#EEEDEB] pb-1 pt-1 px-3'>
+    <div className='w-full h-full bg-[#9ABF80] pb-1 pt-1 px-3'>
         <div className='flex flex-row w-full justify-between gap-40 p-5 items-center sm:gap-8 p-5'>
             <div className='flex-shrink-0'>
              <Sidebar/>
             </div>
-            <h1 className="text-fontGreen text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
+            <h1 className="text-[#1C325B] font-light text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
             <div className='mt-3 sm:mt-0'>
                 {/* Small screen only */}
                 <div className="flex items-center gap-2 sm:hidden">
                   <a href="/profile">
-                    <HiOutlineUserCircle className="text-3xl text-gray-700" />
+                    <HiOutlineUserCircle className="text-3xl text-[#1C325B]" />
                   </a>
                   <LogoutBtn />
                 </div>
@@ -39,7 +39,7 @@ function Header() {
                         <li>User not logged in</li>
                       )}
                     </ul>
-                    <HiOutlineUserCircle className='text-4xl text-gray-700' />
+                    <HiOutlineUserCircle className='text-4xl text-[#1C325B]' />
                   </a>
                   <LogoutBtn />
                 </div>
