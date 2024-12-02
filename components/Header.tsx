@@ -17,28 +17,33 @@ function Header() {
              <Sidebar/>
             </div>
             <h1 className="text-fontGreen text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
-            <a href="/profile" className='mt-3 sm:mt-0'>
-              {/* small screen only */}
-              <div className="flex items-center gap-2 sm:hidden">
-                <HiOutlineUserCircle className="text-3xl text-gray-700" />
-                <LogoutBtn />
-              </div>
-              {/* Larger Screens: Full Profile Info */}
-              <div className='hidden sm:flex items-center gap-0'>
-                <ul className='text-right text-xs sm:text-base m-0 p-0'>
-                    {session?.user ? (
-                    <>
-                      <li>{session.user.name},</li>
-                      <li>{session?.role}</li>
-                    </>
-                  ) : (
-                    <li>User not logged in</li>
-                  )}
-                </ul>
-                <HiOutlineUserCircle className='text-4xl text-gray-700'></HiOutlineUserCircle>
-                <LogoutBtn/>
-              </div>
-            </a>
+            <div className='mt-3 sm:mt-0'>
+                {/* Small screen only */}
+                <div className="flex items-center gap-2 sm:hidden">
+                  <a href="/profile">
+                    <HiOutlineUserCircle className="text-3xl text-gray-700" />
+                  </a>
+                  <LogoutBtn />
+                </div>
+                
+                {/* Larger Screens: Full Profile Info */}
+                <div className='hidden sm:flex items-center gap-0'>
+                  <a href="/profile" className="text-right text-xs sm:text-base flex items-center gap-2">
+                    <ul className='m-0 p-0'>
+                      {session?.user ? (
+                        <>
+                          <li>{session.user.name},</li>
+                          <li>{session?.role}</li>
+                        </>
+                      ) : (
+                        <li>User not logged in</li>
+                      )}
+                    </ul>
+                    <HiOutlineUserCircle className='text-4xl text-gray-700' />
+                  </a>
+                  <LogoutBtn />
+                </div>
+            </div>
             
         </div>
     </div>
