@@ -1,137 +1,264 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from 'react';
+import {
+Box,
+Card,
+Typography,
+IconButton,
+Menu,
+MenuItem,
+ToggleButtonGroup,
+ToggleButton,
+Table,
+TableBody,
+ TableCell,
+TableContainer,
+TableHead,
+TableRow,
+Paper,
+Dialog,
+DialogTitle,
+DialogContent,
+DialogActions,
+TextField,
+Button,
+} from '@mui/material';
+import GridViewIcon from '@mui/icons-material/GridView';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { CardMedia } from '@mui/material';
+
+interface Folder {
+  id: string;
+  name: string;
+  createdDate: string;
+  modifiedBy: string;
+  owner: string;
+}
 
 function FolderList() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const [folders, setFolders] = useState<{ id: string; name: string }[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
+  const [folders, setFolders] = useState<Folder[]>([
+    { id: '1', name: 'Folder 1', createdDate: '2023-01-01', modifiedBy: 'User A', owner: 'User A' },
+    { id: '2', name: 'Folder 2', createdDate: '2023-02-15', modifiedBy: 'User B', owner: 'User B' },
+    { id: '3', name: 'Folder 3', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User C' },
+  ]);
+  const [layout, setLayout] = useState<'list' | 'grid'>('grid');
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [renameFolderId, setRenameFolderId] = useState<string | null>(null);
+  const [newFolderName, setNewFolderName] = useState('');
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, folderId: string) => {
+    setAnchorEl((prev) => ({ ...prev, [folderId]: event.currentTarget }));
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (folderId: string) => {
+    setAnchorEl((prev) => ({ ...prev, [folderId]: null }));
   };
 
-  // Function to fetch folders
-  const fetchFolders = async () => {
-    try {
-      const response = await fetch('/api/folder'); // Adjust the path if necessary
-      if (!response.ok) {
-        throw new Error('Failed to fetch folders');
-      }
-      const data = await response.json();
-      setFolders(data); // Store the retrieved folders in state
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message); // Set error message if an error occurs
-      }
+  const handleLayoutChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newLayout: 'list' | 'grid' | null
+  ) => {
+    if (newLayout) setLayout(newLayout);
+  };
+
+  const openRenameDialog = (folderId: string, currentName: string) => {
+    setRenameFolderId(folderId);
+    setNewFolderName(currentName);
+    setRenameDialogOpen(true);
+  };
+
+  const handleRename = () => {
+    if (renameFolderId && newFolderName.trim()) {
+      setFolders((prevFolders) =>
+        prevFolders.map((folder) =>
+          folder.id === renameFolderId ? { ...folder, name: newFolderName } : folder
+        )
+      );
+      setRenameDialogOpen(false);
+      setRenameFolderId(null);
+      setNewFolderName('');
     }
   };
 
-  // Fetch folders on component mount
-  useEffect(() => {
-    fetchFolders();
-  }, []);
+  const handleRenameDialogClose = () => {
+    setRenameDialogOpen(false);
+    setRenameFolderId(null);
+    setNewFolderName('');
+  };
 
   return (
-    <Box display="flex" flexDirection="row" alignItems="center">
-      {error && <Typography color="error">{error}</Typography>}
-      {folders.map((folder) => (
-        <Box key={folder.id} width={'300px'} mb={2}> 
-          <Card className='transform transition-all hover:-translate-y-2'
-            variant="outlined"
-            sx={{
-              height: '250px',
-              mx: '18px',
-              marginTop: '48px',
-              borderWidth: '9px',
-              borderStyle: 'solid',
-              borderRadius: '16px',
-              position: 'relative',
-              paddingTop: '25px',
-              '::before': {
-                content: '""',
+    <Box sx={{ padding: 3 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h5">Folders</Typography>
+        <ToggleButtonGroup
+          value={layout}
+          exclusive
+          onChange={handleLayoutChange}
+          aria-label="layout toggle"
+        >
+          <ToggleButton value="grid" aria-label="grid layout">
+            <GridViewIcon />
+          </ToggleButton>
+          <ToggleButton value="list" aria-label="list layout">
+            <ViewListIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
+      {layout === 'grid' ? (
+  <Box display="flex" flexWrap="wrap" gap={2}>
+    {folders.map((folder) => (
+      <Box key={folder.id} width="320px" mb={2} position="relative">
+        <Card
+          variant="outlined"
+          sx={{
+            borderRadius: '12px',
+            boxShadow: 3,
+            cursor: 'pointer',
+            position: 'relative',
+            '&:hover': {
+              transform: 'translateY(-5px)',
+              boxShadow: 6,
+            },
+          }}
+        >
+          {/* Three-dotted menu in the upper-right corner */}
+          <IconButton
+              onClick={(e) => handleClick(e, folder.id)}
+              size="small"
+              sx={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '25px',
-                bgcolor: '#e1e1e0',
-                zIndex: 1,
-              },
+                top: 8,
+                right: 8,
+              }}
+          >
+  <MoreVertIcon />
+</IconButton>
+          <Menu
+            anchorEl={anchorEl[folder.id]}
+            open={Boolean(anchorEl[folder.id])}
+            onClose={() => handleClose(folder.id)}
+          >
+            <MenuItem onClick={() => openRenameDialog(folder.id, folder.name)}>
+              Rename Folder
+            </MenuItem>
+            <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
+          </Menu>
+
+          {/* Thumbnail Section */}
+          <Box
+            sx={{
+              backgroundColor: '#e0e0e0',
+              height: '150px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '25px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '0 10px',
-                zIndex: 2,
-              }}
-            >
-              <Typography variant="body2">{folder.name}</Typography> {/* Display the folder name */}
-              <IconButton
-                aria-label="settings"
-                sx={{
-                  color: 'grey.600',
-                  padding: 0,
-                }}
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-            </Box>
+            <img
+              src={`https://via.placeholder.com/150?text=${folder.name}`}
+              alt={`${folder.name} Thumbnail`}
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+            />
+          </Box>
 
+          {/* Name and Date Section */}
+          <Box sx={{ p: 2 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+              {folder.name}
+            </Typography>
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              sx={{ display: 'block', marginTop: '4px' }}
+            >
+              Created: {new Date(folder.createdDate).toLocaleDateString()}
+            </Typography>
+          </Box>
+        </Card>
+      </Box>
+    ))}
+  </Box>
+) : (
+<TableContainer
+  component={Paper}
+  sx={{
+    height: '100%',
+    maxHeight: 'calc(100vh - 150px)',
+    overflowY: 'auto',
+  }}
+>
+  <Table stickyHeader>
+    <TableHead>
+      <TableRow>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Folder Name</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Date Created</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Modified By</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Owner</TableCell>
+        <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Actions</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {folders.map((folder) => (
+        <TableRow
+          key={folder.id}
+          onClick={() => console.log(`Clicked on folder: ${folder.name}`)}
+          sx={{
+            cursor: 'pointer',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+            transition: 'background-color 0.3s ease',
+          }}
+        >
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.name}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.createdDate}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.modifiedBy}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.owner}</TableCell>
+          <TableCell align="right">
+            <IconButton onClick={(e) => handleClick(e, folder.id)}>
+              <MoreVertIcon />
+            </IconButton>
             <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
+              anchorEl={anchorEl[folder.id]}
+              open={Boolean(anchorEl[folder.id])}
+              onClose={() => handleClose(folder.id)}
             >
-              <MenuItem onClick={handleClose}>Rename Folder</MenuItem>
-              <MenuItem onClick={handleClose}>Download</MenuItem>
+              <MenuItem onClick={() => openRenameDialog(folder.id, folder.name)}>
+                Rename Folder
+              </MenuItem>
+              <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
             </Menu>
-
-            <CardContent className=''>
-              <CardMedia
-                component="img"
-                height="250"
-                
-                image="./assets/free-folder-icon-1485-thumb.png"
-                alt=""
-                sx={{ borderRadius: '8px' }}
-              />
-            </CardContent>
-          </Card>
-        </Box>
+          </TableCell>
+        </TableRow>
       ))}
+    </TableBody>
+  </Table>
+</TableContainer>
+
+
+      )}
+
+      {/* Rename Folder */}
+      <Dialog open={renameDialogOpen} onClose={handleRenameDialogClose}>
+        <DialogTitle>Rename Folder</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+            placeholder="Enter new folder name"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleRenameDialogClose}>Cancel</Button>
+          <Button onClick={handleRename} variant="contained" disabled={!newFolderName.trim()}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
