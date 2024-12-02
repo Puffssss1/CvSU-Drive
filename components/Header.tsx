@@ -12,12 +12,20 @@ function Header() {
 
   return (
     <div className='w-full h-full bg-[#EEEDEB] pb-1 pt-1 px-3'>
-        <div className='flex flex-row w-full justify-between gap-40 p-5 align-middle'>
-            <Sidebar/>
-            <h1 className="text-fontGreen text-center text-2xl">Welcome to CvSU Drive</h1>
-            <a href="/profile">
-              <div className='flex flex-row gap-1 align-middle'>
-                <ul className='text-right text-sm w-24 m-0 p-0 gap-0'>
+        <div className='flex flex-row w-full justify-between gap-40 p-5 items-center sm:gap-8 p-5'>
+            <div className='flex-shrink-0'>
+             <Sidebar/>
+            </div>
+            <h1 className="text-fontGreen text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
+            <a href="/profile" className='mt-3 sm:mt-0'>
+              {/* small screen only */}
+              <div className="flex items-center gap-2 sm:hidden">
+                <HiOutlineUserCircle className="text-3xl text-gray-700" />
+                <LogoutBtn />
+              </div>
+              {/* Larger Screens: Full Profile Info */}
+              <div className='hidden sm:flex items-center gap-0'>
+                <ul className='text-right text-xs sm:text-base m-0 p-0'>
                     {session?.user ? (
                     <>
                       <li>{session.user.name},</li>
@@ -27,7 +35,7 @@ function Header() {
                     <li>User not logged in</li>
                   )}
                 </ul>
-                <HiOutlineUserCircle className='size-10'></HiOutlineUserCircle>
+                <HiOutlineUserCircle className='text-4xl text-gray-700'></HiOutlineUserCircle>
                 <LogoutBtn/>
               </div>
             </a>

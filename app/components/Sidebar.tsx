@@ -246,22 +246,40 @@ function Sidebar() {
     };
   return (
     <div>
-        <React.Fragment>
-            <MenuIcon className='size-10'
-                onClick={
-                    toggleDrawer("left", true)
-                }
-            />
-            <Drawer
-            anchor={"left"}
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-            sx={{ "& .MuiDrawer-paper": { marginTop: '88px' } }}
-            BackdropProps={{ invisible: true }}
-            >
-            {list("left")}
-            </Drawer>
-        </React.Fragment>
+        {/* Small Screen: Only Menu Icon */}
+      <div className="sm:hidden">
+        <MenuIcon
+          className="cursor-pointer text-2xl"
+          onClick={toggleDrawer('left', true)}
+        />
+      </div>
+
+      {/* Large Screen: Sidebar Always Visible */}
+      <div className="hidden sm:block">
+        <Drawer
+          variant="permanent"
+          open
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: 200,
+              marginTop: '95px', // Matches the header height
+              boxSizing: 'border-box',
+            },
+          }}
+        >
+          {list('left')}
+        </Drawer>
+      </div>
+
+      {/* Small Screen Drawer */}
+      <Drawer
+        anchor="left"
+        open={state.left}
+        onClose={toggleDrawer('left', false)}
+        sx={{ '& .MuiDrawer-paper': { marginTop: '98px' } }}
+      >
+        {list('left')}
+      </Drawer>
 
         {/* Create New Modal  */}
         <Modal
