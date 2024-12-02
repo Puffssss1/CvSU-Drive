@@ -264,6 +264,7 @@ function Sidebar() {
               width: 200,
               marginTop: '95px', // Matches the header height
               boxSizing: 'border-box',
+              backgroundColor: "#9ABF80"
             },
           }}
         >
@@ -276,7 +277,7 @@ function Sidebar() {
         anchor="left"
         open={state.left}
         onClose={toggleDrawer('left', false)}
-        sx={{ '& .MuiDrawer-paper': { marginTop: '98px' } }}
+        sx={{ '& .MuiDrawer-paper': { backgroundColor: "#9ABF80"} }}
       >
         {list('left')}
       </Drawer>
