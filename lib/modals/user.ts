@@ -15,9 +15,21 @@ const UserSchema = new Schema(
             type: "string",
             required: true
         },
+        contact: {
+            type: "string",
+            required: true
+        },
         role: {
             type: "string",
             enum: ["Admin", "Faculty", "Chairperson"]
+        },
+        department: {
+            type: "string",
+            enum: ["Department of Education", "Department of Information Technology"]
+        },
+        sex: {
+            type: "string",
+            enum: ["Male", "Female"]
         }
     },
         {

@@ -2,18 +2,18 @@
 import React from 'react';
 import { Paper, Typography, Grid, Avatar } from '@mui/material';
 import Header from '@/components/Header';
-import Sidebar from '../components/Sidebar';
+import { useSession } from 'next-auth/react';
 
 const ProfileView = () => {
-  
+  const {data:session} = useSession();
+
   const profileData = {
-    name: "Denzel Sanchez",
-    department: "Software Development",
-    email: "denzel.sanchez@example.com",
-    sex: "Male",
-    civilStatus: "Single",
-    religion: "Christianity",
-    contact: "+63908264578",
+    name: session?.user?.name || '',
+    department: session?.user?.department || '',
+    email: session?.user?.email || '',
+    sex: session?.user?.sex || '',
+    role: session?.role || '',
+    contact: session?.user?.contact || '',
     birthday: "05/09/1995",
   };
 

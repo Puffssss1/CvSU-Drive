@@ -1,7 +1,6 @@
 "use client"
 import React from 'react'
 import { HiOutlineUserCircle } from "react-icons/hi";
-import SearchBar from '@/app/components/SearchBar';
 import Sidebar from '@/app/components/Sidebar';
 import LogoutBtn from '../app/components/LogoutBtn';
 import { useSession } from 'next-auth/react';
@@ -14,7 +13,7 @@ function Header() {
     <div className='w-full h-full bg-[#9ABF80] pb-1 pt-1 px-3'>
         <div className='flex flex-row w-full justify-between gap-40 p-5 items-center sm:gap-8 p-5'>
             <div className='flex-shrink-0'>
-             <Sidebar/>
+            <Sidebar/>
             </div>
             <h1 className="text-[#1C325B] font-light text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
             <div className='mt-3 sm:mt-0'>

@@ -10,6 +10,9 @@ type UserType = {
     email: string;
     password: string;
     role: string;
+    department: string;
+    contact: string;
+    sex: string;
 };
 
 export const authOptions: NextAuthOptions = {
@@ -39,7 +42,10 @@ export const authOptions: NextAuthOptions = {
                         name: user.name, 
                         email: user.email, 
                         password: user.password,
-                        role: user.role 
+                        role: user.role,
+                        department: user.department,
+                        contact: user.contact,
+                        sex: user.sex,
                     };
 
                     // Return user object
@@ -59,6 +65,9 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.id = user.id;  
                 token.role = user.role; 
+                token.department = user.department; // Include department
+                token.contact = user.contact;       // Include contact
+                token.sex = user.sex; 
             }
             return token;
         },
@@ -66,6 +75,14 @@ export const authOptions: NextAuthOptions = {
             if (token) {
                 session.id = token.id as string;
                 session.role = token.role as string;
+                session.user = {
+                    ...session.user,
+                    id: token.id,
+                    role: token.role,
+                    department: token.department, // Map department
+                    contact: token.contact,       // Map contact
+                    sex: token.sex,               // Map sex
+                };
             }
             return session;
         }
