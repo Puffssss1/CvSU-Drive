@@ -264,7 +264,7 @@ function Sidebar() {
               width: 200,
               marginTop: '95px', // Matches the header height
               boxSizing: 'border-box',
-              backgroundColor: "#9ABF80"
+              backgroundColor: "#004225"
             },
           }}
         >
@@ -305,7 +305,7 @@ function Sidebar() {
             borderRadius:'5px',
             boxShadow: 24,
             p: 4,
-            padding: 2
+            padding: 2,
           }}
           >
 
