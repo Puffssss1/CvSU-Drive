@@ -42,6 +42,24 @@ function FolderList() {
     { id: '1', name: 'Folder 1', createdDate: '2023-01-01', modifiedBy: 'User A', owner: 'User A' },
     { id: '2', name: 'Folder 2', createdDate: '2023-02-15', modifiedBy: 'User B', owner: 'User B' },
     { id: '3', name: 'Folder 3', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User C' },
+    { id: '4', name: 'Folder 4', createdDate: '2023-03-10', modifiedBy: 'User D', owner: 'User D' },
+    { id: '5', name: 'Folder 5', createdDate: '2023-03-10', modifiedBy: 'User E', owner: 'User E' },
+    { id: '6', name: 'Folder 6', createdDate: '2023-03-10', modifiedBy: 'User F', owner: 'User F' },
+    { id: '6', name: 'Folder 7', createdDate: '2023-03-10', modifiedBy: 'User G', owner: 'User G' },
+    { id: '6', name: 'Folder 8', createdDate: '2023-03-10', modifiedBy: 'User H', owner: 'User H' },
+    { id: '6', name: 'Folder 9', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User I' },
+    { id: '6', name: 'Folder 10', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User J' },
+    { id: '6', name: 'Folder 11', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User K' },
+    { id: '6', name: 'Folder 12', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User L' },
+    { id: '6', name: 'Folder 13', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User M' },
+    { id: '6', name: 'Folder 14', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User N' },
+    { id: '6', name: 'Folder 15', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User O' },
+    { id: '6', name: 'Folder 16', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User P' },
+    { id: '6', name: 'Folder 17', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User Q' },
+    { id: '6', name: 'Folder 18', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User R' },
+    { id: '6', name: 'Folder 19', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User S' },
+    { id: '6', name: 'Folder 20', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User T' },
+    
   ]);
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
@@ -108,9 +126,10 @@ function FolderList() {
       </Box>
 
       {layout === 'grid' ? (
-  <Box display="flex" flexWrap="wrap" gap={2}>
+      <div className='ml-56'>
+        <Box display="flex" flexWrap="wrap" gap={2}>
     {folders.map((folder) => (
-      <Box key={folder.id} width="320px" mb={2} position="relative">
+      <Box key={folder.id} width="300px" mb={2} position="relative">
         <Card
           variant="outlined"
           sx={{
@@ -155,6 +174,7 @@ function FolderList() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              color: '#e0e0e0',
             }}
           >
             <img
@@ -165,22 +185,29 @@ function FolderList() {
           </Box>
 
           {/* Name and Date Section */}
+          <div className=''>
           <Box sx={{ p: 2 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            
+            <Typography className='' variant="subtitle2" sx={{ fontWeight: 600 }}>
               {folder.name}
             </Typography>
-            <Typography
+            <Typography className=''
               variant="caption"
               color="textSecondary"
-              sx={{ display: 'block', marginTop: '4px' }}
+              sx={{ display: 'block', marginTop: '4px'}}
             >
               Created: {new Date(folder.createdDate).toLocaleDateString()}
             </Typography>
+            
+            
           </Box>
+          </div>
         </Card>
       </Box>
     ))}
   </Box>
+      </div>
+  
 ) : (
 <TableContainer
   component={Paper}
@@ -188,15 +215,16 @@ function FolderList() {
     height: '100%',
     maxHeight: 'calc(100vh - 150px)',
     overflowY: 'auto',
+    position: 'flex',
   }}
 >
   <Table stickyHeader>
     <TableHead>
       <TableRow>
-        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Folder Name</TableCell>
-        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Date Created</TableCell>
-        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Modified By</TableCell>
-        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Owner</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Folder Name</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Date Created</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Modified By</TableCell>
+        <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Owner</TableCell>
         <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Actions</TableCell>
       </TableRow>
     </TableHead>
@@ -213,10 +241,10 @@ function FolderList() {
             transition: 'background-color 0.3s ease',
           }}
         >
-          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.name}</TableCell>
-          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.createdDate}</TableCell>
-          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.modifiedBy}</TableCell>
-          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem' }}>{folder.owner}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16}}>{folder.name}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16}}>{folder.createdDate}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16}}>{folder.modifiedBy}</TableCell>
+          <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16}}>{folder.owner}</TableCell>
           <TableCell align="right">
             <IconButton onClick={(e) => handleClick(e, folder.id)}>
               <MoreVertIcon />

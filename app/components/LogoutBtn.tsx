@@ -23,7 +23,7 @@ function LogoutBtn() {
         <Button 
           variant="text" 
           onClick={handleLogout}>
-          <LogoutRoundedIcon className='text-[#1C325B]'/>
+          <LogoutRoundedIcon className='text-[#FFB000] hover:brightness-125'/>
         </Button>
       </div>
     );
