@@ -3,12 +3,15 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Header from '@/components/Header';
 
 function track() {
     return (
         <div>
-            <div className='text-4xl m-5 bg-slate-200 p-2 font-bold font-mono'> DOCUMENT TRACKING
+            <div className="sticky top-0 z-50">
+                <Header/>
             </div>
+            <div className='text-4xl m-5 bg-slate-200 p-2 font-bold font-mono'> DOCUMENT TRACKING</div>
             <Box className='justify-self-end mr-10'
             component="form"
             sx={{ '& > :not(style)': { m: 1, width: '100ch' } }}

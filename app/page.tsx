@@ -13,7 +13,9 @@ export default async function Home() {
   }
   return (
     <div>
-      <Header></Header>
+      <div className="sticky top-0 z-50">
+        <Header/>
+      </div>
       <div className='justify-items-center mt-3'>
         <SearchBar/>
         <div>
