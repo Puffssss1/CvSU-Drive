@@ -11,26 +11,29 @@ function track() {
             <div className="sticky top-0 z-50">
                 <Header/>
             </div>
-            <div className='text-4xl m-5 bg-slate-200 p-2 font-bold font-mono'> DOCUMENT TRACKING</div>
-            <Box className='justify-self-end mr-10'
+            <div className='text-4xl m-5 bg-slate-200 p-4 font-bold font-mono ml-52'> DOCUMENT TRACKING</div>
+            <div className='flex justify-items-center items-center'>
+            <Box className='justify-self-start ml-56 flex items-center'
             component="form"
             sx={{ '& > :not(style)': { m: 1, width: '100ch' } }}
             noValidate
             autoComplete="off">
                 <TextField className='' id="Reference" label="Enter Reference Number" variant="outlined" />
-                <Stack spacing={2} direction="row" className='justify-center'>
-                    <Button variant="contained" className='rounded-3xl bg-[#004225] hover:bg-green-600 '>Search</Button>
+                <Stack spacing={2} direction="row" className='flex'>
+                    <Button variant="contained" className='rounded-3xl bg-[#004225] hover:bg-green-600 h-10'>Search</Button>
                     </Stack>
                 </Box>
-                <div className='text-4xl m-5 bg-slate-200 p-2 font-bold font-mono'> TRACKING DETAILS
+            </div>
+            
+                <div className='text-4xl m-5 bg-slate-200 p-4 font-bold font-mono ml-52'> TRACKING DETAILS
                 </div>
             <div className='justify-self-center font-bold'>
             [REFERENCE NUMBER]
             </div>
             
-            <hr className='w-5/6 border-t-2 border-black border-opacity-10 mt-2 mx-auto '/>
+            <hr className='w-2/3 border-t-2 border-black border-opacity-10 mt-2 mx-auto '/>
 
-            <div className='m-5 ml-44 flex'>
+            <div className='m-5 ml-56 flex'>
                 <div className=' text-black opacity-50 mr-24'>
                     January 01 2025, 12:01 am
                 </div>
@@ -39,7 +42,7 @@ function track() {
                 </div>
             </div>
 
-            <div className='m-5 ml-44 flex'>
+            <div className='m-5 ml-56 flex'>
                 <div className=' text-black opacity-50 mr-24'>
                     January 01 2025, 12:01 am
                 </div>
@@ -48,7 +51,7 @@ function track() {
                 </div>
             </div>
 
-            <div className='m-5 ml-44 flex'>
+            <div className='m-5 ml-56 flex'>
                 <div className=' text-black opacity-50 mr-24'>
                     January 01 2025, 12:01 am
                 </div>
@@ -57,7 +60,7 @@ function track() {
                 </div>
             </div>
 
-            <div className='m-5 ml-44 flex'>
+            <div className='m-5 ml-56 flex'>
                 <div className=' text-black opacity-50 mr-24'>
                     January 01 2025, 12:01 am
                 </div>
