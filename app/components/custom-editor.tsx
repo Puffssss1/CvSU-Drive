@@ -10,6 +10,25 @@ const LICENSE_KEY =
 const CLOUD_SERVICES_TOKEN_URL =
 	'https://sqlq79td7m6b.cke-cs.com/token/dev/0e43fc2d47319cc2255fc3a7106067072ddff9b335ce93562b3740114730?limit=10';
 
+	const handleSave = async () => {
+		try {
+			const response = await fetch('/api/save-document', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ content: editorContent }),
+			});
+			if (response.ok) {
+				console.log('Document saved successfully');
+			} else {
+				console.error('Failed to save document');
+			}
+		} catch (error) {
+			console.error('Error saving document:', error);
+		}
+	};
+
 export default function App() {
 	const editorContainerRef = useRef(null);
 	const editorMenuBarRef = useRef(null);
@@ -161,10 +180,11 @@ export default function App() {
 					TableProperties,
 					TableToolbar,
 					TodoList,
-					Underline
+					Underline,
 				],
 				cloudServices: {
-					tokenUrl: CLOUD_SERVICES_TOKEN_URL
+					tokenUrl: CLOUD_SERVICES_TOKEN_URL,
+					uploadUrl: 'localhost:3000/api/textEditor',
 				},
 				exportPdf: {
 					stylesheets: [
@@ -302,6 +322,13 @@ export default function App() {
 									onReady={editor => {
 										editorToolbarRef.current.appendChild(editor.ui.view.toolbar.element);
 										editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+										
+										// Add custom logic on editor initialization
+    									console.log('Editor is ready!', editor);	
+									}}
+									onChange={(event, editor) => {
+										const data = editor.getData();
+										console.log('Editor data changed:', data); // Log editor data on change
 									}}
 									onAfterDestroy={() => {
 										Array.from(editorToolbarRef.current.children).forEach(child => child.remove());
@@ -315,6 +342,7 @@ export default function App() {
 					</div>
 				</div>
 			</div>
+			<button onClick={handleSave}>Save Document</button>
 		</div>
 	);
 }
