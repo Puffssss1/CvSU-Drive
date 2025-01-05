@@ -10,6 +10,16 @@ const LICENSE_KEY =
 const CLOUD_SERVICES_TOKEN_URL =
 	'https://sqlq79td7m6b.cke-cs.com/token/dev/0e43fc2d47319cc2255fc3a7106067072ddff9b335ce93562b3740114730?limit=10';
 
+	
+
+export default function App() {
+	const editorContainerRef = useRef(null);
+	const editorMenuBarRef = useRef(null);
+	const editorToolbarRef = useRef(null);
+	const editorRef = useRef(null);
+	const [isLayoutReady, setIsLayoutReady] = useState(false);
+	const cloud = useCKEditorCloud({ version: '44.1.0', premium: true, ckbox: { version: '2.6.1' } });
+
 	const handleSave = async () => {
 		try {
 			const response = await fetch('/api/save-document', {
@@ -17,7 +27,7 @@ const CLOUD_SERVICES_TOKEN_URL =
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ content: editorContent }),
+				body: JSON.stringify({ content: editorConfig }),
 			});
 			if (response.ok) {
 				console.log('Document saved successfully');
@@ -28,15 +38,7 @@ const CLOUD_SERVICES_TOKEN_URL =
 			console.error('Error saving document:', error);
 		}
 	};
-
-export default function App() {
-	const editorContainerRef = useRef(null);
-	const editorMenuBarRef = useRef(null);
-	const editorToolbarRef = useRef(null);
-	const editorRef = useRef(null);
-	const [isLayoutReady, setIsLayoutReady] = useState(false);
-	const cloud = useCKEditorCloud({ version: '44.1.0', premium: true, ckbox: { version: '2.6.1' } });
-
+	
 	useEffect(() => {
 		setIsLayoutReady(true);
 
