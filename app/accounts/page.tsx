@@ -13,20 +13,14 @@ function Accounts() {
   return (
     <div>
       <AccountsTable />
-      <button
+      <div className='ml-52'>
+      <button className='py-3 px-5 bg-[#004225] text-[#FFB000] rounded-3xl mt-4 '
         onClick={handleRedirect}
-        style={{
-          padding: '10px 20px',
-          background: '#0070f3',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          zIndex: 10,
-        }}
       >
-        Go to Target Page
+        Add Account
       </button>
+      </div>
+      
     </div>
   );
 }

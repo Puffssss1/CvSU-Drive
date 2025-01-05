@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Header from '@/components/Header';
+import Loading from '../components/loading';
 
 interface User {
   name: string;
@@ -38,16 +39,20 @@ function AccountsTable() {
 
   // If data is loading, show a loading message
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <>
-      <Header />
-      <TableContainer component={Paper} sx={{ margin: '10px' }}>
+    <Header />
+
+    
+    {/* <div className='ml-52'> */}
+    
+      <TableContainer component={Paper} sx={{ margin: '10px', marginLeft: '13rem' }} className=''>
         <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow className=''>
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Department</TableCell>
               <TableCell align="left">E-mail</TableCell>
@@ -70,6 +75,8 @@ function AccountsTable() {
           </TableBody>
         </Table>
       </TableContainer>
+    {/* </div> */}
+      
     </>
   );
 }
