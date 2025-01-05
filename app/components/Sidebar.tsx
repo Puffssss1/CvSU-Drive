@@ -20,6 +20,7 @@ import BackupTableIcon from '@mui/icons-material/BackupTable';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import FindInPageIcon from '@mui/icons-material/FindInPage';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -135,13 +136,19 @@ function Sidebar() {
         >
           <List sx={{ flexGrow: 1 }}>
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <HomeIcon/>
-                </ListItemIcon>
-                <ListItemText primary={"Home"}/>
-              </ListItemButton>
+              <a href="/">
+                <ListItemButton>
+                    <ListItemIcon>
+                      <HomeIcon
+                      sx={{ color: '#FFB000' }}/>
+                    </ListItemIcon>
+                    <ListItemText primary={"Home"}
+                    sx={{ color: '#FFB000' }}/>
+                </ListItemButton>
+              </a>
             </ListItem>
+            <Divider 
+            sx={{ color: '4C585B' }}/>
 
             {userRole === Roles.ADMIN && (
               <>
@@ -149,67 +156,86 @@ function Sidebar() {
                   <a href='./log-history'>
                     <ListItemButton>
                       <ListItemIcon>
-                        <WorkHistoryIcon/>
+                        <WorkHistoryIcon
+                        sx={{ color: '#FFB000' }}/>
                       </ListItemIcon>
-                      <ListItemText primary={"Log History"}/>
+                      <ListItemText primary={"Log History"}
+                      sx={{ color: '#FFB000' }}/>
                         </ListItemButton>
                   </a>
                 </ListItem>
+                <Divider 
+                sx={{ color: '4C585B' }}/>
 
                 <ListItem disablePadding>
                   <a href='/accounts'>
                     <ListItemButton>
                       <ListItemIcon>
-                        <AccountBoxIcon/>
+                        <AccountBoxIcon
+                        sx={{ color: '#FFB000' }}/>
                       </ListItemIcon>
-                      <ListItemText primary={"Accounts"}/>
+                      <ListItemText primary={"Accounts"}
+                      sx={{ color: '#FFB000' }}/>
                     </ListItemButton>
                   </a>
                 </ListItem>
               </>
             )}
             
+            <Divider 
+            sx={{ color: '4C585B' }}/>
             {userRole === Roles.CHAIRPERSON && (
               <>
                 <ListItem disablePadding>
                   <a href='./profile'>
                     <ListItemButton>
                       <ListItemIcon>
-                        <AccountBoxIcon/>
+                        <AccountBoxIcon
+                        sx={{ color: '#FFB000' }}/>
                       </ListItemIcon>
-                      <ListItemText primary={"Faculty's Profile"}/>
+                      <ListItemText primary={"Faculty's Profile"}
+                      sx={{ color: '#FFB000' }}/>
                     </ListItemButton>
                   </a>
                 </ListItem>
               </>
             )}
-
-            <ListItem disablePadding>
-              <a href='./messages'>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <MessageIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary={"Messages"}/>
-                </ListItemButton>
-              </a>
-            </ListItem>
+            <Divider 
+            sx={{ color: '4C585B' }}/>
 
             <ListItem disablePadding>
               <a href='/files'>
                 <ListItemButton>
                   <ListItemIcon>
-                    <BackupTableIcon/>
+                    <BackupTableIcon
+                    sx={{ color: '#FFB000' }}/>
                   </ListItemIcon>
-                  <ListItemText primary={"Files"}/>
+                  <ListItemText primary={"Files"}
+                  sx={{ color: '#FFB000' }}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
+            <Divider 
+            sx={{ color: '4C585B' }}/>
+
+            <ListItem disablePadding>
+              <a href='/document-tracking'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <FindInPageIcon
+                    sx={{ color: '#FFB000' }}/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Document Tracker"}
+                  sx={{ color: '#FFB000' }}/>
                 </ListItemButton>
               </a>
             </ListItem>
           </List>
-          <Divider />
+          <Divider 
+          sx={{ color: '4C585B' }}/>
           
           {/* Upload */}
-          <List sx={{ flexGrow: 1 }}>
+          {/* <List sx={{ flexGrow: 1 }}>
             <ListItem disablePadding>
                 <ListItemButton onClick={HandleOpenCreateModal}>
                   <ListItemIcon>
@@ -218,7 +244,7 @@ function Sidebar() {
                   <ListItemText primary={"Create New"}/>
                 </ListItemButton>
             </ListItem>
-          </List>
+          </List> */}
         </Box>
       );
 
@@ -251,6 +277,7 @@ function Sidebar() {
         <MenuIcon
           className="cursor-pointer text-2xl"
           onClick={toggleDrawer('left', true)}
+          sx={{ color: '#FFB000' }}
         />
       </div>
 
@@ -277,7 +304,7 @@ function Sidebar() {
         anchor="left"
         open={state.left}
         onClose={toggleDrawer('left', false)}
-        sx={{ '& .MuiDrawer-paper': { backgroundColor: "#9ABF80"} }}
+        sx={{ '& .MuiDrawer-paper': { backgroundColor: "#004225"} }}
       >
         {list('left')}
       </Drawer>

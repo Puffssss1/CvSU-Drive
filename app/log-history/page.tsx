@@ -28,7 +28,9 @@ function LogHistory
 return (
     
     <div>
-        <><Header />
+        <div className="sticky top-0 z-50">
+            <Header/>
+        </div>
         <TableContainer component={Paper}
         sx={{
             margin:'10px',
@@ -62,7 +64,7 @@ return (
                     ))}
                 </TableBody>
             </Table>
-        </TableContainer></>
+        </TableContainer>
     </div>
 )
 }
