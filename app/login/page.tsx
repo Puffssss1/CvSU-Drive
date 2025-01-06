@@ -69,8 +69,19 @@ export default function Login() {
                             <h2 className="text-3xl font-bold text-black">Welcome to</h2>
                             <h2 className="text-3xl font-bold text-black ml-2">CvSU Drive - Silang Campus</h2>
                         </div> 
+                        <br />
+                        <p className="text-justify mx-10  tracking-widest leading-10 text-black font-bold text-xl">
+                            Vision
+                        </p>
                         <p className="text-justify mx-10  tracking-widest leading-10 text-black ">
-                            In the early part of 2006, loads of requests from the members of the Silang community have been received by the local government for the establishment of the branch campus of Cavite State University. Believing in the aspirations of CvSU, Mayor Clarito A. Poblete representing the Local Government of Silang and Dr. Ruperto S. Sangalang, representing Cavite State University signed a Memorandum of Agreement on April 18, 2006 granting the creation of Cavite State University Silang Campus. CvSU – Silang initially offered six curricular programs while holding fast to the theme “Focus to Build a Guaranteed Future.” The degree programs offered were: Bachelor of Science in Business Management, Bachelor of Science in Tourism and Resort Management, Bachelor of Science in Computer Science, Bachelor of Science in Landscape Design and Management, Bachelor of Science in Hotel and Restaurant Management, and Diploma in Hotel and Restaurant Management.
+                            The premier university in historic Cavite globally recognized for excellence in character development, academics, research, innovation and sustainable community engagement.
+                        </p>
+                        <br />
+                        <p className="text-justify mx-10  tracking-widest leading-10 text-black font-bold text-xl">
+                            Mission
+                        </p>
+                        <p className="text-justify mx-10  tracking-widest leading-10 text-black ">
+                            Cavite State University shall provide excellent, equitable and relevant educational opportunities in the arts, sciences and technology through quality instruction and responsive research and development activities. It shall produce professional, skilled and morally upright individuals for global competitiveness.
                         </p>
                     </div>
                 </Box>
