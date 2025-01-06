@@ -1,6 +1,7 @@
 import React from 'react'
 import FolderCard from '../components/FolderCard'
 import Header from '@/components/Header'
+import UploadFile from '../components/UploadFile';
 
 function Files() {
   return (
@@ -9,6 +10,10 @@ function Files() {
         <Header/>
       </div>
       <FolderCard />
+
+      <div className='ml-56 mb-12'>
+        <UploadFile />
+      </div>
     </div>
   )
 }
