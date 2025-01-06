@@ -14,6 +14,7 @@ interface User {
   department: string;
   email: string;
   role: string;
+  contact: string;
 }
 
 function AccountsTable() {
@@ -44,7 +45,6 @@ function AccountsTable() {
 
   return (
     <>
-    <Header />
 
     
     {/* <div className='ml-52'> */}
@@ -53,11 +53,12 @@ function AccountsTable() {
         <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow className=''>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Department</TableCell>
-              <TableCell align="left">E-mail</TableCell>
-              <TableCell align="left">Role</TableCell>
-              <TableCell align="left"></TableCell>
+              <TableCell align="left" sx={{ width: '15%' }}>Name</TableCell>
+              <TableCell align="left" sx={{ width: '35%' }}>Department</TableCell>
+              <TableCell align="left" sx={{ width: '20%' }}>E-mail</TableCell>
+              <TableCell align="left" sx={{ width: '15%' }}>Contact</TableCell>
+              <TableCell align="left" sx={{ width: '10%' }}>Role</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -68,8 +69,8 @@ function AccountsTable() {
                 </TableCell>
                 <TableCell align="left">{user.department}</TableCell>
                 <TableCell align="left">{user.email}</TableCell>
+                <TableCell align="left">{user.contact}</TableCell>
                 <TableCell align="left">{user.role}</TableCell>
-                <TableCell align="left"></TableCell>
               </TableRow>
             ))}
           </TableBody>

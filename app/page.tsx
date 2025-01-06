@@ -17,7 +17,6 @@ export default async function Home() {
         <Header/>
       </div>
       <div className='justify-items-center mt-3'>
-        <SearchBar/>
         <div>
           <FolderCard />
         </div>
