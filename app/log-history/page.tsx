@@ -38,14 +38,15 @@ return (
 
         }}
         >
-            <h1 className='font-bold text-3xl'> |   LOG HISTORY </h1>
-            <Table sx={{ minWidth: 200 }} aria-label="simple table">
+            <div className='overflow-hidden'>
+            <h1 className='font-bold text-3xl ml-52'>  LOG HISTORY </h1>
+            <Table className='ml-52 overflow-hidden table-fixed w-full mt-4' sx={{ minWidth: 100 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align='left' className='font-bold text-green-800'>Name</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800'>Department</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800'>Date</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800'>File</TableCell>
+                        <TableCell align='left' className='font-bold text-green-800' sx={{ width: '15%' }}>Name</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800' sx={{ width: '20%' }}>Department</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800' sx={{ width: '10%' }}>Date</TableCell>
+                        <TableCell align="left" className='font-bold text-green-800'sx={{ width: '20%' }}>File</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -57,13 +58,15 @@ return (
                             <TableCell component="th" scope="row">
                                 {row.name}
                             </TableCell>
-                            <TableCell align="left">{row.department}</TableCell>
-                            <TableCell align="left">{row.date}</TableCell>
-                            <TableCell align="left">{row.file}</TableCell>
+                            <TableCell align="left" sx={{ width: '15%' }}>{row.department}</TableCell>
+                            <TableCell align="left" sx={{ width: '15%' }}>{row.date}</TableCell>
+                            <TableCell align="left" sx={{ width: '15%' }}>{row.file}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            </div>
+            
         </TableContainer>
     </div>
 )

@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Header from '@/components/Header';
 import Loading from '../components/loading';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface User {
   name: string;
@@ -58,6 +59,7 @@ function AccountsTable() {
               <TableCell align="left" sx={{ width: '20%' }}>E-mail</TableCell>
               <TableCell align="left" sx={{ width: '15%' }}>Contact</TableCell>
               <TableCell align="left" sx={{ width: '10%' }}>Role</TableCell>
+              <TableCell align="left" sx={{ width: '10%' }}> Edit</TableCell>
 
             </TableRow>
           </TableHead>
@@ -71,6 +73,9 @@ function AccountsTable() {
                 <TableCell align="left">{user.email}</TableCell>
                 <TableCell align="left">{user.contact}</TableCell>
                 <TableCell align="left">{user.role}</TableCell>
+                <TableCell align="left">
+                  <button className='hover:-translate-y-1 ease-linear'><EditIcon/></button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

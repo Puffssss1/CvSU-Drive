@@ -51,36 +51,37 @@ export default function Login() {
 
     return (
         sessionStatus !== "authenticated" && (
-            <div className="bg-[url('/images/LoginBackground.png')] bg-no-repeat bg-cover min-h-screen flex items-center justify-center p-10">
+            <div className="bg-[url('/images/cvsuuu.png')] bg-no-repeat bg-cover min-h-screen flex items-center justify-center p-10">
                 {/* Left Side Sample Text */}
                 <Box
                     component="form"
                     sx={{ 
                         '& > :not(style)': { m: 0, width: '100%' },
-                        maxWidth: '1000px',         // Set a max-width for the login box
+                        maxWidth: '1350px',         // Set a max-width for the login box
                         minHeight: '550px',        // Increase the height (you can adjust the value)
+                        marginRight: '4rem'
                     }}
                     noValidate
                     autoComplete="off"
-                    className="rounded-lg shadow-2xl ring-1 ring-gray-300 backdrop-blur-sm bg-green-100 bg-opacity-35"
+                    className="rounded-lg shadow-2xl ring-1 ring-green-800 backdrop-blur-sm bg-green-900 bg-opacity-30"
                 > 
                     <div className="text-green-900">
-                        <div className="flex mx-10 mt-10 m-4">
+                        {/* <div className="flex mx-10 mt-10 m-4">
                             <h2 className="text-3xl font-bold text-black">Welcome to</h2>
                             <h2 className="text-3xl font-bold text-black ml-2">CvSU Drive - Silang Campus</h2>
-                        </div> 
+                        </div>  */}
                         <br />
-                        <p className="text-justify mx-10  tracking-widest leading-10 text-black font-bold text-xl">
+                        <p className="text-justify mx-10 mt-5  tracking-widest leading-10 text-green-100 font-bold text-4xl ">
                             Vision
                         </p>
-                        <p className="text-justify mx-10  tracking-widest leading-10 text-black ">
+                        <p className="text-justify mx-10  tracking-widest leading-10 mt-6 text-white text-l  ">
                             The premier university in historic Cavite globally recognized for excellence in character development, academics, research, innovation and sustainable community engagement.
                         </p>
                         <br />
-                        <p className="text-justify mx-10  tracking-widest leading-10 text-black font-bold text-xl">
+                        <p className="text-justify mx-10 mt-10  tracking-widest leading-10 text-green-100 font-bold text-4xl">
                             Mission
                         </p>
-                        <p className="text-justify mx-10  tracking-widest leading-10 text-black ">
+                        <p className="text-justify mx-10  tracking-widest leading-10 mt-6 text-white text-l ">
                             Cavite State University shall provide excellent, equitable and relevant educational opportunities in the arts, sciences and technology through quality instruction and responsive research and development activities. It shall produce professional, skilled and morally upright individuals for global competitiveness.
                         </p>
                     </div>
@@ -91,8 +92,8 @@ export default function Login() {
                     component="form"
                     sx={{ 
                         '& > :not(style)': { m: 0, width: '100%' },
-                        maxWidth: '400px',         // Set a max-width for the login box
-                        minHeight: '550px',        // Increase the height (you can adjust the value)
+                        maxWidth: '1000px',         // Set a max-width for the login box
+                        minHeight: '700px',        // Increase the height (you can adjust the value)
                         padding: '40px',           // Add padding to give more space inside the form
                         margin: '10px',
                         display: 'flex',
@@ -111,19 +112,27 @@ export default function Login() {
                         <img 
                             src="/images/Cvsu-logo.png" 
                             alt="CvSU Logo" 
-                            className="w-200 h-auto"  // You can adjust the size of the logo here
+                            className="w-200 h-auto" 
                         />
                     </div>
                     <div className=''>
                     <TextField
-                        className="bg-white mb-8 mt-8"
+                        className="bg-white mb-8 mt-8 text-3xl"
                         id="username"
-                        label="Username"
+                        label="Email"
                         variant="outlined"
                         fullWidth
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)} 
-                    />
+                        InputProps={{
+                            classes: {
+                              input: "text-2xl", // Adjusts the input text size
+                            },
+                          }}
+                          InputLabelProps={{
+                            className: "text-xl", // Adjusts the label text size
+                          }}
+                        />
                     </div>
                     
                     <div>
@@ -136,8 +145,18 @@ export default function Login() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} 
-                    />
+                        InputProps={{
+                            classes: {
+                              input: "text-2xl", // Adjusts the input text size
+                            },
+                          }}
+                          InputLabelProps={{
+                            className: "text-xl", // Adjusts the label text size
+                          }}
+                        />
                     </div>
+
+                    
                     
 
                     {error && (
@@ -148,14 +167,26 @@ export default function Login() {
                     <div>
                     <Stack spacing={2} direction="row" justifyContent="center" className="mt-16">
                         <Button 
-                            className="rounded-full px-8 text-gray-500 hover:bg-green-600 hover:text-green-200 border-green-700 hover:border-green-500 w-[150px] h-[40px]"
+                            className="rounded-full px-8 text-gray-500 hover:bg-green-600 hover:text-green-200 border-green-700 hover:border-green-500 w-[200px] h-[60px]"
                             variant="outlined"
                             type="submit"
                         >
                             Login
                         </Button>
                     </Stack>
+
+                    <div className='mt-6 text-slate-200'>
+                        ____________________________________________
                     </div>
+
+                    <button className='text-blue-500 hover:underline cursor-pointer mt-10'>
+                        Forgot password?
+                    </button>
+
+                    
+                    </div>
+
+                    
                     
                 </Box>
             </div>

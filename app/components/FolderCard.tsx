@@ -43,23 +43,7 @@ function FolderList() {
     { id: '2', name: 'Folder 2', createdDate: '2023-02-15', modifiedBy: 'User B', owner: 'User B' },
     { id: '3', name: 'Folder 3', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User C' },
     { id: '4', name: 'Folder 4', createdDate: '2023-03-10', modifiedBy: 'User D', owner: 'User D' },
-    { id: '5', name: 'Folder 5', createdDate: '2023-03-10', modifiedBy: 'User E', owner: 'User E' },
-    { id: '6', name: 'Folder 6', createdDate: '2023-03-10', modifiedBy: 'User F', owner: 'User F' },
-    { id: '6', name: 'Folder 7', createdDate: '2023-03-10', modifiedBy: 'User G', owner: 'User G' },
-    { id: '6', name: 'Folder 8', createdDate: '2023-03-10', modifiedBy: 'User H', owner: 'User H' },
-    { id: '6', name: 'Folder 9', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User I' },
-    { id: '6', name: 'Folder 10', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User J' },
-    { id: '6', name: 'Folder 11', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User K' },
-    { id: '6', name: 'Folder 12', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User L' },
-    { id: '6', name: 'Folder 13', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User M' },
-    { id: '6', name: 'Folder 14', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User N' },
-    { id: '6', name: 'Folder 15', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User O' },
-    { id: '6', name: 'Folder 16', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User P' },
-    { id: '6', name: 'Folder 17', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User Q' },
-    { id: '6', name: 'Folder 18', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User R' },
-    { id: '6', name: 'Folder 19', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User S' },
-    { id: '6', name: 'Folder 20', createdDate: '2023-03-10', modifiedBy: 'User C', owner: 'User T' },
-    
+
   ]);
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
