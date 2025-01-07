@@ -21,6 +21,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -211,6 +212,21 @@ function Sidebar() {
                     sx={{ color: '#FFB000' }}/>
                   </ListItemIcon>
                   <ListItemText primary={"Files"}
+                  sx={{ color: '#FFB000' }}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
+            <Divider 
+            sx={{ color: '4C585B' }}/>
+
+            <ListItem disablePadding>
+              <a href='/approval'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <FactCheckIcon
+                    sx={{ color: '#FFB000' }}/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Approval"}
                   sx={{ color: '#FFB000' }}/>
                 </ListItemButton>
               </a>
