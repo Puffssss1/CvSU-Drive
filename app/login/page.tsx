@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/loading';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 
@@ -17,6 +21,13 @@ export default function Login() {
     const { status: sessionStatus } = useSession(); 
     const router = useRouter();
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
     useEffect(() => {
         if (sessionStatus === "authenticated") {
             router.replace("/");
@@ -25,23 +36,48 @@ export default function Login() {
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+    
+        // Basic validation
+        if (!userName) {
+            setError("Email is required.");
+            return;
+        }
+    
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(userName)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+    
+        if (!password) {
+            setError("Password is required.");
+            return;
+        }
+    
+        if (password.length < 6) {
+            setError("Password must be at least 6 characters long.");
+            return;
+        }
+    
+        // If validation passes, clear error and proceed with login
+        setError("");
+    
         try {
             const res = await signIn("credentials", {
                 email: userName,
                 password: password,
                 redirect: false,
             });
-
+    
             if (res?.error) {
                 setError("Invalid Credentials");
                 return;
             }
-
+    
             router.replace("/");
         } catch (error) {
             console.error("Error signing in:", error);
-            setError("Invalid Credentials");
+            setError("An error occurred. Please try again.");
         }
     };
 
@@ -123,7 +159,9 @@ export default function Login() {
                         variant="outlined"
                         fullWidth
                         value={userName}
-                        onChange={(e) => setUserName(e.target.value)} 
+                        onChange={(e) => setUserName(e.target.value)}
+                        error={!!error && error.includes("Email")}
+                        helperText={error && error.includes("Email") ? error : ""} 
                         InputProps={{
                             classes: {
                               input: "text-2xl", // Adjusts the input text size
@@ -142,18 +180,30 @@ export default function Login() {
                         label="Password"
                         variant="outlined"
                         fullWidth
-                        type="password"
+                        type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password'
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)} 
+                        onChange={(e) => setPassword(e.target.value)}
+                        error={!!error && error.includes("Password")}
                         InputProps={{
                             classes: {
-                              input: "text-2xl", // Adjusts the input text size
+                                input: "text-2xl", // Adjusts the input text size
                             },
-                          }}
-                          InputLabelProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                        InputLabelProps={{
                             className: "text-xl", // Adjusts the label text size
-                          }}
-                        />
+                        }}
+                    />
                     </div>
 
                     
