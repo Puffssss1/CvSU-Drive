@@ -15,7 +15,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import { SelectChangeEvent } from '@mui/material'; // Import SelectChangeEvent
 interface User {
   _id: string;
   name: string;
@@ -24,6 +28,9 @@ interface User {
   role: string;
   contact: string;
 }
+
+const departments = ['Department of Information Technology', 'Department of Education'];  // departments
+const roles = ['Faculty', 'Chairperson', 'Admin']; // roles
 
 function AccountsTable() {
   const [users, setUsers] = React.useState<User[]>([]);
@@ -53,8 +60,28 @@ function AccountsTable() {
 
   const handleEditSubmit = async () => {
     if (editUser) {
+          // Name validation: should not contain numbers or special characters
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(editUser.name)) {
+      alert('Name must only contain letters and spaces.');
+      return;
+    }
+
+    // Email validation (basic regex for email)
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(editUser.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+  // Validate contact number
+  if (!editUser?.contact || !/^09\d{9}$/.test(editUser.contact)) {
+    alert('Contact must be a valid 11-digit phone number starting with 09.');
+    return false;
+  }
+
       try {
-        const response = await fetch(`http://localhost:3000/api/user/${editUser._id}`, {
+        const response = await fetch(`/api/editUsers/?id=${editUser._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(editUser),
@@ -83,16 +110,15 @@ function AccountsTable() {
 
   const handleDeleteConfirm = async () => {
     if (deleteUserId) {
-
-    console.log(deleteUserId);
       try {
-        const response = await fetch(`/api/user/${deleteUserId}`, {
+        const response = await fetch(`/api/editUsers/?id=${deleteUserId}`, {
           method: 'DELETE',
         });
 
         if (response.ok) {
           setUsers((prevUsers) => prevUsers.filter((user) => user._id !== deleteUserId));
           setDeleteUserId(null);
+          alert("Successfully deleted the account.");
         } else {
           alert('Failed to delete user.');
         }
@@ -107,10 +133,12 @@ function AccountsTable() {
     setDeleteUserId(null);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }> | SelectChangeEvent<string>
+  ) => {
     const { name, value } = e.target;
     if (editUser) {
-      setEditUser({ ...editUser, [name]: value });
+      setEditUser({ ...editUser, [name as string]: value });
     }
   };
 
@@ -159,7 +187,20 @@ function AccountsTable() {
 
       {/* Edit Dialog */}
       {editUser && (
-        <Dialog open={!!editUser} onClose={() => setEditUser(null)}>
+        <Dialog
+          open={!!editUser}
+          onClose={() => setEditUser(null)}
+          sx={{
+            '& .MuiDialog-paper': {
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '400px', 
+              maxWidth: '90vw',
+            },
+          }}
+        >
           <DialogTitle>Edit User</DialogTitle>
           <DialogContent>
             <TextField
@@ -170,14 +211,21 @@ function AccountsTable() {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Department"
-              name="department"
-              value={editUser.department}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Department</InputLabel>
+              <Select
+                label="Department"
+                name="department"
+                value={editUser.department}
+                onChange={handleInputChange}
+              >
+                {departments.map((department) => (
+                  <MenuItem key={department} value={department}>
+                    {department}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               label="Email"
               name="email"
@@ -194,14 +242,21 @@ function AccountsTable() {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Role"
-              name="role"
-              value={editUser.role}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Role</InputLabel>
+              <Select
+                label="Role"
+                name="role"
+                value={editUser.role}
+                onChange={handleInputChange}
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role} value={role}>
+                    {role}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setEditUser(null)}>Cancel</Button>
