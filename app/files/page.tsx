@@ -9,9 +9,12 @@ function Files() {
       <div className="sticky top-0 z-50">
         <Header/>
       </div>
-      <FolderCard />
 
-      <div className='ml-56 mb-12'>
+      <div className='justify-items-center mt-3'>
+        <FolderCard />
+      </div>
+    
+      <div className='fixed bottom-10 right-10 z-50s'>
         <UploadFile />
       </div>
     </div>

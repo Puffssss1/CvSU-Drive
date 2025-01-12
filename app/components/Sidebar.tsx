@@ -251,7 +251,7 @@ function Sidebar() {
           sx={{ color: '4C585B' }}/>
           
           {/* Upload */}
-          <List sx={{ flexGrow: 1 }}>
+          {/* <List sx={{ flexGrow: 1 }}>
             <ListItem disablePadding>
                 <ListItemButton onClick={HandleOpenCreateModal}>
                   <ListItemIcon>
@@ -260,7 +260,7 @@ function Sidebar() {
                   <ListItemText primary={"Create New"}/>
                 </ListItemButton>
             </ListItem>
-          </List>
+          </List> */}
         </Box>
       );
 
