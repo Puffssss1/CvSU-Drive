@@ -17,6 +17,9 @@ export default async function Home() {
         <Header/>
       </div>
       <div className='justify-items-center mt-3'>
+        <div className='w-screen justify-items-center'>
+          <SearchBar/>
+        </div>
         <div>
           <FolderCard />
         </div>

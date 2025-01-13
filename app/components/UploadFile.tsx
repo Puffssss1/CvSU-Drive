@@ -3,6 +3,10 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useSession } from 'next-auth/react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
 
 const FileUpload = () => {
   const {data:session} = useSession();
@@ -89,20 +93,49 @@ function generateFileReference(): string {
     setUploading(false);
   };
 
+  const [open, setOpenModal] = React.useState(false);
+  const openModal = () => setOpenModal(true);
+  const closeModal = () => setOpenModal(false);
+
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Upload'}
-      </button>
-      {uploadedFileUrl && (
-        <div>
-          <p>File uploaded successfully!</p>
-          <a href={uploadedFileUrl} target="_blank" rel="noopener noreferrer">
-            View File
-          </a>
-        </div>
-      )}
+      <Button onClick={openModal} variant='contained' className='bg-[#004225] text-[#FFB000] text-base'>Upload</Button>
+      <Modal
+        open={open}
+        onClose={closeModal}
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 500,
+          bgcolor: 'background.paper',
+          //border: '2px solid #000',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 3,
+        }}>
+          <button onClick={closeModal} className='absolute top-2 right-2'><CloseIcon/></button>
+          <div className='justify-items-center gap-3  mt-4'>
+            <div  className='flex flex-row justify-between align-middle'>
+              <input type="file" onChange={handleFileChange}/>
+              <Button onClick={handleUpload} disabled={uploading} variant='contained'  className='bg-[#004225] text-[#FFB000] text-base'>
+                {uploading ? 'Uploading...' : 'Upload'}
+              </Button>
+            </div>
+            {uploadedFileUrl && (
+              <div className='mt-3 justify-items-center'>
+                <p>File uploaded successfully!</p>
+                <a href={uploadedFileUrl} target="_blank" rel="noopener noreferrer">
+                  View File
+                </a>
+              </div>
+           )}
+          </div>
+        </Box>
+      </Modal>
+      
     </div>
   );
 };
