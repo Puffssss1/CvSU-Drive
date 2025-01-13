@@ -52,13 +52,13 @@ function ApprovalTable() {
               {/* actions whether to revise approve or decline */}
               <TableCell align="left">
                 <div className='flex flex-row justify-between gap-0'>
-                    <button type='button' className='text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>
+                    <button type='button' className='text-white bg-green-800 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-800 dark:hover:bg-green-700 dark:focus:ring-green-800'>
                         approve
                     </button>
-                    <button type='button' className='text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-400 dark:hover:bg-blue-500 dark:focus:ring-blue-500'>
+                    <button type='button' className='text-white bg-blue-800 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-400 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-800 dark:hover:bg-blue-700 dark:focus:ring-blue-500'>
                         revision
                     </button>
-                    <button type='button' className='text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-400 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-400 dark:hover:bg-red-500 dark:focus:ring-red-500'>
+                    <button type='button' className='text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-400 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-800 dark:hover:bg-red-700 dark:focus:ring-red-500'>
                         decline
                     </button>
                 </div>

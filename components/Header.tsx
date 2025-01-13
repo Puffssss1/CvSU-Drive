@@ -10,12 +10,19 @@ function Header() {
   const {data:session} = useSession();
 
   return (
-    <div className='w-full h-full bg-[#004225] pb-1 pt-1 px-3'>
+    <div className='w-full h-full bg-[#6A1E9C] pb-1 pt-1 px-3'>
         <div className='flex flex-row w-full justify-between gap-40 p-5 items-center sm:gap-8'>
             <div className='flex-shrink-0'>
             <Sidebar/>
             </div>
-            <h1 className="text-[#FFB000] font-light text-center text-sm sm:text-2xl mt-3 sm:mt-0 max-w-[250px] sm:max-w-full mx-auto break-words">Welcome to CvSU Drive</h1>
+            {/* <div>
+            <img 
+                            src="/images/CVSU LOGO.png" 
+              
+                            alt="CvSU Logo" 
+                            className="w-10 h-auto" 
+                        />
+            </div> */}
             <div className='mt-3 sm:mt-0'>
                 {/* Small screen only */}
                 <div className="flex items-center gap-2 sm:hidden">
@@ -27,6 +34,7 @@ function Header() {
                 
                 {/* Larger Screens: Full Profile Info */}
                 <div className='hidden sm:flex items-center gap-0'>
+                  <div className='hover:bg-slate-400 hover:bg-opacity-20 p-1 rounded-lg'>
                   <a href="/profile" className="text-right text-xs sm:text-base flex items-center gap-2 text-[#FFCF9D] text-opacity-80">
                     <ul className='m-0 p-0'>
                       {session?.user ? (
@@ -40,6 +48,8 @@ function Header() {
                     </ul>
                     <HiOutlineUserCircle className='text-4xl text-[#FFB000]' />
                   </a>
+                  </div>
+                  
                   <LogoutBtn />
                 </div>
             </div>

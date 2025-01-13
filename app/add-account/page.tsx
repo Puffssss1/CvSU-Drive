@@ -16,7 +16,10 @@ const type = [
 
 const department = [
     { value: "Department of Information Technology", label: "Department of Information Technology" },
-    { value: "Department of Education", label: "Department of Education" },
+    { value: "Teachers Education Department", label: "Department of Education" },
+    { value: "Department of Arts & Sciences", label: "Department of Arts & Sciences" },
+    { value: "Department of Management", label: "Department of Management" },
+    
 ];
 
 const sex = [
@@ -127,13 +130,13 @@ function AddAccount() {
             </div>
             <Box
                 component="form"
-                className="flex flex-col items-center p-6 overflow-hidden"
+                className="flex flex-col items-center p-6 overflow-hidden  "
                 noValidate
                 autoComplete="off"
                 onSubmit={handleSubmit}
             >
                 <div>
-                    <h1 className="font-bold text-3xl mb-4 px-6">| ADD ACCOUNT</h1>
+                    <h1 className="font-bold text-6xl mb-8 px-6 mt-2 font-sans text-[#FFB000]">ADD ACCOUNT</h1>
                 </div>
 
                 {[
@@ -169,7 +172,7 @@ function AddAccount() {
                     </div>
                 ))}
 
-                <div className="mb-4 w-full max-w-xs">
+                <div className="mb-10 w-full max-w-xs">
                     <TextField
                         label="Birthday"
                         type="date"
@@ -187,7 +190,7 @@ function AddAccount() {
                 </div>
 
                 <Stack spacing={2} direction="row">
-                    <Button type="submit" variant="contained">
+                    <Button type="submit" variant="contained" className="text-[#FFB000] bg-[#21094E] hover:bg-[#511281] rounded-full text-sm p-4">
                         Create Account
                     </Button>
                 </Stack>

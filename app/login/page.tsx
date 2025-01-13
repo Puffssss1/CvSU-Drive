@@ -102,25 +102,30 @@ export default function Login() {
                     className="rounded-lg shadow-2xl ring-1 ring-green-800 backdrop-blur-sm bg-green-900 bg-opacity-30"
                 > 
                     <div className="text-green-900">
-                        {/* <div className="flex mx-10 mt-10 m-4">
-                            <h2 className="text-3xl font-bold text-black">Welcome to</h2>
-                            <h2 className="text-3xl font-bold text-black ml-2">CvSU Drive - Silang Campus</h2>
-                        </div>  */}
-                        <br />
-                        <p className="text-justify mx-10 mt-5  tracking-widest leading-10 text-green-100 font-bold text-4xl ">
-                            Vision
-                        </p>
-                        <p className="text-justify mx-10  tracking-widest leading-10 mt-6 text-white text-l  ">
-                            The premier university in historic Cavite globally recognized for excellence in character development, academics, research, innovation and sustainable community engagement.
-                        </p>
-                        <br />
-                        <p className="text-justify mx-10 mt-10  tracking-widest leading-10 text-green-100 font-bold text-4xl">
-                            Mission
-                        </p>
-                        <p className="text-justify mx-10  tracking-widest leading-10 mt-6 text-white text-l ">
-                            Cavite State University shall provide excellent, equitable and relevant educational opportunities in the arts, sciences and technology through quality instruction and responsive research and development activities. It shall produce professional, skilled and morally upright individuals for global competitiveness.
-                        </p>
-                    </div>
+    {/* <div className="flex mx-10 mt-10 m-4">
+        <h2 className="text-3xl font-bold text-black">Welcome to</h2>
+        <h2 className="text-3xl font-bold text-black ml-2">CvSU Drive - Silang Campus</h2>
+    </div> */}
+    <br />
+    
+    {/* Vision Section */}
+    <p className="text-justify mx-5 md:mx-10 mt-10 tracking-widest leading-10 text-green-100 font-bold text-3xl sm:text-4xl lg:text-5xl">
+        Vision
+    </p>
+    <p className="text-justify mx-5 md:mx-10 mt-6 tracking-widest leading-10 text-white text-base sm:text-lg lg:text-md">
+        The premier university in historic Cavite globally recognized for excellence in character development, academics, research, innovation, and sustainable community engagement.
+    </p>
+    <br />
+
+    {/* Mission Section */}
+    <p className="text-justify mx-5 md:mx-10 mt-10 tracking-widest leading-10 text-green-100 font-bold text-3xl sm:text-4xl lg:text-5xl">
+        Mission
+    </p>
+    <p className="text-justify mx-5 md:mx-10 mt-6 tracking-widest leading-10 text-white text-base sm:text-lg lg:text-md">
+        Cavite State University shall provide excellent, equitable, and relevant educational opportunities in the arts, sciences, and technology through quality instruction and responsive research and development activities. It shall produce professional, skilled, and morally upright individuals for global competitiveness.
+    </p>
+</div>
+
                 </Box>
 
                 {/* Login Form Box */}
