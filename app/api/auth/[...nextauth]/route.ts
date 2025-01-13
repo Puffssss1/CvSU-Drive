@@ -79,9 +79,9 @@ export const authOptions: NextAuthOptions = {
                     ...session.user,
                     id: token.id,
                     role: token.role,
-                    department: token.department, // Map department
-                    contact: token.contact,       // Map contact
-                    sex: token.sex,               // Map sex
+                    department: token.department, 
+                    contact: token.contact,       
+                    sex: token.sex,               
                 };
             }
             return session;
