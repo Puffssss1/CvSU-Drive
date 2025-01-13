@@ -160,46 +160,45 @@ function FolderList() {
           </ToggleButtonGroup>
         </Box>
 
-      {layout === 'grid' ? (
-      <div className='ml-56'>
-        <Box display="flex" flexWrap="wrap" gap={2}>
-    {folders.map((folder) => (
-      <Box key={folder.id} width="300px" mb={2} position="relative">
-        <Card
-          variant="outlined"
-          sx={{
-            borderRadius: '12px',
-            boxShadow: 3,
-            cursor: 'pointer',
-            position: 'relative',
-            '&:hover': {
-              transform: 'translateY(-5px)',
-              boxShadow: 6,
-            },
-          }}
-        >
-          {/* Three-dotted menu in the upper-right corner */}
-          <IconButton
-              onClick={(e) => handleClick(e, folder.id)}
-              size="small"
-              sx={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-              }}
-          >
-  <MoreVertIcon />
-</IconButton>
-          <Menu
-            anchorEl={anchorEl[folder.id]}
-            open={Boolean(anchorEl[folder.id])}
-            onClose={() => handleClose(folder.id)}
-          >
-            <MenuItem onClick={() => openRenameDialog(folder.id, folder.name)}>
-              Rename Folder
-            </MenuItem>
-            <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
-          </Menu>
+        {layout === 'grid' ? (
+          <Box display="flex" flexWrap="wrap" gap={2}>
+            {filteredFolders.map((folder) => (
+              <Box key={folder.id} width="300px" mb={2} position="relative">
+                <Card
+                  variant="outlined"
+                  sx={{
+                    borderRadius: '12px',
+                    boxShadow: 3,
+                    cursor: 'pointer',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'translateY(-5px)',
+                      boxShadow: 6,
+                    },
+                  }}
+                  onClick={() => handleFolderClick(folder.file_url)}
+                >
+                  <IconButton
+                    onClick={(e) => handleClick(e, folder.file_url)}
+                    size="small"
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                    }}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl[folder.id]}
+                    open={Boolean(anchorEl[folder.id])}
+                    onClose={() => handleClose(folder.id)}
+                  >
+                    <MenuItem onClick={() => openRenameDialog(folder.id, folder.file_name)}>
+                      Rename Folder
+                    </MenuItem>
+                    <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
+                  </Menu>
 
                   <Box
                     sx={{
