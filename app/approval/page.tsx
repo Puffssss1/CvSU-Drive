@@ -10,7 +10,7 @@ function Approval() {
             <Header/>
         </div> 
 
-        <div className='flex-grow pt-24 overflow-x-auto overflow-y-auto overflow-y-hidden overflow-hidden'>
+        <div className='flex-grow pt-24 overflow-x-auto overflow-y-auto overflow-hidden'>
             <ApprovalTable/>
         </div>
 

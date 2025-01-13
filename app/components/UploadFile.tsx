@@ -7,8 +7,21 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
+
 
 const FileUpload = () => {
+
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
+
   const {data:session} = useSession();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -97,9 +110,11 @@ function generateFileReference(): string {
   const openModal = () => setOpenModal(true);
   const closeModal = () => setOpenModal(false);
 
+
+
   return (
     <div>
-      <Button onClick={openModal} variant='contained' className='bg-[#004225] text-[#FFB000] text-base'>Upload</Button>
+      <Button onClick={openModal} variant='contained' className='bg-[#6A1E9C] text-[#FFB000] text-base hover:bg-[#511281] rounded-xl px-8 py-4'>Upload</Button>
       <Modal
         open={open}
         onClose={closeModal}
@@ -120,10 +135,67 @@ function generateFileReference(): string {
           <div className='justify-items-center gap-3  mt-4'>
             <div  className='flex flex-row justify-between align-middle'>
               <input type="file" onChange={handleFileChange}/>
-              <Button onClick={handleUpload} disabled={uploading} variant='contained'  className='bg-[#004225] text-[#FFB000] text-base'>
+              <Button onClick={handleUpload} disabled={uploading} variant='contained'  className='bg-[#6A1E9C] text-[#FFB000] text-base rounded-lg'>
                 {uploading ? 'Uploading...' : 'Upload'}
               </Button>
+
+              
+              
             </div>
+
+            <div>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="Dept">Department</InputLabel>
+                <Select
+                  labelId="Department"
+                  id="Dept"
+                  value={age}
+                  onChange={handleChange}
+                  label="Department"
+                >
+                  <MenuItem value="">
+                  </MenuItem>
+                  <MenuItem value={'TED'}>Teachers Education Department</MenuItem>
+                  <MenuItem value={'DAS'}>Department of Arts and Sciences</MenuItem>
+                  <MenuItem value={'DIT'}>Department of Information Technology</MenuItem>
+                  <MenuItem value={'DOM'}>Department of Management</MenuItem>
+                </Select>
+              </FormControl>
+              
+            </div>
+
+            <div className='justify-center flex'>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="Type">Type of File</InputLabel>
+                <Select
+                  labelId="Type"
+                  id="Type"
+                  value={age}
+                  onChange={handleChange}
+                  label="Type"
+                >
+                  <MenuItem value="">
+                  </MenuItem>
+                  <MenuItem value={'COG'}>Certificate of Grade</MenuItem>
+                  <MenuItem value={'IPCR'}>Individual Performance Commitment Record</MenuItem>
+                  <MenuItem value={'OPCR'}>OPCR</MenuItem>
+                  <MenuItem value={'Memorandum'}>Memorandum</MenuItem>
+                  
+                  <MenuItem value={'Minutes of Meeting'}>Minutes of the Meeting</MenuItem>
+                  <MenuItem value={'Board Resolution'}>Board Resolution</MenuItem>
+                  <MenuItem value={'Faculty Schedule'}>Faculty Schedule</MenuItem>
+                  <MenuItem value={'Faculty Workload'}>Faculty Workload</MenuItem>
+
+                  <MenuItem value={'AL'}>Approved Letter</MenuItem>
+                  <MenuItem value={'Accomplishment Report'}>Accomplishment Report</MenuItem>
+                  <MenuItem value={'Annual Report'}>Annual Report</MenuItem>
+                  <MenuItem value={'Student Evaluation of Teacher Result'}>Student Evaluation of Teacher Result</MenuItem>
+                  <MenuItem value={'Class Observation'}>Class Observation</MenuItem>
+                </Select>
+              </FormControl>
+              
+            </div>
+
             {uploadedFileUrl && (
               <div className='mt-3 justify-items-center'>
                 <p>File uploaded successfully!</p>
@@ -141,3 +213,4 @@ function generateFileReference(): string {
 };
 
 export default FileUpload;
+

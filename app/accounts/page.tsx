@@ -24,7 +24,7 @@ function Accounts() {
       </div>
 
       <div className='fixed bottom-10 right-10 z-50 '>
-        <button className='py-3 px-5 bg-[#004225] text-[#FFB000] rounded-3xl mt-4 '
+        <button className='py-3 px-5 bg-[#6A1E9C] text-[#FFB000] rounded-3xl mt-4 hover:bg-purple-700'
           onClick={handleRedirect}
           >
             Add Account
