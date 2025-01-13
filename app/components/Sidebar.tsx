@@ -134,7 +134,7 @@ function Sidebar() {
           role="presentation"
           onClick={toggleDrawer(anchor, false)}
           onKeyDown={toggleDrawer(anchor, false)}
-        >
+        > 
           <List sx={{ flexGrow: 1 }}>
             <ListItem disablePadding>
               <a href="/">
@@ -307,7 +307,7 @@ function Sidebar() {
               width: 200,
               marginTop: '95px', // Matches the header height
               boxSizing: 'border-box',
-              backgroundColor: "#004225"
+              backgroundColor: "#6A1E9C"
             },
           }}
         >
@@ -320,7 +320,7 @@ function Sidebar() {
         anchor="left"
         open={state.left}
         onClose={toggleDrawer('left', false)}
-        sx={{ '& .MuiDrawer-paper': { backgroundColor: "#004225"} }}
+        sx={{ '& .MuiDrawer-paper': { backgroundColor: "#6A1E9C"} }}
       >
         {list('left')}
       </Drawer>

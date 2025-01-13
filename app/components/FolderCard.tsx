@@ -93,7 +93,7 @@ function FolderList() {
   return (
     <Box sx={{ padding: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h5">Folders</Typography>
+        <Typography variant="h5"></Typography>
         <ToggleButtonGroup
           value={layout}
           exclusive
@@ -114,7 +114,7 @@ function FolderList() {
         <Box display="flex" flexWrap="wrap" gap={2}>
     {folders.map((folder) => (
       <Box key={folder.id} width="300px" mb={2} position="relative">
-        <Card
+        <Card className='bg-zinc-100'
           variant="outlined"
           sx={{
             borderRadius: '12px',

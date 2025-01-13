@@ -170,12 +170,12 @@ function AccountsTable() {
                 <TableCell>{user.contact}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
-                  <button onClick={() => handleEditClick(user)} className="hover:-translate-y-1 ease-linear">
+                  <button onClick={() => handleEditClick(user)} className="hover:-translate-y-1 transition-transform duration-100 ease-in-out">
                     <EditIcon />
                   </button>
                 </TableCell>
                 <TableCell>
-                  <button onClick={() => handleDeleteClick(user._id)} className="hover:-translate-y-1 ease-linear">
+                  <button onClick={() => handleDeleteClick(user._id)} className="hover:-translate-y-1 transition-transform duration-100 ease-in-out">
                     <DeleteIcon />
                   </button>
                 </TableCell>
@@ -271,8 +271,8 @@ function AccountsTable() {
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogContent>Are you sure you want to delete this user?</DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteCancel}>Cancel</Button>
-            <Button onClick={handleDeleteConfirm} variant="contained" color="error">
+            <Button onClick={handleDeleteCancel} variant="contained" className='hover:bg-blue-800'>Cancel</Button>
+            <Button onClick={handleDeleteConfirm} variant="contained" color="error" className='hover:bg-red-800'>
               Delete
             </Button>
           </DialogActions>
