@@ -16,10 +16,15 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 const FileUpload = () => {
 
-  const [age, setAge] = React.useState('');
+  const [category, setCategory] = React.useState('');
+  const [department, setDepartment] = React.useState('');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const handleCategoryChange = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
+  };
+
+  const handleDepartmentChange = (event: SelectChangeEvent) => {
+    setDepartment(event.target.value);
   };
 
   const {data:session} = useSession();
@@ -50,7 +55,6 @@ function generateFileReference(): string {
 
   const handleUpload = async () => {
     if (!file) return;
-
     setUploading(true);
 
     const fileName = `documents/${Date.now()}_${file.name}`; // Add a timestamp for uniqueness
@@ -79,7 +83,6 @@ function generateFileReference(): string {
     const publicUrl = publicUrlData.publicUrl;
 
     console.log('Public URL:', publicUrl);
-    console.log(fileReference)
 
     // Save file metadata to the database
     const { data: metadataData, error: metadataError } = await supabase
@@ -91,16 +94,18 @@ function generateFileReference(): string {
             file_url: publicUrl,
             isApproved: false,
             referenceId: fileReference,
+            Category: category,
         },
       ]);
 
+      console.log(metadataData)
+      
     if (metadataError) {
       console.error('Error saving metadata:', metadataError);
       setUploading(false);
       return;
     }
 
-    console.log('Metadata inserted:', metadataData);
 
     setUploadedFileUrl(publicUrl);
     setUploading(false);
@@ -149,8 +154,8 @@ function generateFileReference(): string {
                 <Select
                   labelId="Department"
                   id="Dept"
-                  value={age}
-                  onChange={handleChange}
+                  value={department}
+                  onChange={handleDepartmentChange}
                   label="Department"
                 >
                   <MenuItem value="">
@@ -170,8 +175,8 @@ function generateFileReference(): string {
                 <Select
                   labelId="Type"
                   id="Type"
-                  value={age}
-                  onChange={handleChange}
+                  value={category}
+                  onChange={handleCategoryChange}
                   label="Type"
                 >
                   <MenuItem value="">
