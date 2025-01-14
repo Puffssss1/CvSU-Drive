@@ -186,7 +186,7 @@ const FolderList = () => {
 
       {/* Pagination Controls */}
       <Box display="flex" justifyContent="center" alignItems="center" mt={3}>
-        <Button variant="contained" disabled={currentPage === 1} onClick={handlePreviousPage}>
+        <Button variant="contained" disabled={currentPage === 1} onClick={handlePreviousPage} className='bg-[#6A1E9C] rounded-sm'>
           Previous
         </Button>
         <Typography variant="body1" mx={2}>
@@ -196,6 +196,7 @@ const FolderList = () => {
           variant="contained"
           disabled={currentPage * itemsPerPage >= filteredFolders.length}
           onClick={handleNextPage}
+          className='bg-[#6A1E9C] rounded-sm'
         >
           Next
         </Button>
