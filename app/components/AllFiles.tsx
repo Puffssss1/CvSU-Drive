@@ -31,8 +31,8 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import Header from '@/components/Header'
-import UploadFile from '../components/UploadFile';
+import Header from '@/components/Header';
+import UploadFile from '@/app/components/UploadFile';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
@@ -46,7 +46,7 @@ interface Folder {
   Category: string;
   file_url: string;
   uploaded_at: string;
-  uploaded_by: string; // Assuming this is a string representing the user or uploader
+  uploaded_by: string;
 }
 
 interface categories {
@@ -55,7 +55,7 @@ interface categories {
 }
 
 function FolderList() {
-  const { data: session } = useSession(); // Accessing logged-in user session
+  const { data: session } = useSession();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -63,46 +63,39 @@ function FolderList() {
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [renameFolderId, setRenameFolderId] = useState<string | null>(null);
   const [newFolderName, setNewFolderName] = useState('');
-  
   const [isMounted, setIsMounted] = useState(false);
+  const [category, setCategory] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const [category, setCategory] = useState<string | null>(null);
-
-  const pathname = usePathname(); // 
-
-const segments = pathname.split('/').filter(Boolean); // Remove empty segments
-const lastTwoSegments = segments[segments.length - 2];
-
+  const pathname = usePathname();
+  const segments = pathname.split('/').filter(Boolean);
+  const lastTwoSegments = segments[segments.length - 2];
 
   useEffect(() => {
     const fetchCategoryAndFolders = async () => {
-      const pathId = lastTwoSegments; // Assuming the path contains the ID
+      const pathId = lastTwoSegments;
       if (!pathId) return;
-      let catName: string |  null = null;
+      let catName: string | null = null;
 
-      // Fetch category based on path ID
       const { data: categoryData, error: categoryError } = await supabase
         .from('categories')
         .select('id, name')
-        .eq('id', pathId)
-  
-        if (categoryData && categoryData.length > 0) {
-          catName = categoryData[0]?.name; // Store the 'name' in the variable
-          console.log(catName); // You can use categoryName here
+        .eq('id', pathId);
+
+      if (categoryData && categoryData.length > 0) {
+        catName = categoryData[0]?.name;
       } else {
-          console.log('No category found or error occurred:', categoryError);
+        console.log('No category found or error occurred:', categoryError);
       }
       setCategory(catName);
-  
-      // Fetch folders and filter by matching category
+
       const { data: folderData, error: folderError } = await supabase
         .from('file_metadata')
         .select('id, file_name, Category, file_url, uploaded_at, uploaded_by');
-  
+
       if (folderError) {
         console.error('Error fetching folders:', folderError);
       } else {
@@ -112,11 +105,9 @@ const lastTwoSegments = segments[segments.length - 2];
         setFolders(filtered);
       }
     };
-    
-  
+
     fetchCategoryAndFolders();
-  }, [pathname]); // Re-fetch when the path ID changes
-  
+  }, [pathname]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>, folderId: string) => {
     setAnchorEl((prev) => ({ ...prev, [folderId]: event.currentTarget }));
@@ -165,23 +156,19 @@ const lastTwoSegments = segments[segments.length - 2];
   };
 
   const handleFolderClick = (folderId: string) => {
-    // window.open(folderId, '_blank')
     router?.push(`/${folderId}`);
-    // console.log(pushToHere);
   };
 
   if (!isMounted) {
     return null;
   }
-  
 
-  // Filter the folders based on the logged-in user session (uploaded_by matches session.user.email or session.user.id)
   const filteredFolders = folders.filter(folder => folder.uploaded_by === session?.user?.name);
 
   return (
-      <>
+    <>
       <div className="sticky top-0 z-50">
-        <Header/>
+        <Header />
       </div>
 
       <div className='ml-[220px]'>
@@ -203,7 +190,11 @@ const lastTwoSegments = segments[segments.length - 2];
             </ToggleButtonGroup>
           </Box>
 
-          {layout === 'grid' ? (
+          {filteredFolders.length === 0 ? ( // Added this condition
+            <Typography variant="h6" color="textSecondary" align="center">
+              No files available
+            </Typography>
+          ) : layout === 'grid' ? (
             <Box display="flex" flexWrap="wrap" gap={2}>
               {filteredFolders.map((folder) => (
                 <Box key={folder.id} width="300px" mb={2} position="relative">
@@ -252,13 +243,7 @@ const lastTwoSegments = segments[segments.length - 2];
                         alignItems: 'center',
                         color: '#e0e0e0',
                       }}
-                    >
-                      {/* <img
-                        src={`https://via.placeholder.com/150?text=${folder.file_name}`}
-                        alt={`${folder.file_name} Thumbnail`}
-                        style={{ maxWidth: '100%', maxHeight: '100%' }}
-                      /> */}
-                    </Box>
+                    />
 
                     <Box sx={{ p: 2 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
@@ -292,39 +277,40 @@ const lastTwoSegments = segments[segments.length - 2];
                     <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Folder Name</TableCell>
                     <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Date Created</TableCell>
                     <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Uploaded By</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Owner</TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1rem' }}>Actions</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {filteredFolders.map((folder) => (
                     <TableRow
                       key={folder.id}
-                      onClick={() => handleFolderClick(folder.id)}
                       sx={{
-                        cursor: 'pointer',
                         '&:hover': {
-                          backgroundColor: '#f0f0f0',
+                          backgroundColor: '#f5f5f5',
+                          cursor: 'pointer',
                         },
-                        transition: 'background-color 0.3s ease',
                       }}
+                      onClick={() => handleFolderClick(folder.file_url)}
                     >
-                      <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16 }}>
-                        {folder.file_name}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16 }}>
+                      <TableCell sx={{ paddingX: 16 }}>{folder.file_name}</TableCell>
+                      <TableCell sx={{ paddingX: 16 }}>
                         {new Date(folder.uploaded_at).toLocaleDateString()}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16 }}>
-                        {folder.uploaded_by} {/* Displaying uploaded_by directly */}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 'medium', fontSize: '0.9rem', paddingX: 16 }}>
-                        Owner Name
-                      </TableCell>
-                      <TableCell align="right">
-                        <IconButton onClick={(e) => handleClick(e, folder.id)}>
+                      <TableCell sx={{ paddingX: 16 }}>{folder.uploaded_by}</TableCell>
+                      <TableCell align="right" sx={{ paddingX: 16 }}>
+                        <IconButton onClick={(e) => handleClick(e, folder.file_url)}>
                           <MoreVertIcon />
                         </IconButton>
+                        <Menu
+                          anchorEl={anchorEl[folder.id]}
+                          open={Boolean(anchorEl[folder.id])}
+                          onClose={() => handleClose(folder.id)}
+                        >
+                          <MenuItem onClick={() => openRenameDialog(folder.id, folder.file_name)}>
+                            Rename Folder
+                          </MenuItem>
+                          <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
+                        </Menu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -333,33 +319,31 @@ const lastTwoSegments = segments[segments.length - 2];
             </TableContainer>
           )}
         </Box>
-
-        <Dialog open={renameDialogOpen} onClose={handleRenameDialogClose}>
-          <DialogTitle>Rename Folder</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="newFolderName"
-              label="New Folder Name"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleRenameDialogClose}>Cancel</Button>
-            <Button onClick={handleRename}>Rename</Button>
-          </DialogActions>
-        </Dialog>
+        <div className='fixed bottom-10 right-10 z-50s'>
+          <UploadFile />
+        </div>
       </div>
 
-      <div className='fixed bottom-10 right-10 z-50s'>
-        <UploadFile />
-      </div>
-      </>
+      
+
+      <Dialog open={renameDialogOpen} onClose={handleRenameDialogClose}>
+        <DialogTitle>Rename Folder</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Folder Name"
+            fullWidth
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleRenameDialogClose}>Cancel</Button>
+          <Button onClick={handleRename}>Rename</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 

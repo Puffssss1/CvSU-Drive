@@ -6,9 +6,9 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 import Header from '@/components/Header'
-import UploadFile from '../../components/UploadFile';
+import UploadFile from '../../../../components/UploadFile';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
@@ -23,27 +23,29 @@ interface Folder {
 
 
 function Files() {
-  const [folders, setFolders] = useState<Folder[]>([]);
-  const [layout, setLayout] = useState<'list' | 'grid'>('grid');
-  const router = useRouter();
+    const [folders, setFolders] = useState<Folder[]>([]);
+    const [layout, setLayout] = useState<'list' | 'grid'>('grid');
+    const router = useRouter();
 
 
   const pathname = usePathname()
+
   const lastSegment = pathname.split('/').pop();
+
+
   const departmentId = lastSegment;
+  
 
-  const previous = pathname.split('/').pop();
-  const newPath = previous;
-
+  console.log(pathname )
 
   useEffect(() => {
     if (!departmentId) return;
 
     const fetchFolders = async () => {
       const { data, error } = await supabase
-        .from('courses') // Assuming your table name is file_folder
+        .from('categories') 
         .select('id, name')
-        .eq('department_id', departmentId)  // Fetch courses for the department
+        .eq('id', departmentId) 
         .order('name', { ascending: true });
 
       if (error) {
@@ -68,7 +70,7 @@ function Files() {
 
   const handleFolderClick = (folderId: string) => {
     console.log(`Folder clicked: ${folderId}`);
-    router?.push(`/files/${newPath}/showCategory`); // Handle folder click action here, e.g., navigate to folder details page
+    router?.push(`${pathname}/allFiles`); // Handle folder click action here, e.g., navigate to folder details page
   };
   return (
     <div>
@@ -81,7 +83,7 @@ function Files() {
         <div className="ml-[220px]">
           <Box sx={{ padding: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <Typography variant="h5">Courses</Typography>
+              <Typography variant="h5">File Category</Typography>
               <ToggleButtonGroup
                 value={layout}
                 exclusive
