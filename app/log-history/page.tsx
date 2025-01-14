@@ -1,4 +1,6 @@
-import * as React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,69 +9,116 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Header from '@/components/Header';
+import { createClient } from '@supabase/supabase-js';
 
-function createData(
-    name: string,
-    department: string,
-    date: string,
-    file: string,
-    ) {
-        return { name, department, date, file};
-    }
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
-    const rows = [
-        createData('Gil Menciano', 'Department of Information Technology', 'January 01 2024', 'Nehemiah.docx'),
-        createData('Nehemiah Bernardo Mota', 'Department of Information Technology', 'January 02 2024', 'Gil.docx'),
-        createData('Joshua', 'Department of Information Technology', 'January 03 2024', 'Joshua.docx'),
-    ];
+// Initialize Supabase client
+const supabase = createClient(supabaseUrl, supabaseKey);
+interface Folder {
+    id: string;
+    file_name: string;
+    file_url: string;
+    referenceId: string;
+    uploaded_at: string;
+    uploaded_by: string;
+  }
 
-function LogHistory
-() {
-return (
-    
+function LogHistory() {
+  const [rows, setRows] = useState<Folder[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data, error } = await supabase
+        .from('file_metadata')
+          .select('*');
+
+        if (error) {
+          throw error;
+        }
+
+        setRows(data || []);
+      } catch (err) {
+        setError('Failed to fetch data from Supabase');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
     <div>
-        <div className="sticky top-0 z-50">
-            <Header/>
-        </div>
-        <TableContainer component={Paper}
+      <div className="sticky top-0 z-50">
+        <Header />
+      </div>
+      <TableContainer
+        component={Paper}
         sx={{
-            margin:'10px',
-
-
+          margin: '10px',
         }}
-        >
-            <div className='overflow-hidden'>
-            <h1 className='font-bold text-3xl ml-52'>  LOG HISTORY </h1>
-            <Table className='ml-52 overflow-hidden table-fixed w-full mt-4' sx={{ minWidth: 100 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align='left' className='font-bold text-green-800' sx={{ width: '15%' }}>Name</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800' sx={{ width: '20%' }}>Department</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800' sx={{ width: '10%' }}>Date</TableCell>
-                        <TableCell align="left" className='font-bold text-green-800'sx={{ width: '20%' }}>File</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="left" sx={{ width: '15%' }}>{row.department}</TableCell>
-                            <TableCell align="left" sx={{ width: '15%' }}>{row.date}</TableCell>
-                            <TableCell align="left" sx={{ width: '15%' }}>{row.file}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
+      >
+        <div className="overflow-hidden">
+          <h1 className="font-bold text-3xl ml-52">LOG HISTORY</h1>
+          {loading ? (
+            <p className="ml-52 mt-4 text-green-800">Loading...</p>
+          ) : error ? (
+            <p className="ml-52 mt-4 text-red-800">{error}</p>
+          ) : (
+            <Table
+              className="ml-52 overflow-hidden table-fixed w-full mt-4"
+              sx={{ minWidth: 100 }}
+              aria-label="simple table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left" className="font-bold text-green-800" sx={{ width: '15%' }}>
+                    Name
+                  </TableCell>
+                  <TableCell align="left" className="font-bold text-green-800" sx={{ width: '20%' }}>
+                    Reference Number
+                  </TableCell>
+                  <TableCell align="left" className="font-bold text-green-800" sx={{ width: '10%' }}>
+                    Date
+                  </TableCell>
+                  <TableCell align="left" className="font-bold text-green-800" sx={{ width: '20%' }}>
+                    File Link
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.file_name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.uploaded_by}
+                    </TableCell>
+                    <TableCell align="left" sx={{ width: '15%' }}>
+                      {row.referenceId}
+                    </TableCell>
+                    <TableCell align="left" sx={{ width: '15%' }}>
+                      {row.uploaded_at}
+                    </TableCell>
+                    <TableCell align="left" sx={{ width: '15%' }}>
+                      {row.file_url}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
             </Table>
-            </div>
-            
-        </TableContainer>
+          )}
+        </div>
+      </TableContainer>
     </div>
-)
+  );
 }
 
-export default LogHistory
+export default LogHistory;

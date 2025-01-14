@@ -110,6 +110,7 @@ function FolderList() {
   }, [pathname]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>, folderId: string) => {
+    event.stopPropagation(); // Prevent the event from propagating to the Card
     setAnchorEl((prev) => ({ ...prev, [folderId]: event.currentTarget }));
   };
 
@@ -156,7 +157,7 @@ function FolderList() {
   };
 
   const handleFolderClick = (folderId: string) => {
-    router?.push(`/${folderId}`);
+    router?.push(`${folderId}`);
   };
 
   if (!isMounted) {
@@ -213,7 +214,10 @@ function FolderList() {
                     onClick={() => handleFolderClick(folder.file_url)}
                   >
                     <IconButton
-                      onClick={(e) => handleClick(e, folder.file_url)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click from propagating to the parent
+                        handleClick(e, folder.file_url);
+                      }}
                       size="small"
                       sx={{
                         position: 'absolute',
@@ -320,7 +324,7 @@ function FolderList() {
           )}
         </Box>
         <div className='fixed bottom-10 right-10 z-50s'>
-          <UploadFile />
+        <UploadFile />
         </div>
       </div>
 
