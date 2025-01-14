@@ -27,7 +27,7 @@ const  rows = [
 
 function ApprovalTable() {
   return (
-    <TableContainer component={Paper} sx={{ margin: '10px', marginLeft: '13rem' }}>
+    <TableContainer component={Paper} sx={{ margin: '10px', marginLeft: '220px' }}>
       <Table sx={{ minWidth: 150 }} aria-label="simple table">
         <TableHead>
           <TableRow>
