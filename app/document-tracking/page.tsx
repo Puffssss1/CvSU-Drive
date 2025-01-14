@@ -49,8 +49,9 @@ function Track() {
             <div className="sticky top-0 z-50">
                 <Header/>
             </div>
+            <div>
             <div className='text-4xl m-5 bg-slate-200 p-4 font-bold font-mono ml-52'> DOCUMENT TRACKING</div>
-            <div className='flex justify-items-center items-center'>
+            <div className='flex justify-items-center items-center overflow-auto overflow-x-hidden'>
             <Box className='justify-self-start ml-56 flex items-center'
             component="form"
             sx={{ '& > :not(style)': { m: 1, width: '100ch' } }}
@@ -125,10 +126,7 @@ function Track() {
             ) : (
                 <div className="justify-self-center font-bold text-red-500">No data found</div>
             )}
-
-            
-            
-                
+            </div>   
         </div>
 );
 }

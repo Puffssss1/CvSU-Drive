@@ -55,7 +55,7 @@ function LogHistory() {
 
   return (
     <div>
-      <div className="sticky top-0 z-50">
+      <div className="fixed w-full top-0 z-50">
         <Header />
       </div>
       <TableContainer
@@ -64,15 +64,16 @@ function LogHistory() {
           margin: '10px',
         }}
       >
-        <div className="overflow-hidden">
+        <div className="overflow-x-auto mt-28">
           <h1 className="font-bold text-3xl ml-52">LOG HISTORY</h1>
           {loading ? (
             <p className="ml-52 mt-4 text-green-800">Loading...</p>
           ) : error ? (
             <p className="ml-52 mt-4 text-red-800">{error}</p>
           ) : (
-            <Table
-              className="ml-52 overflow-hidden table-fixed w-full mt-4"
+            <div>
+              <Table
+              className="ml-52 table-fixed w-full mt-4"
               sx={{ minWidth: 100 }}
               aria-label="simple table"
             >
@@ -114,6 +115,8 @@ function LogHistory() {
                 ))}
               </TableBody>
             </Table>
+            </div>
+            
           )}
         </div>
       </TableContainer>

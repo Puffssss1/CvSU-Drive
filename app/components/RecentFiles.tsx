@@ -100,18 +100,20 @@ const FolderList = () => {
 
         {/* Filter Buttons */}
         <Box>
-          <Button variant="contained" onClick={() => handleFilterChange('all')}>
-            All Files
-          </Button>
-          <Button variant="contained" onClick={() => handleFilterChange('7days')}>
-            Added in 7 Days
-          </Button>
-          <Button variant="contained" onClick={() => handleFilterChange('week')}>
-            Added Last Week
-          </Button>
-          <Button variant="contained" onClick={() => handleFilterChange('month')}>
-            Added Last Month
-          </Button>
+          <div className='flex flex-row justify-between gap-2'>
+            <Button variant="contained" onClick={() => handleFilterChange('all')} className='text-xs bg-[#6A1E9C]'>
+              All Files
+            </Button>
+            <Button variant="contained" onClick={() => handleFilterChange('7days')} className='text-xs bg-[#6A1E9C]'>
+              Added in 7 Days
+            </Button>
+            <Button variant="contained" onClick={() => handleFilterChange('week')} className='text-xs bg-[#6A1E9C]'>
+              Added Last Week
+            </Button>
+            <Button variant="contained" onClick={() => handleFilterChange('month')} className='text-xs bg-[#6A1E9C]'>
+              Added Last Month
+            </Button>
+          </div>
         </Box>
 
         {/* Layout Toggle */}
@@ -184,7 +186,7 @@ const FolderList = () => {
 
       {/* Pagination Controls */}
       <Box display="flex" justifyContent="center" alignItems="center" mt={3}>
-        <Button variant="contained" disabled={currentPage === 1} onClick={handlePreviousPage}>
+        <Button variant="contained" disabled={currentPage === 1} onClick={handlePreviousPage} className='bg-[#6A1E9C] rounded-sm'>
           Previous
         </Button>
         <Typography variant="body1" mx={2}>
@@ -194,6 +196,7 @@ const FolderList = () => {
           variant="contained"
           disabled={currentPage * itemsPerPage >= filteredFolders.length}
           onClick={handleNextPage}
+          className='bg-[#6A1E9C] rounded-sm'
         >
           Next
         </Button>
