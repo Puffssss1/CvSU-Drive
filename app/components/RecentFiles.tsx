@@ -78,7 +78,8 @@ const FolderList = () => {
   };
 
   const handleFolderClick = (fileUrl: string) => {
-    window.location.href = fileUrl; // Redirect to the file URL
+    //window.location.href = fileUrl; // Redirect to the file URL
+    window.open(fileUrl, '_blank');
   };
 
   const handleNextPage = () => {
@@ -96,7 +97,7 @@ const FolderList = () => {
   return (
     <Box sx={{ padding: 3, marginLeft: '220px' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h5">Folders</Typography>
+        <Typography variant="h5">Recent Files</Typography>
 
         {/* Filter Buttons */}
         <Box>
@@ -181,7 +182,7 @@ const FolderList = () => {
           ))}
         </Box>
       ) : (
-        <div>List Layout</div>
+        <div className='w-[930px]'>List Layout</div>
       )}
 
       {/* Pagination Controls */}
