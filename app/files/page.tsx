@@ -59,16 +59,17 @@ function Files() {
   };
   return (
     <div>
-      <div className="sticky top-0 z-50">
+      <div className="fixed w-full top-0 z-50">
         <Header/>
       </div>
 
-      <div className='justify-items-center mt-3'>
+
+      <div className='justify-items-center mt-32'>
         {/* <DepartmentCard /> */}
         <div className="ml-[220px]">
           <Box sx={{ padding: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <Typography variant="h5">Departments</Typography>
+              <Typography variant="h5">Files</Typography>
               <ToggleButtonGroup
                 value={layout}
                 exclusive

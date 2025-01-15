@@ -50,7 +50,7 @@ function Track() {
                 <Header/>
             </div>
             <div>
-            <div className='text-4xl m-5 bg-slate-200 p-4 font-bold font-mono ml-52'> DOCUMENT TRACKING</div>
+            <div className='text-4xl m-5 bg-[#6A1E9C] text-white p-4 font-bold font-mono ml-52'> DOCUMENT TRACKING</div>
             <div className='flex justify-items-center items-center overflow-auto overflow-x-hidden'>
             <Box className='justify-self-start ml-56 flex items-center'
             component="form"
@@ -66,7 +66,7 @@ function Track() {
                 <Stack spacing={2} direction="row" className='flex'>
                 <Button
                     variant="contained"
-                    className="rounded-3xl bg-[#004225] hover:bg-green-600 h-10"
+                    className="rounded-3xl bg-[#6A1E9C] hover:bg-[#511281] h-10"
                     onClick={fetchTrackingDetails}
                     >
                         Search
