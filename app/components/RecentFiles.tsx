@@ -5,6 +5,7 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { useSession } from 'next-auth/react';
 import { createClient } from '@supabase/supabase-js';
+import Loading from '@/app/components/loading';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
@@ -25,9 +26,11 @@ const FolderList = () => {
   const [filter, setFilter] = useState<string>('all'); // Filter state: 'all', '7days', 'week', 'month'
   const [currentPage, setCurrentPage] = useState<number>(1); // Current page for pagination
   const itemsPerPage = 5; // Number of items per page
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   useEffect(() => {
     const fetchFolders = async () => {
+      setLoading(true); // Set loading to true before fetching
       const { data, error } = await supabase
         .from('file_metadata')
         .select('id, file_name, file_url, uploaded_at, uploaded_by')
@@ -38,6 +41,7 @@ const FolderList = () => {
       } else {
         setFolders(data);
       }
+      setLoading(false); // Set loading to false after fetching
     };
 
     fetchFolders();
@@ -98,23 +102,25 @@ const FolderList = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h5">Folders</Typography>
 
-        {/* Filter Buttons */}
-        <Box>
-          <div className='flex flex-row justify-between gap-2'>
-            <Button variant="contained" onClick={() => handleFilterChange('all')} className='text-xs bg-[#6A1E9C]'>
-              All Files
-            </Button>
-            <Button variant="contained" onClick={() => handleFilterChange('7days')} className='text-xs bg-[#6A1E9C]'>
-              Added in 7 Days
-            </Button>
-            <Button variant="contained" onClick={() => handleFilterChange('week')} className='text-xs bg-[#6A1E9C]'>
-              Added Last Week
-            </Button>
-            <Button variant="contained" onClick={() => handleFilterChange('month')} className='text-xs bg-[#6A1E9C]'>
-              Added Last Month
-            </Button>
-          </div>
-        </Box>
+        {/* Only show filter buttons if not loading */}
+        {!loading && (
+          <Box>
+            <div className='flex flex-row justify-between gap-2'>
+              <Button variant="contained" onClick={() => handleFilterChange('all')} className='text-xs bg-[#6A1E9C]'>
+                All Files
+              </Button>
+              <Button variant="contained" onClick={() => handleFilterChange('7days')} className='text-xs bg-[#6A1E9C]'>
+                Added in 7 Days
+              </Button>
+              <Button variant="contained" onClick={() => handleFilterChange('week')} className='text-xs bg-[#6A1E9C]'>
+                Added Last Week
+              </Button>
+              <Button variant="contained" onClick={() => handleFilterChange('month')} className='text-xs bg-[#6A1E9C]'>
+                Added Last Month
+              </Button>
+            </div>
+          </Box>
+        )}
 
         {/* Layout Toggle */}
         <ToggleButtonGroup
@@ -132,56 +138,65 @@ const FolderList = () => {
         </ToggleButtonGroup>
       </Box>
 
-      {/* Grid View Layout */}
-      {layout === 'grid' ? (
-        <Box display="flex" flexWrap="wrap" gap={2}>
-          {paginatedFolders.map((folder) => (
-            <Box key={folder.id} width="300px" mb={2} position="relative">
-              <Card
-                variant="outlined"
-                sx={{
-                  borderRadius: '12px',
-                  boxShadow: 3,
-                  cursor: 'pointer',
-                  position: 'relative',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: 6,
-                  },
-                }}
-                onClick={() => handleFolderClick(folder.file_url)}
-              >
-                <Box
-                  sx={{
-                    backgroundColor: '#e0e0e0',
-                    height: '150px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: '#e0e0e0',
-                  }}
-                >
-                  {/* Thumbnail placeholder */}
-                </Box>
-
-                <Box sx={{ p: 2 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    {folder.file_name}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    color="textSecondary"
-                    sx={{ display: 'block', marginTop: '4px' }}
-                  >
-                    Created: {new Date(folder.uploaded_at).toLocaleDateString()}
-                  </Typography>
-                </Box>
-              </Card>
-            </Box>
-          ))}
+      {/* Loading State */}
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="400px">
+          <Typography variant="h6"><Loading/></Typography>
         </Box>
       ) : (
-        <div>List Layout</div>
+        <>
+          {/* Grid View Layout */}
+          {layout === 'grid' ? (
+            <Box display="flex" flexWrap="wrap" gap={2}>
+              {paginatedFolders.map((folder) => (
+                <Box key={folder.id} width="300px" mb={2} position="relative">
+                  <Card
+                    variant="outlined"
+                    sx={{
+                      borderRadius: '12px',
+                      boxShadow: 3,
+                      cursor: 'pointer',
+                      position: 'relative',
+                      '&:hover': {
+                        transform: 'translateY(-5px)',
+                        boxShadow: 6,
+                      },
+                    }}
+                    onClick={() => handleFolderClick(folder.file_url)}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: '#e0e0e0',
+                        height: '150px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: '#e0e0e0',
+                      }}
+                    >
+                      {/* Thumbnail placeholder */}
+                    </Box>
+
+                    <Box sx={{ p: 2 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                        {folder.file_name}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ display: 'block', marginTop: '4px' }}
+                      >
+                        Created: {new Date(folder.uploaded_at).toLocaleDateString()}
+                      </Typography>
+                    </Box>
+                  </Card>
+                </Box>
+              ))}
+            </Box>
+          ) : (
+            <div>List Layout</div>
+          )}
+        </>
       )}
 
       {/* Pagination Controls */}
