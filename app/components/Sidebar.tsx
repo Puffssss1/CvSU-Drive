@@ -22,6 +22,7 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
+import SendFile from '@/app/components/SendFile';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -47,7 +48,7 @@ function Sidebar() {
   const [openOpenCreateModal, setOpenCreateModal] = useState(false);
 
   //Create New Handler
-  const HandleOpenCreateModal = () => setOpenCreateModal(true);
+  // const HandleOpenCreateModal = () => setOpenCreateModal(true);
   const HandleCloseCreateModal = () => setOpenCreateModal(false);
 
     const [state, setState] = React.useState({
@@ -261,6 +262,10 @@ function Sidebar() {
           </List>
           <Divider 
           sx={{ color: '4C585B' }}/>
+
+          <Divider>
+            <SendFile />
+          </Divider>
           
           {/* Upload */}
           {/* <List sx={{ flexGrow: 1 }}>
