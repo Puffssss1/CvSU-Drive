@@ -98,8 +98,8 @@ const FolderList = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, marginLeft: '220px' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+    <Box sx={{ padding: 3, marginLeft: '220px', minWidth: '600px', maxWidth: '1200px' }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} sx={{width: '1200px'}}>
         <Typography variant="h5">Folders</Typography>
 
         {/* Only show filter buttons if not loading */}
@@ -141,7 +141,7 @@ const FolderList = () => {
       {/* Loading State */}
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="400px">
-          <Typography variant="h6"><Loading/></Typography>
+          <Typography variant="h6"><Loading /></Typography>
         </Box>
       ) : (
         <>

@@ -199,6 +199,18 @@ function Sidebar() {
                     </ListItemButton>
                   </a>
                 </ListItem>
+                <ListItem disablePadding>
+                  <a href='/accounts'>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <AccountBoxIcon
+                        sx={{ color: '#FFB000' }}/>
+                      </ListItemIcon>
+                      <ListItemText primary={"Accounts"}
+                      sx={{ color: '#FFB000' }}/>
+                    </ListItemButton>
+                  </a>
+                </ListItem>
               </>
             )}
             <Divider 
