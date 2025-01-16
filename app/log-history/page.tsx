@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Header from '@/components/Header';
 import { createClient } from '@supabase/supabase-js';
 
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
@@ -25,7 +26,8 @@ interface Folder {
     uploaded_by: string;
   }
 
-function LogHistory() {
+  export default function LogHistory() {
+
   const [rows, setRows] = useState<Folder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -123,5 +125,3 @@ function LogHistory() {
     </div>
   );
 }
-
-export default LogHistory;

@@ -3,9 +3,16 @@ import React from 'react';
 import { Paper, Typography, Grid, Avatar } from '@mui/material';
 import Header from '@/components/Header';
 import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-const ProfileView = () => {
+export default async function ProfileView() {
   const {data:session} = useSession();
+  const userSession = await getServerSession();
+
+  if (!userSession) {
+    redirect("/login")
+  }
 
   const profileData = {
     name: session?.user?.name || '',
@@ -16,6 +23,7 @@ const ProfileView = () => {
     contact: session?.user?.contact || '',
     birthday: "05/09/1995",
   };
+
 
   return (
     <div>
@@ -87,4 +95,3 @@ const ProfileView = () => {
   );
 };
 
-export default ProfileView;

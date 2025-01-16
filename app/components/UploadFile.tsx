@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,6 +13,11 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+
+// Initialize Supabase client
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const FileUpload = () => {
 
@@ -53,63 +58,71 @@ function generateFileReference(): string {
     return `${timestamp}_${randomString}`;
 }
 
-  const handleUpload = async () => {
-    if (!file) return;
-    setUploading(true);
+const handleUpload = async () => {
+  if (!file) return;
 
-    const fileName = `documents/${Date.now()}_${file.name}`; // Add a timestamp for uniqueness
+  // Define allowed file types
+  const allowedFileTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+  
+  // Check if the file type is allowed
+  if (!allowedFileTypes.includes(file.type)) {
+      console.error('Invalid file type. Please upload a PDF, DOCX, or XLSX file.');
+      return; // Exit the function if the file type is not allowed
+  }
 
-    // Upload file to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('documents')
-      .upload(fileName, file);
+  setUploading(true);
 
-    if (uploadError) {
-      console.error('Error uploading file:', uploadError);
-      setUploading(false);
-      return;
-    }
+  const fileName = `documents/${Date.now()}_${file.name}`; // Add a timestamp for uniqueness
 
-    console.log('Uploaded file data:', uploadData);
+  // Upload file to Supabase Storage
+  const { data: uploadData, error: uploadError } = await supabase.storage
+    .from('documents')
+    .upload(fileName, file);
 
-    const fileReference = generateFileReference();
-
-    // Get the public URL for the uploaded file
-    const { data: publicUrlData } = supabase.storage
-      .from('documents')
-      .getPublicUrl(fileName);
-
-
-    const publicUrl = publicUrlData.publicUrl;
-
-    console.log('Public URL:', publicUrl);
-
-    // Save file metadata to the database
-    const { data: metadataData, error: metadataError } = await supabase
-      .from('file_metadata')
-      .insert([
-        {
-            file_name: file.name,
-            uploaded_by: session?.user.name, 
-            file_url: publicUrl,
-            isApproved: false,
-            referenceId: fileReference,
-            Category: category,
-        },
-      ]);
-
-      console.log(metadataData)
-      
-    if (metadataError) {
-      console.error('Error saving metadata:', metadataError);
-      setUploading(false);
-      return;
-    }
-
-
-    setUploadedFileUrl(publicUrl);
+  if (uploadError) {
+    console.error('Error uploading file:', uploadError);
     setUploading(false);
-  };
+    return;
+  }
+
+  console.log('Uploaded file data:', uploadData);
+
+  const fileReference = generateFileReference();
+
+  // Get the public URL for the uploaded file
+  const { data: publicUrlData } = supabase.storage
+    .from('documents')
+    .getPublicUrl(fileName);
+
+  const publicUrl = publicUrlData.publicUrl;
+
+  console.log('Public URL:', publicUrl);
+
+  // Save file metadata to the database
+  const { data: metadataData, error: metadataError } = await supabase
+    .from('file_metadata')
+    .insert([
+      {
+          file_name: file.name,
+          uploaded_by: session?.user.name, 
+          file_url: publicUrl,
+          isApproved: false,
+          referenceId: fileReference,
+          Category: category,
+      },
+    ]);
+
+  console.log(metadataData);
+    
+  if (metadataError) {
+    console.error('Error saving metadata:', metadataError);
+    setUploading(false);
+    return;
+  }
+
+  setUploadedFileUrl(publicUrl);
+  setUploading(false);
+};
 
   const [open, setOpenModal] = React.useState(false);
   const openModal = () => setOpenModal(true);

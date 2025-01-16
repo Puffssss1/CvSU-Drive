@@ -60,24 +60,26 @@ function AccountsTable() {
 
   const handleEditSubmit = async () => {
     if (editUser) {
-          // Name validation: should not contain numbers or special characters
-    const nameRegex = /^[A-Za-z\s]+$/;
-    if (!nameRegex.test(editUser.name)) {
-      alert('Name must only contain letters and spaces.');
-      return;
+    // Name validation: at least 2 valid parts (first and last name), can include spaces, hyphens, or apostrophes
+    const namePattern = /^[A-Za-zÀ-ÿ\s'-]{2,}$/;
+    const nameParts = editUser .name.trim().split(/\s+/); // Split by whitespace
+
+    if (!namePattern.test(editUser .name) || nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+        alert('Name must contain at least 2 valid parts (e.g., first and last name) and can include spaces, hyphens, or apostrophes.');
+        return;
     }
 
-    // Email validation (basic regex for email)
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailRegex.test(editUser.email)) {
-      alert('Please enter a valid email address.');
-      return;
+    // Email validation: must end with @gmail.com and contain only letters before that
+    const emailRegex = /^[A-Za-z._%+-]+@gmail\.com$/;
+    if (!emailRegex.test(editUser .email)) {
+        alert('Please enter a valid email address ending with @gmail.com and containing only letters.');
+        return;
     }
 
-  // Validate contact number
-  if (!editUser?.contact || !/^09\d{9}$/.test(editUser.contact)) {
-    alert('Contact must be a valid 11-digit phone number starting with 09.');
-    return false;
+    // Validate contact number: must be a valid 11-digit phone number starting with 09
+    if (!editUser .contact || !/^09\d{9}$/.test(editUser .contact)) {
+      alert('Contact must be a valid 11-digit phone number starting with 09.');
+      return;
   }
 
       try {

@@ -7,6 +7,7 @@ export const config = { matcher: [
     '/approval', 
     '/document-tracking', 
     '/files',
+    '/files/:path*',
     '/log-history',
     '/profile',
     '/messages', 

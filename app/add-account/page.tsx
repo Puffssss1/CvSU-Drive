@@ -56,31 +56,35 @@ function AddAccount() {
             password: "",
             contact: "",
         };
+    
+        // Validate name (at least 2 letters, no numbers or special characters)
+        // Validate name (at least 2 letters, can include spaces, hyphens, or apostrophes)
+        const namePattern = /^[A-Za-zÀ-ÿ\s'-]{2,}$/;
+        const nameParts = formData.name.trim().split(/\s+/); // Split by whitespace
 
-        // Validate name (only text, no special characters or numbers)
-        if (!/^[A-Za-z\s]+$/.test(formData.name)) {
-            newErrors.name = "Name must contain only letters.";
+        if (!namePattern.test(formData.name) || nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+            newErrors.name = "Name must contain at least 2 valid parts (e.g., first and last name) and can include spaces, hyphens, or apostrophes.";
             isValid = false;
         }
-
-        // Validate email (valid email format)
-        if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
-            newErrors.email = "Enter a valid email address.";
+    
+        // Validate email (valid email format ending with @gmail.com, no numbers or single letters)
+        if (!/^[A-Za-z._%+-]+@gmail\.com$/.test(formData.email)) {
+            newErrors.email = "Enter a valid email address ending with @gmail.com and containing only letters.";
             isValid = false;
         }
-
-        // Validate password (6 characters only)
-        if (formData.password.length !== 6) {
-            newErrors.password = "Password must be exactly 6 characters.";
+    
+        // Validate password (at least 6 characters)
+        if (formData.password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters long.";
             isValid = false;
         }
-
-        // Validate contact (only numbers)
-        if (!/^\d+$/.test(formData.contact)) {
-            newErrors.contact = "Contact must contain only numbers.";
+    
+        // Validate contact (11 digits starting with 09)
+        if (!/^09\d{9}$/.test(formData.contact)) {
+            newErrors.contact = "Contact must be an 11-digit number starting with 09.";
             isValid = false;
         }
-
+    
         setErrors(newErrors);
         return isValid;
     };
