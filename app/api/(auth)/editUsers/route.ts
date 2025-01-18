@@ -43,6 +43,30 @@ export const PUT = async (request: Request) => {
         }
 };
 
+// Update user data
+export const PATCH = async (request: Request) => {
+    try {
+        await connect();
+        const body = await request.json();
+        const { email } = body; // Extract email from the request body
+
+        if (!email) {
+            return new NextResponse("Email is required", { status: 400 });
+        }
+
+        // Find the user by email and update their data
+        const updatedUser  = await User.findOneAndUpdate({ email }, body, { new: true });
+
+        if (!updatedUser ) {
+            return new NextResponse("User  not found", { status: 404 });
+        }
+
+        return new NextResponse(JSON.stringify({ message: "User  updated successfully", user: updatedUser  }), { status: 200 });
+    } catch (error: any) {
+        return new NextResponse("Error updating user: " + error.message, { status: 500 });
+    }
+};
+
   // Delete a user
 export const DELETE = async (request: Request) => {
     try {

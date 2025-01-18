@@ -147,7 +147,23 @@ const SendFile = () => {
 
     return (
         <div>
-            <Button onClick={openModal} variant='contained' className='bg-[#FFB000] text-[#6A1E9C] text-base hover:bg-[#511281] hover:text-[#FFB000] rounded-xl px-8 py-4'>Send File</Button>
+            <Button
+                onClick={openModal}
+                variant="contained"
+                sx={{
+                    backgroundColor: '#FFB000',
+                    color: '#6A1E9C',
+                    fontSize: '1rem',
+                    '&:hover': {
+                    backgroundColor: '#511281',
+                    color: '#FFB000',
+                    },
+                    borderRadius: '1rem',
+                    padding: '0.5rem 2rem',
+                }}
+                >
+                Send File
+                </Button>
             <Modal open={open} onClose={closeModal}>
                 <Box sx={{
                     position: 'absolute',

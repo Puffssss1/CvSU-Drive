@@ -36,6 +36,7 @@
     "@types/ckeditor__ckeditor5-core": "^33.0.3",
     "@types/formidable": "^3.4.5",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8.57.0",

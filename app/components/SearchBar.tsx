@@ -105,7 +105,7 @@ function SearchBar() {
           },
         }}
       />
-      {loading && <p>Loading...</p>} {/* Display loading message */}
+      {/* {loading && <p>Loading...</p>} Display loading message */}
       {error && <p>Error: {error}</p>} {/* Display error message */}
 
       {/* Dropdown for filtered results */}

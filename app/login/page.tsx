@@ -11,8 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { createClient } from '@supabase/supabase-js';
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
+// Initialize Supabase client
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -20,8 +25,11 @@ export default function Login() {
     const [error, setError] = useState("");
     const { status: sessionStatus } = useSession(); 
     const router = useRouter();
-
     const [showPassword, setShowPassword] = useState(false);
+
+    const [resetPassword, setResetPassword] = useState<boolean>(false);
+    const [success, setSuccess] = useState<boolean>(false);
+    const [emailAddress, setEmailAddress] = useState('');
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,6 +86,87 @@ export default function Login() {
         } catch (error) {
             console.error("Error signing in:", error);
             setError("An error occurred. Please try again.");
+        }
+    };
+
+    const sendResetPassword = async () => {
+        setError(''); // Clear previous errors
+        setSuccess(false); // Reset success state
+
+        // Generate a 6-digit OTP
+        const generateOTP = () => {
+            return Math.floor(100000 + Math.random() * 900000).toString(); // Generates a number between 100000 and 999999
+        };
+
+        const otp = generateOTP(); // Generate the OTP
+        const expirationTime = Date.now() + 15 * 60 * 1000;
+
+        // Construct the request body
+        const requestBody = {
+            sender: {
+                name: "CVSU",
+                email: "buttercough3@gmail.com"
+            },
+            to: [
+                {
+                    email: emailAddress // Use the emailAddress state
+                }
+            ],
+            subject: "Reset your password",
+            htmlContent: `
+                            <html> 
+                                <body> 
+                                    <h1> 
+                                        Resetting your password 
+                                    </h1>
+                                    </br> 
+                                        <p>Confirm this OTP to reset password: <strong>${otp}</strong></p>
+                                    </br>
+                                        <p>
+                                            Visit this link: <a href="http://localhost:3000/confirm-password">Link here</a>
+                                        </p>
+                                </body> 
+                            </html>`
+        };
+
+        try {
+            const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'content-type': 'application/json',
+                    'api-key': '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'
+                },
+                body: JSON.stringify(requestBody), // Send the constructed object as JSON
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message || 'An error occurred.'); 
+                return;
+            }
+
+            const data = await response.json();
+            console.log(data)
+            // Insert file metadata into Supabase
+            const { error } = await supabase
+            .from('store_otp')
+            .insert([
+                {
+                    otp,
+                    emailAddress,
+                    expirationTime,
+                },
+            ]);
+            if (error) {
+                console.error('Error storing OTP:', error);
+                alert('Error saving OTP. Please try again.'); 
+            } else {
+                alert('File sent successfully! '); 
+            }
+            setSuccess(true); 
+        } catch (err) {
+            setError('Network error. Please try again later.', err);
         }
     };
 
@@ -156,93 +245,143 @@ export default function Login() {
                             className="w-200 h-auto" 
                         />
                     </div>
-                    <div className=''>
-                    <TextField
-                        className="bg-white mb-8 mt-8 text-3xl"
-                        id="username"
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        error={!!error && error.includes("Email")}
-                        helperText={error && error.includes("Email") ? error : ""} 
-                        InputProps={{
-                            classes: {
-                              input: "text-2xl", // Adjusts the input text size
-                            },
-                          }}
-                          InputLabelProps={{
-                            className: "text-xl", // Adjusts the label text size
-                          }}
-                        />
-                    </div>
+
+                    {/* Logging in */}
+                    {!resetPassword && 
                     
                     <div>
-                    <TextField
-                        className="bg-white mb-8"
-                        id="password"
-                        label="Password"
-                        variant="outlined"
-                        fullWidth
-                        type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        error={!!error && error.includes("Password")}
-                        InputProps={{
-                            classes: {
-                                input: "text-2xl", // Adjusts the input text size
-                            },
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                        InputLabelProps={{
-                            className: "text-xl", // Adjusts the label text size
-                        }}
-                    />
-                    </div>
-
-                    
-                    
-
-                    {error && (
-                        <div className="text-red-500 mb-4 text-center">
-                            {error}
-                        </div>
-                    )}
-                    <div>
-                    <Stack spacing={2} direction="row" justifyContent="center" className="mt-16">
-                        <Button 
-                            className="rounded-full px-8 text-gray-500 hover:bg-green-600 hover:text-green-200 border-green-700 hover:border-green-500 w-[200px] h-[60px]"
+                        <div className=''>
+                        <TextField
+                            className="bg-white mb-8 mt-8 text-3xl"
+                            id="username"
+                            label="Email"
                             variant="outlined"
-                            type="submit"
-                        >
-                            Login
-                        </Button>
-                    </Stack>
+                            fullWidth
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            error={!!error && error.includes("Email")}
+                            helperText={error && error.includes("Email") ? error : ""} 
+                            InputProps={{
+                                classes: {
+                                input: "text-2xl", // Adjusts the input text size
+                                },
+                            }}
+                            InputLabelProps={{
+                                className: "text-xl", // Adjusts the label text size
+                            }}
+                            />
+                        </div>
 
-                    <div className='mt-6 text-slate-200'>
-                        ____________________________________________
+                        <div>
+                        <TextField
+                            className="bg-white mb-8"
+                            id="password"
+                            label="Password"
+                            variant="outlined"
+                            fullWidth
+                            type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            error={!!error && error.includes("Password")}
+                            InputProps={{
+                                classes: {
+                                    input: "text-2xl", // Adjusts the input text size
+                                },
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            InputLabelProps={{
+                                className: "text-xl", // Adjusts the label text size
+                            }}
+                        />
+                        </div>
+
+                        {error && (
+                            <div className="text-red-500 mb-4 text-center">
+                                {error}
+                            </div>
+                        )}
+                        <div>
+                            <Stack spacing={2} direction="row" justifyContent="center" className="mt-16">
+                                <Button 
+                                    className="rounded-full px-8 text-gray-500 hover:bg-green-600 hover:text-green-200 border-green-700 hover:border-green-500 w-[200px] h-[60px]"
+                                    variant="outlined"
+                                    type="submit"
+                                >
+                                    Login
+                                </Button>
+                            </Stack>
+
+                            <div className='mt-6 text-slate-200'>
+                                ____________________________________________
+                            </div>
+                        </div>
                     </div>
+                    }
+                    {/* for resetting the password */}
+                    {resetPassword && 
+                    <div>
+                        <div className=''>
+                            Enter valid email to reset Password
+                        <TextField
+                            className="bg-white mb-8 mt-8 text-3xl"
+                            id="emailAddress"
+                            label="Enter your email"
+                            variant="outlined"
+                            fullWidth
+                            value={emailAddress}
+                            onChange={(e) => setEmailAddress(e.target.value)}
+                            error={!!error && error.includes("Email")}
+                            helperText={error && error.includes("Email") ? error : ""} 
+                            InputProps={{
+                                classes: {
+                                input: "text-2xl", // Adjusts the input text size
+                                },
+                            }}
+                            InputLabelProps={{
+                                className: "text-xl", // Adjusts the label text size
+                            }}
+                            />
+                        </div>
 
-                    <button className='text-blue-500 hover:underline cursor-pointer mt-10'>
-                        Forgot password?
-                    </button>
+                        {success && (
+                            <div className="text-green-800 mb-4 text-center">
+                                Reset Request sent! Check your email to reset your password.
+                            </div>
+                        )}
 
-                    
+                        {error && (
+                            <div className="text-red-500 mb-4 text-center">
+                                {error}
+                            </div>
+                        )}
+                        <div>
+                            <Stack spacing={2} direction="row" justifyContent="center" className="mt-16">
+                                <Button 
+                                    onClick={sendResetPassword}
+                                    className="rounded-full px-8 text-gray-500 hover:bg-green-600 hover:text-green-200 border-green-700 hover:border-green-500 w-[200px] h-[60px]"
+                                    variant="outlined"
+                                >
+                                    Reset my password
+                                </Button>
+                            </Stack>
+
+                            <div className='mt-6 text-slate-200'>
+                                ____________________________________________
+                            </div>
+                        </div>
                     </div>
-
-                    
-                    
+                    }
+                    <p className='text-blue-500 hover:underline cursor-pointer mt-10' onClick={() => setResetPassword(!resetPassword)}>{resetPassword ? 'Login' : 'Forgot Password?'}</p>
                 </Box>
             </div>
         )

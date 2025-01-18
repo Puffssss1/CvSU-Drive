@@ -132,7 +132,22 @@ const handleUpload = async () => {
 
   return (
     <div>
-      <Button onClick={openModal} variant='contained' className='bg-[#6A1E9C] text-[#FFB000] text-base hover:bg-[#511281] rounded-xl px-8 py-4'>Upload</Button>
+      <Button 
+          onClick={openModal} 
+          variant='contained' 
+          sx={{
+            backgroundColor: '#6A1E9C',
+            color: '#FFB000',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: '#511281',
+            },
+            borderRadius: '1rem',
+            padding: '0.5rem 2rem',
+          }}
+        >
+          Upload
+      </Button>
       <Modal
         open={open}
         onClose={closeModal}
