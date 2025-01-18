@@ -110,12 +110,9 @@ function ApprovalTable() {
                                     >
                                         Approve
                                     </Button>
-                                    <Button variant="contained" color="info" size="small">
-                                        Revision
-                                    </Button>
-                                    <Button variant="contained" color="error" size="small">
+                                    {/* <Button variant="contained" color="error" size="small">
                                         Decline
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             </TableCell>
                         </TableRow>
