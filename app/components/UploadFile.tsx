@@ -50,13 +50,14 @@ const FileUpload = () => {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
+  } 
 
-function generateFileReference(): string {
-    const timestamp = Date.now(); // Unique timestamp
-    const randomString = generateRandomString(8); // Random 8-character string
-    return `${timestamp}_${randomString}`;
-}
+  function generateFileReference(): string {
+      const timestamp = Date.now(); // Unique timestamp
+      const randomString = generateRandomString(8); // Random 8-character string
+      return `${timestamp}_${randomString}`;
+  }
+  
 const [open, setOpenModal] = React.useState(false);
   const openModal = () => setOpenModal(true);
   const closeModal = () => setOpenModal(false);

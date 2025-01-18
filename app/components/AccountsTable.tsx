@@ -37,6 +37,7 @@ function AccountsTable() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [editUser, setEditUser] = React.useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = React.useState<string | null>(null);
+  const [confirmationText, setConfirmationText] = React.useState<string>("");
 
   React.useEffect(() => {
     const fetchUsers = async () => {
@@ -111,7 +112,7 @@ function AccountsTable() {
   };
 
   const handleDeleteConfirm = async () => {
-    if (deleteUserId) {
+    if (deleteUserId && confirmationText === "YES" && deleteUserId) {
       try {
         const response = await fetch(`/api/editUsers/?id=${deleteUserId}`, {
           method: 'DELETE',
@@ -133,6 +134,7 @@ function AccountsTable() {
 
   const handleDeleteCancel = () => {
     setDeleteUserId(null);
+    setConfirmationText(""); 
   };
 
   const handleInputChange = (
@@ -269,9 +271,16 @@ function AccountsTable() {
 
       {/* Delete Confirmation Dialog */}
       {deleteUserId && (
-        <Dialog open={!!deleteUserId} onClose={handleDeleteCancel}>
+          <Dialog open={!!deleteUserId} onClose={handleDeleteCancel}>
           <DialogTitle>Confirm Deletion</DialogTitle>
-          <DialogContent>Are you sure you want to delete this user?</DialogContent>
+            <DialogContent>
+              <TextField
+                label="Type 'YES' to confirm"
+                value={confirmationText}
+                onChange={(e) => setConfirmationText(e.target.value)}
+                fullWidth
+              />
+          </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteCancel} variant="contained" className='hover:bg-blue-800'>Cancel</Button>
             <Button onClick={handleDeleteConfirm} variant="contained" color="error" className='hover:bg-red-800'>

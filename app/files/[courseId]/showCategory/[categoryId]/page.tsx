@@ -81,8 +81,7 @@ function Files() {
       <div className='justify-items-center mt-3'>
         {/* <DepartmentCard /> */}
         <div className="ml-[220px]">
-          <Box sx={{ padding: 3,  
-                      width: '1200px',}}>
+          <Box sx={{ padding: 3, width: '1200px',}}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <Typography variant="h5">File Category</Typography>
               <ToggleButtonGroup
