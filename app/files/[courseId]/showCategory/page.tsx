@@ -87,7 +87,7 @@ function Files() {
 
       <div className='justify-items-center mt-3'>
         <div className="ml-[220px]">
-          <Box sx={{ padding: 3 }}>
+          <Box sx={{ padding: 3, width: '1200px', }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <Typography variant="h5">Categories</Typography>
               <ToggleButtonGroup
@@ -152,8 +152,36 @@ function Files() {
                   ))}
                 </Box>
               ) : (
+                // List View Layout
                 <Box>
-                  <Typography variant="h6">Table View (not implemented)</Typography>
+                  {folders.map((folder) => (
+                    <Card
+                      key={folder.id}
+                      variant="outlined"
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: 2,
+                        width: '1200px',
+                        marginBottom: 2,
+                        cursor: 'pointer',
+                        '&:hover': {
+                          boxShadow: 3,
+                        },
+                      }}
+                      onClick={() => handleFolderClick(folder.id)}
+                    >
+                      <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                          {folder.name}
+                        </Typography>
+                      </Box>
+                      {/* <Button variant="contained" color="primary" onClick={() => handleFolderClick(folder.id)}>
+                        View
+                      </Button> */}
+                    </Card>
+                  ))}
                 </Box>
               )
             )}

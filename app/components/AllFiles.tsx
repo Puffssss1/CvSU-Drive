@@ -21,7 +21,6 @@ import {
   DialogTitle, 
   DialogContent, 
   DialogActions, 
-  TextField, 
   Button 
 } from '@mui/material';
 import GridViewIcon from '@mui/icons-material/GridView';
@@ -49,20 +48,14 @@ interface Folder {
   uploaded_by: string;
 }
 
-interface categories {
-  id: string;
-  name: string;
-}
-
 function FolderList() {
   const { data: session } = useSession();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<{ [key: string]: HTMLElement | null }>({});
   const [folders, setFolders] = useState<Folder[]>([]);
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [renameFolderId, setRenameFolderId] = useState<string | null>(null);
-  const [newFolderName, setNewFolderName] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteFolderId, setDeleteFolderId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [category, setCategory] = useState<string | null>(null);
 
@@ -122,42 +115,35 @@ function FolderList() {
     if (newLayout) setLayout(newLayout);
   };
 
-  const openRenameDialog = (folderId: string, currentName: string) => {
-    setRenameFolderId(folderId);
-    setNewFolderName(currentName);
-    setRenameDialogOpen(true);
+  const openDeleteDialog = (folderId: string) => {
+    setDeleteFolderId(folderId);
+    setDeleteDialogOpen(true);
   };
 
-  const handleRename = async () => {
-    if (renameFolderId && newFolderName.trim()) {
-      const { data, error } = await supabase
+  const handleDelete = async () => {
+    if (deleteFolderId) {
+      const { error } = await supabase
         .from('file_metadata')
-        .update({ file_name: newFolderName })
-        .eq('id', renameFolderId);
+        .delete()
+        .eq('id', deleteFolderId);
 
       if (error) {
-        console.error('Error renaming folder:', error);
+        console.error('Error deleting folder:', error);
       } else {
-        setFolders((prevFolders) =>
-          prevFolders.map((folder) =>
-            folder.id === renameFolderId ? { ...folder, file_name: newFolderName } : folder
-          )
-        );
-        setRenameDialogOpen(false);
-        setRenameFolderId(null);
-        setNewFolderName('');
+        setFolders((prevFolders) => prevFolders.filter((folder) => folder.id !== deleteFolderId));
+        setDeleteDialogOpen(false);
+        setDeleteFolderId(null);
       }
     }
   };
 
-  const handleRenameDialogClose = () => {
-    setRenameDialogOpen(false);
-    setRenameFolderId(null);
-    setNewFolderName('');
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+    setDeleteFolderId(null);
   };
 
   const handleFolderClick = (folderId: string) => {
-    router?.push(`${folderId}`);
+    window.open(folderId, '_blank');
   };
 
   if (!isMounted) {
@@ -175,7 +161,7 @@ function FolderList() {
       <div className='ml-[220px]'>
         <Box sx={{ padding: 3 }}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h5">Folders</Typography>
+            <Typography variant="h5">Files</Typography>
             <ToggleButtonGroup
               value={layout}
               exclusive
@@ -191,7 +177,7 @@ function FolderList() {
             </ToggleButtonGroup>
           </Box>
 
-          {filteredFolders.length === 0 ? ( // Added this condition
+          {filteredFolders.length === 0 ? (
             <Typography variant="h6" color="textSecondary" align="center">
               No files available
             </Typography>
@@ -216,7 +202,7 @@ function FolderList() {
                     <IconButton
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent click from propagating to the parent
-                        handleClick(e, folder.file_url);
+                        handleClick(e, folder.id);
                       }}
                       size="small"
                       sx={{
@@ -232,8 +218,8 @@ function FolderList() {
                       open={Boolean(anchorEl[folder.id])}
                       onClose={() => handleClose(folder.id)}
                     >
-                      <MenuItem onClick={() => openRenameDialog(folder.id, folder.file_name)}>
-                        Rename Folder
+                      <MenuItem onClick={() => openDeleteDialog(folder.id)}>
+                        Delete Folder
                       </MenuItem>
                       <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
                     </Menu>
@@ -278,7 +264,7 @@ function FolderList() {
               <Table stickyHeader>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Folder Name</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>File Name</TableCell>
                     <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Date Created</TableCell>
                     <TableCell sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Uploaded By</TableCell>
                     <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1rem', paddingX: 16 }}>Actions</TableCell>
@@ -302,7 +288,7 @@ function FolderList() {
                       </TableCell>
                       <TableCell sx={{ paddingX: 16 }}>{folder.uploaded_by}</TableCell>
                       <TableCell align="right" sx={{ paddingX: 16 }}>
-                        <IconButton onClick={(e) => handleClick(e, folder.file_url)}>
+                        <IconButton onClick={(e) => handleClick(e, folder.id)}>
                           <MoreVertIcon />
                         </IconButton>
                         <Menu
@@ -310,8 +296,8 @@ function FolderList() {
                           open={Boolean(anchorEl[folder.id])}
                           onClose={() => handleClose(folder.id)}
                         >
-                          <MenuItem onClick={() => openRenameDialog(folder.id, folder.file_name)}>
-                            Rename Folder
+                          <MenuItem onClick={() => openDeleteDialog(folder.id)}>
+                            Delete Folder
                           </MenuItem>
                           <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
                         </Menu>
@@ -323,30 +309,22 @@ function FolderList() {
             </TableContainer>
           )}
         </Box>
-        <div className='fixed bottom-10 right-10 z-50s'>
-        <UploadFile />
+
+        <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
+          <DialogTitle>Delete Folder</DialogTitle>
+          <DialogContent>
+            <Typography>Are you sure you want to delete this folder?</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteDialogClose}>Cancel</Button>
+            <Button onClick={handleDelete} color="error">Delete</Button>
+          </DialogActions>
+        </Dialog>
+
+        <div className='fixed bottom-10 right-10 z-50'>
+          <UploadFile />
         </div>
       </div>
-
-      
-
-      <Dialog open={renameDialogOpen} onClose={handleRenameDialogClose}>
-        <DialogTitle>Rename Folder</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Folder Name"
-            fullWidth
-            value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleRenameDialogClose}>Cancel</Button>
-          <Button onClick={handleRename}>Rename</Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 }

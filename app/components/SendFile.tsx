@@ -187,7 +187,7 @@ const SendFile = () => {
                                 onChange={handleUserChange}
                             >
                                 {users.map((user) => (
-                                    <MenuItem key={user.id} value={user.id}>
+                                    <MenuItem key={user.id} value={user.name}>
                                         {user.name}
                                     </MenuItem>
                                 ))}
@@ -219,11 +219,11 @@ const SendFile = () => {
                         </FormControl>
                         <input type="file" onChange={handleFileChange} />
                         <Button onClick={handleUpload} disabled={uploading} variant='contained' className='bg-[#6A1E9C] text-[#FFB000] text-base rounded-lg'>
-                            {uploading ? 'Uploading...' : 'Upload'}
+                            {uploading ? 'Sending...' : 'Send'}
                         </Button>
                         {uploadedFileUrl && (
                             <div className='mt-3'>
-                                <p>File uploaded successfully!</p>
+                                <p>File sent successfully!</p>
                                 <a href={uploadedFileUrl} target="_blank" rel="noopener noreferrer">
                                     View File
                                 </a>

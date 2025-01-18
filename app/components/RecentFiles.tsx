@@ -1,6 +1,14 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Box, Card, Typography, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { 
+  Box, 
+  Card, 
+  Typography, 
+  Button, 
+  ToggleButtonGroup, 
+  ToggleButton 
+} from '@mui/material';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { useSession } from 'next-auth/react';
@@ -58,11 +66,12 @@ const FolderList = () => {
       case '7days':
         return uploadedDate >= new Date(now.setDate(now.getDate() - 7));
       case 'week':
-        return uploadedDate >= new Date(now.setDate(now.getDate() - 7));
+        // const startOfWeek = ; // Start of the week
+        return uploadedDate >= new Date(now.setDate(now.getDate() - now.getDay()));
       case 'month':
         return uploadedDate >= new Date(now.setMonth(now.getMonth() - 1));
       default:
-        return true;
+        return true; // Show all files
     }
   });
 
@@ -82,7 +91,7 @@ const FolderList = () => {
   };
 
   const handleFolderClick = (fileUrl: string) => {
-    window.location.href = fileUrl; // Redirect to the file URL
+    window.open(fileUrl, '_blank');
   };
 
   const handleNextPage = () => {
@@ -99,10 +108,10 @@ const FolderList = () => {
 
   return (
     <Box sx={{ padding: 3, marginLeft: '220px', minWidth: '600px', maxWidth: '1200px' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} sx={{width: '1200px'}}>
-        <Typography variant="h5">Folders</Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h5">Recent Files</Typography>
 
-        {/* Only show filter buttons if not loading */}
+        {/* Filter Buttons */}
         {!loading && (
           <Box>
             <div className='flex flex-row justify-between gap-2'>
@@ -194,14 +203,47 @@ const FolderList = () => {
               ))}
             </Box>
           ) : (
-            <div>List Layout</div>
+            // List View Layout
+            <Box>
+              {paginatedFolders.map((folder) => (
+                <Card
+                  key={folder.id}
+                  variant="outlined"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: 2,
+                    width: '1200px',
+                    marginBottom: 2,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      boxShadow: 3,
+                    },
+                  }}
+                  onClick={() => handleFolderClick(folder.file_url)}
+                >
+                  <Box>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      {folder.file_name}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                      Uploaded by: {folder.uploaded_by}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                      Created: {new Date(folder.uploaded_at).toLocaleDateString()}
+                    </Typography>
+                  </Box>
+                </Card>
+              ))}
+            </Box>
           )}
         </>
       )}
 
       {/* Pagination Controls */}
       <Box display="flex" justifyContent="center" alignItems="center" mt={3}>
-        <Button variant="contained" disabled={currentPage === 1} onClick={handlePreviousPage} className='bg-[#6A1E9C] rounded-sm'>
+        <Button variant="contained" disabled ={currentPage === 1} onClick={handlePreviousPage} className='bg-[#6A1E9C] rounded-sm'>
           Previous
         </Button>
         <Typography variant="body1" mx={2}>

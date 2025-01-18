@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Card, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Box, Card, Typography, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header'
+import Header from '@/components/Header';
 import UploadFile from '../components/UploadFile';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
@@ -19,7 +19,6 @@ interface Folder {
   id: string;
   name: string; // Folder name will now be a combination of department and course
 }
-
 
 function Files() {
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -48,7 +47,6 @@ function Files() {
     fetchFolders();
   }, []);
 
-
   const handleLayoutChange = (event: React.MouseEvent<HTMLElement>, newLayout: 'list' | 'grid' | null) => {
     if (newLayout) setLayout(newLayout);
   };
@@ -57,16 +55,16 @@ function Files() {
     console.log(`Folder clicked: ${folderId}`);
     router?.push(`/files/${folderId}`); // Handle folder click action here, e.g., navigate to folder details page
   };
+
   return (
     <div>
       <div className="sticky top-0 z-50">
-        <Header/>
+        <Header />
       </div>
 
       <div className='justify-items-center mt-3'>
-        {/* <DepartmentCard /> */}
         <div className="ml-[220px]">
-          <Box sx={{ padding: 3 }}>
+          <Box sx={{ padding: 3, width: '1200px', }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <Typography variant="h5">Departments</Typography>
               <ToggleButtonGroup
@@ -84,6 +82,7 @@ function Files() {
               </ToggleButtonGroup>
             </Box>
 
+            {/* Grid View Layout */}
             {layout === 'grid' ? (
               <Box display="flex" flexWrap="wrap" gap={2}>
                 {folders.map((folder) => (
@@ -111,7 +110,6 @@ function Files() {
                           alignItems: 'center',
                         }}
                       >
-                        {/* Placeholder for image or folder content */}
                         <Typography variant="h6" color="textSecondary">
                           {folder.name}
                         </Typography>
@@ -127,19 +125,47 @@ function Files() {
                 ))}
               </Box>
             ) : (
+              // List View Layout
               <Box>
-                <Typography variant="h6">Table View (not implemented)</Typography>
+                {folders.map((folder) => (
+                  <Card
+                    key={folder.id}
+                    variant="outlined"
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: 2,
+                      width: '1200px',
+                      marginBottom: 2,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        boxShadow: 3,
+                      },
+                    }}
+                    onClick={() => handleFolderClick(folder.id)}
+                  >
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                        {folder.name}
+                      </Typography>
+                    </Box>
+                    {/* <Button variant="contained" color="primary" onClick={() => handleFolderClick(folder.id)}>
+                      View
+                    </Button> */}
+                  </Card>
+                ))}
               </Box>
             )}
           </Box>
         </div>
       </div>
-    
-      <div className='fixed bottom-10 right-10 z-50s'>
+
+      <div className='fixed bottom-10 right-10 z-50'>
         <UploadFile />
       </div>
     </div>
-  )
+  );
 }
 
-export default Files
+export default Files;

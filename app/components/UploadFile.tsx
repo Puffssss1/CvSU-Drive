@@ -57,7 +57,10 @@ function generateFileReference(): string {
     const randomString = generateRandomString(8); // Random 8-character string
     return `${timestamp}_${randomString}`;
 }
-
+const [open, setOpenModal] = React.useState(false);
+  const openModal = () => setOpenModal(true);
+  const closeModal = () => setOpenModal(false);
+  
 const handleUpload = async () => {
   if (!file) return;
 
@@ -113,7 +116,8 @@ const handleUpload = async () => {
     ]);
 
   console.log(metadataData);
-    
+  alert('File Uploaded Successfully!'); 
+  closeModal();
   if (metadataError) {
     console.error('Error saving metadata:', metadataError);
     setUploading(false);
@@ -124,9 +128,7 @@ const handleUpload = async () => {
   setUploading(false);
 };
 
-  const [open, setOpenModal] = React.useState(false);
-  const openModal = () => setOpenModal(true);
-  const closeModal = () => setOpenModal(false);
+  
 
 
 
