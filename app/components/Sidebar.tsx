@@ -259,6 +259,18 @@ function Sidebar() {
                 </ListItemButton>
               </a>
             </ListItem>
+            <ListItem disablePadding>
+              <a href='/sent-files'>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <BackupTableIcon
+                    sx={{ color: '#FFB000' }}/>
+                  </ListItemIcon>
+                  <ListItemText primary={"Sent Files"}
+                  sx={{ color: '#FFB000' }}/>
+                </ListItemButton>
+              </a>
+            </ListItem>
           </List>
           <Divider 
           sx={{ color: '4C585B' }}/>
