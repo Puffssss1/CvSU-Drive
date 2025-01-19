@@ -199,6 +199,13 @@ const FolderList = () => {
                         color="textSecondary"
                         sx={{ display: 'block', marginTop: '4px' }}
                       >
+                        Sent by: {folder.sent_by} 
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ display: 'block', marginTop: '4px' }}
+                      >
                         Created: {new Date(folder.uploaded_at).toLocaleDateString()}
                       </Typography>
                     </Box>
@@ -232,8 +239,9 @@ const FolderList = () => {
                       {folder.file_name}
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
-                      Uploaded by: {folder.uploaded_by}
+                      Sent by: {folder.sent_by}
                     </Typography>
+                    <br />
                     <Typography variant="caption" color="textSecondary">
                       Created: {new Date(folder.uploaded_at).toLocaleDateString()}
                     </Typography>

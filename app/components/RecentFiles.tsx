@@ -108,7 +108,7 @@ const FolderList = () => {
 
   return (
     <Box sx={{ padding: 3, marginLeft: '220px', minWidth: '600px', maxWidth: '1200px' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box sx={{width: '1200px'}} display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h5">Recent Files</Typography>
 
         {/* Filter Buttons */}
