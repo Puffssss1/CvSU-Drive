@@ -26,7 +26,7 @@ interface User {
 const SendFile = () => {
     const [category, setCategory] = useState('');
     const [users, setUsers] = useState<User[]>([]);
-    const [selectedUser , setSelectedUser ] = useState<string>('');
+    const [selectedUsers, setSelectedUsers] = useState<string[]>([]); // Change to array
     const { data: session } = useSession();
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
@@ -51,8 +51,11 @@ const SendFile = () => {
         setCategory(event.target.value);
     };
 
-    const handleUserChange = (event: SelectChangeEvent) => {
-        setSelectedUser (event.target.value); // Update selected user
+    const handleUserChange = (event: SelectChangeEvent<typeof selectedUsers>) => {
+        const {
+            target: { value },
+        } = event;
+        setSelectedUsers(typeof value === 'string' ? value.split(',') : value); // Update selected users
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,8 +80,8 @@ const SendFile = () => {
     }
 
     const handleUpload = async () => {
-        if (!file || !selectedUser ) {
-            alert('Please select a file and a user to send it to.'); // User feedback
+        if (!file || selectedUsers.length === 0) {
+            alert('Please select a file and at least one user to send it to.'); // User feedback
             return;
         }
 
@@ -116,34 +119,44 @@ const SendFile = () => {
 
         const publicURL = publicUrlData.publicUrl; // Correctly access publicUrl
 
-        // Insert file metadata into Supabase
-        const { error: metadataError } = await supabase
-            .from('file_metadata')
-            .insert([
-                {
-                    file_name: file.name,
-                    uploaded_by: selectedUser ,
-                    sent_by: session?.user?.name || 'Unknown', // Handle session safely
-                    file_url: publicURL,
-                    isApproved: false,
-                    referenceId: fileReference,
-                    Category: category, // Include category in metadata
-                },
-            ]);
+        // Insert file metadata into Supabase for each selected user
+        const insertPromises = selectedUsers.map(async (user) => {
+            const { error: metadataError } = await supabase
+                .from('file_metadata')
+                .insert([
+                    {
+                        file_name: file.name,
+                        uploaded_by: user,
+                        sent_by: session?.user?.name || 'Unknown', // Handle session safely
+                        file_url: publicURL,
+                        isApproved: false,
+                        referenceId: fileReference,
+                        Category: category, // Include category in metadata
+                    },
+                ]);
 
-        if (metadataError) {
-            console.error('Error inserting metadata:', metadataError);
-            alert('Error saving file metadata. Please try again.'); // User feedback
-        } else {
-            alert('File sent successfully! '); // User feedback
-            setUploadedFileUrl(publicURL); // Set the uploaded file URL for display
-        }
+            if (metadataError) {
+                console.error('Error inserting metadata:', metadataError);
+                alert('Error saving file metadata. Please try again.'); // User feedback
+            }
+        });
+
+        await Promise.all(insertPromises); // Wait for all inserts to complete
+
+        alert('File sent successfully!'); // User feedback
+        setUploadedFileUrl(publicURL); // Set the uploaded file URL for display
 
         setUploading(false);
     };
 
     const openModal = () => setOpenModal(true);
     const closeModal = () => setOpenModal(false);
+
+    // Get the logged-in user's name
+    const loggedInUserName = session?.user?.name;
+
+    // Filter out the logged-in user from the users list
+    const filteredUsers = users.filter(user => user.name !== loggedInUserName);
 
     return (
         <div>
@@ -183,10 +196,11 @@ const SendFile = () => {
                             <InputLabel id="user-select-label">Select User</InputLabel>
                             <Select
                                 labelId="user-select-label"
-                                value={selectedUser }
+                                multiple
+                                value={selectedUsers}
                                 onChange={handleUserChange}
                             >
-                                {users.map((user) => (
+                                {filteredUsers.map((user) => (
                                     <MenuItem key={user.id} value={user.name}>
                                         {user.name}
                                     </MenuItem>

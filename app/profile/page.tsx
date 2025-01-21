@@ -45,7 +45,7 @@ export default async function ProfileView() {
             <Grid item xs={12} sm={4} md={3}>
               <Avatar 
                 alt="Profile Picture" 
-                src="/path/to/profile-pic.jpg" 
+                // src="/path/to/profile-pic.jpg" 
                 style={{
                   width: '100%',
                   height: 'auto',
