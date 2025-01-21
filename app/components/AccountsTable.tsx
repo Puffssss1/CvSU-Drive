@@ -19,7 +19,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { SelectChangeEvent } from '@mui/material'; // Import SelectChangeEvent
+import { SelectChangeEvent } from '@mui/material';
+
 interface User {
   _id: string;
   name: string;
@@ -27,15 +28,16 @@ interface User {
   email: string;
   role: string;
   contact: string;
+  birthdate: string; // Add birthdate field
 }
 
-const departments = ['Department of Information Technology', 'Department of Education'];  // departments
-const roles = ['Faculty', 'Chairperson', 'Admin']; // roles
+const departments = ['Department of Information Technology', 'Department of Education'];
+const roles = ['Faculty', 'Chairperson', 'Admin'];
 
 function AccountsTable() {
   const [users, setUsers] = React.useState<User[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [editUser, setEditUser] = React.useState<User | null>(null);
+  const [editUser , setEditUser ] = React.useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = React.useState<string | null>(null);
   const [confirmationText, setConfirmationText] = React.useState<string>("");
 
@@ -56,54 +58,42 @@ function AccountsTable() {
   }, []);
 
   const handleEditClick = (user: User) => {
-    setEditUser(user);
+    setEditUser (user);
   };
 
   const handleEditSubmit = async () => {
-    if (editUser) {
-    // Name validation: at least 2 valid parts (first and last name), can include spaces, hyphens, or apostrophes
-    const namePattern = /^[A-Za-zÀ-ÿ\s'-]{2,}$/;
-    const nameParts = editUser .name.trim().split(/\s+/); // Split by whitespace
+    if (editUser ) {
+      // Name validation
+      const namePattern = /^[A-Za-zÀ-ÿ\s'-]{2,}$/;
+      const nameParts = editUser .name.trim().split(/\s+/);
 
-    if (!namePattern.test(editUser .name) || nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+      if (!namePattern.test(editUser .name) || nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
         alert('Name must contain at least 2 valid parts (e.g., first and last name) and can include spaces, hyphens, or apostrophes.');
         return;
-    }
+      }
 
-    // Email validation: must end with @gmail.com and contain only letters before that
-    const emailRegex = /^[A-Za-z._%+-]+@gmail\.com$/;
-    if (!emailRegex.test(editUser .email)) {
+      // Email validation
+      const emailRegex = /^[A-Za-z._%+-]+@gmail\.com$/;
+      if (!emailRegex.test(editUser .email)) {
         alert('Please enter a valid email address ending with @gmail.com and containing only letters.');
         return;
-    }
-
-    // Validate contact number: must be a valid 11-digit phone number starting with 09
-    if (!editUser .contact || !/^09\d{9}$/.test(editUser .contact)) {
-      alert('Contact must be a valid 11-digit phone number starting with 09.');
-      return;
-  }
-
-      try {
-        const response = await fetch(`/api/editUsers/?id=${editUser._id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(editUser),
-        });
-
-        if (response.ok) {
-          setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-              user._id === editUser._id ? { ...editUser } : user
-            )
-          );
-          setEditUser(null);
-        } else {
-          alert('Failed to update user.');
-        }
-      } catch (error) {
-        console.error('Error updating user:', error);
-        alert('An error occurred while updating the user.');
       }
+
+      // Validate contact number
+      if (!editUser .contact || !/^09\d{9}$/.test(editUser .contact)) {
+        alert('Contact must be a valid 11-digit phone number starting with 09.');
+        return;
+      }
+
+      // Validate birthdate
+      if (!editUser .birthdate) {
+        alert('Birthdate must be filled out before submitting.');
+        return;
+      }
+
+      // If all validations pass, you can proceed with the submission logic here
+      alert('All validations passed!'); // Placeholder for submission logic
+      setEditUser (null); // Close the dialog after submission
     }
   };
 
@@ -141,8 +131,8 @@ function AccountsTable() {
     e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }> | SelectChangeEvent<string>
   ) => {
     const { name, value } = e.target;
-    if (editUser) {
-      setEditUser({ ...editUser, [name as string]: value });
+    if (editUser ) {
+      setEditUser ({ ...editUser , [name as string]: value });
     }
   };
 
@@ -190,10 +180,10 @@ function AccountsTable() {
       </TableContainer>
 
       {/* Edit Dialog */}
-      {editUser && (
+      {editUser  && (
         <Dialog
-          open={!!editUser}
-          onClose={() => setEditUser(null)}
+          open={!!editUser }
+          onClose={() => setEditUser (null)}
           sx={{
             '& .MuiDialog-paper': {
               display: 'flex',
@@ -210,7 +200,7 @@ function AccountsTable() {
             <TextField
               label="Name"
               name="name"
-              value={editUser.name}
+              value={editUser .name}
               onChange={handleInputChange}
               fullWidth
               margin="normal"
@@ -220,7 +210,7 @@ function AccountsTable() {
               <Select
                 label="Department"
                 name="department"
-                value={editUser.department}
+                value={editUser .department}
                 onChange={handleInputChange}
               >
                 {departments.map((department) => (
@@ -233,7 +223,7 @@ function AccountsTable() {
             <TextField
               label="Email"
               name="email"
-              value={editUser.email}
+              value={editUser .email}
               onChange={handleInputChange}
               fullWidth
               margin="normal"
@@ -241,17 +231,29 @@ function AccountsTable() {
             <TextField
               label="Contact"
               name="contact"
-              value={editUser.contact}
+              value={editUser .contact}
               onChange={handleInputChange}
               fullWidth
               margin="normal"
+            />
+            <TextField
+              label="Birthdate"
+              name="birthdate"
+              type="date"
+              value={editUser .birthdate}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel>Role</InputLabel>
               <Select
                 label="Role"
                 name="role"
-                value={editUser.role}
+                value={editUser .role}
                 onChange={handleInputChange}
               >
                 {roles.map((role) => (
@@ -263,7 +265,7 @@ function AccountsTable() {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setEditUser(null)}>Cancel</Button>
+            <Button onClick={() => setEditUser (null)}>Cancel</Button>
             <Button onClick={handleEditSubmit} variant="contained">Save</Button>
           </DialogActions>
         </Dialog>
@@ -271,15 +273,15 @@ function AccountsTable() {
 
       {/* Delete Confirmation Dialog */}
       {deleteUserId && (
-          <Dialog open={!!deleteUserId} onClose={handleDeleteCancel}>
+        <Dialog open={!!deleteUserId} onClose={handleDeleteCancel}>
           <DialogTitle>Confirm Deletion</DialogTitle>
-            <DialogContent>
-              <TextField
-                label="Type 'YES' to confirm"
-                value={confirmationText}
-                onChange={(e) => setConfirmationText(e.target.value)}
-                fullWidth
-              />
+          <DialogContent>
+            <TextField
+              label="Type 'YES' to confirm"
+              value={confirmationText}
+              onChange={(e) => setConfirmationText(e.target.value)}
+              fullWidth
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteCancel} variant="contained" className='hover:bg-blue-800'>Cancel</Button>
