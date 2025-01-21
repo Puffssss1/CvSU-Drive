@@ -142,8 +142,8 @@ function FolderList() {
     setDeleteFolderId(null);
   };
 
-  const handleFolderClick = (folderId: string) => {
-    window.open(folderId, '_blank');
+  const handleFolderClick = (folderUrl: string) => {
+    window.open(folderUrl, '_blank');
   };
 
   if (!isMounted) {
@@ -197,7 +197,7 @@ function FolderList() {
                         boxShadow: 6,
                       },
                     }}
-                    onClick={() => handleFolderClick(folder.file_url)}
+                    onClick={() => handleFolderClick(folder.file_url)} // Open file on card click
                   >
                     <IconButton
                       onClick={(e) => {
@@ -218,7 +218,12 @@ function FolderList() {
                       open={Boolean(anchorEl[folder.id])}
                       onClose={() => handleClose(folder.id)}
                     >
-                      <MenuItem onClick={() => openDeleteDialog(folder.id)}>
+                      <MenuItem 
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent click from propagating to the card
+                          openDeleteDialog(folder.id);
+                        }}
+                      >
                         Delete Folder
                       </MenuItem>
                       <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
@@ -280,7 +285,7 @@ function FolderList() {
                           cursor: 'pointer',
                         },
                       }}
-                      onClick={() => handleFolderClick(folder.file_url)}
+                      onClick={() => handleFolderClick(folder.file_url)} // Open file on row click
                     >
                       <TableCell sx={{ paddingX: 16 }}>{folder.file_name}</TableCell>
                       <TableCell sx={{ paddingX: 16 }}>
@@ -296,7 +301,12 @@ function FolderList() {
                           open={Boolean(anchorEl[folder.id])}
                           onClose={() => handleClose(folder.id)}
                         >
-                          <MenuItem onClick={() => openDeleteDialog(folder.id)}>
+                          <MenuItem 
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent click from propagating to the row
+                              openDeleteDialog(folder.id);
+                            }}
+                          >
                             Delete Folder
                           </MenuItem>
                           <MenuItem onClick={() => handleClose(folder.id)}>Download</MenuItem>
