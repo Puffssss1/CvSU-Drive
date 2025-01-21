@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -91,6 +91,9 @@ function ApprovalTable() {
         return <Typography variant="h6" align="center">Loading...</Typography>; // Loading state
     }
 
+    // Check if the user is an admin
+    const isAdmin = session?.user?.role === 'Admin'; // Adjust this based on your role structure
+
     return (
         <TableContainer component={Paper} sx={{ margin: '10px', marginLeft: '220px' }}>
             <Table sx={{ minWidth: 150 }} aria-label="simple table">
@@ -116,28 +119,30 @@ function ApprovalTable() {
                             <TableCell align="left">{row.uploaded_by}</TableCell>
                             <TableCell align="left">{new Date(row.uploaded_at).toLocaleDateString()}</TableCell>
 
-                            {/* Actions: Approve, Revise, Decline */}
+                            {/* Actions: Approve, Decline */}
                             <TableCell align="left">
-                                <div className='flex flex-row justify-between gap-0'>
-                                    <Button 
-                                        variant="contained" 
-                                        color="success" 
-                                        size="small" 
-                                        onClick={() => handleApprove(row.id)} // Call handleApprove on click
-                                        disabled={row.isApproved} // Disable if already approved
-                                    >
-                                        Approve
-                                    </Button>
-                                    <Button 
-                                        variant="contained" 
-                                        color="error" 
-                                        size="small" 
-                                        onClick={() => handleDecline(row.id)} // Call handleDecline on click
-                                        disabled={row.isApproved === false} // Disable if already declined
-                                    >
-                                        Decline
-                                    </Button>
-                                </div>
+                                {isAdmin && ( // Only show buttons if the user is an admin
+                                    <div className='flex flex-row justify-between gap-0'>
+                                        <Button 
+                                            variant="contained" 
+                                            color="success" 
+                                            size="small" 
+                                            onClick={() => handleApprove(row.id)} // Call handleApprove on click
+                                            disabled={row.isApproved} // Disable if already approved
+                                        >
+                                            Approve
+                                        </Button>
+                                        <Button 
+                                            variant="contained" 
+                                            color="error" 
+                                            size="small" 
+                                            onClick={() => handleDecline(row.id)} // Call handleDecline on click
+                                            disabled={row.isApproved === false} // Disable if already declined
+                                        >
+                                            Decline
+                                        </Button>
+                                    </div>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
