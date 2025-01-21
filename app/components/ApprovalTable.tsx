@@ -69,6 +69,24 @@ function ApprovalTable() {
         }
     };
 
+    const handleDecline = async (folderId: string) => {
+        const { error } = await supabase
+            .from('file_metadata')
+            .update({ isApproved: false }) // Update isApproved to false
+            .eq('id', folderId);
+
+        if (error) {
+            console.error('Error declining folder:', error);
+        } else {
+            // Update the local state to reflect the change
+            setRows((prevRows) =>
+                prevRows.map((row) =>
+                    row.id === folderId ? { ...row, isApproved: false } : row
+                )
+            );
+        }
+    };
+
     if (loading) {
         return <Typography variant="h6" align="center">Loading...</Typography>; // Loading state
     }
@@ -106,13 +124,19 @@ function ApprovalTable() {
                                         color="success" 
                                         size="small" 
                                         onClick={() => handleApprove(row.id)} // Call handleApprove on click
-                                        disabled={ row.isApproved} // Disable if already approved
+                                        disabled={row.isApproved} // Disable if already approved
                                     >
                                         Approve
                                     </Button>
-                                    {/* <Button variant="contained" color="error" size="small">
+                                    <Button 
+                                        variant="contained" 
+                                        color="error" 
+                                        size="small" 
+                                        onClick={() => handleDecline(row.id)} // Call handleDecline on click
+                                        disabled={row.isApproved === false} // Disable if already declined
+                                    >
                                         Decline
-                                    </Button> */}
+                                    </Button>
                                 </div>
                             </TableCell>
                         </TableRow>
